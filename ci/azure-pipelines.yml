@@ -1,6 +1,7 @@
 trigger:
   - master
   - release-*
+  - v*
 
 jobs:
 - job: 'Ubuntu_1604_Apt'
