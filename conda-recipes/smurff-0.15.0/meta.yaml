@@ -4,10 +4,12 @@ package:
 
 source:
    git_url: https://github.com/ExaScience/smurff
-   git_rev: v0.15.0
+   #git_rev: v0.15.0
+   git_rev: release-0.15
 
 build:
    number: 2
+   script: $RECIPE_DIR/blas_build.sh {{ blas_impl }}
 
 requirements:
    build:
@@ -17,7 +19,7 @@ requirements:
      - llvm-openmp              # [osx]
    host:
      - intel-openmp
-     - mkl-devel
+     - {{ blas_impl }}-devel
      - eigen3
      - boost
      - cython >=0.25
@@ -26,13 +28,13 @@ requirements:
      - numpy >=1.13
    run:
      - intel-openmp
-     - mkl
+     - {{ blas_impl }}
      - libboost
      - numpy >=1.13
      - scipy
      - pandas
      - scikit-learn
-     - matrix_io
+     - matrix_io >=0.5
 
 test:
     commands:

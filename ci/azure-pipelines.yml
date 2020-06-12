@@ -64,16 +64,59 @@ jobs:
     displayName: Take ownership of conda installation
   - template: conda-steps.yml
 
-- job: 'Conda_Windows'
+# - job: 'Conda_Windows'
+#   pool:
+#     vmImage: 'vs2017-win2016	'
+#   steps:
+#     - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+#       displayName: Add conda to PATH
+#     - script: conda create --yes --quiet --name buildEnv conda-build
+#       displayName: Create Anaconda environment and install conda-build
+#     - script: |
+#         call activate buildEnv
+#         cd conda-recipes
+#         conda build --no-test  -c vanderaa smurff-latest
+#       displayName: Build using "conda build"
+
+
+
+
+- job: linux_wheel
   variables:
-    VS140COMNTOOLS: 'C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\'
-  pool:
-    vmImage: 'vs2017-win2016'
+    - CIBW_BUILD: cp3*-manylinux_x86_64	
+    - CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64
+  pool: {vmImage: 'Ubuntu-16.04'}
   steps:
-    - script: |
-        rd /s /q "C:\Program Files (x86)\Windows Kits\10\include\wdf"
-      displayName: Remove 'wdf' SDK
-    - script: |
-         choco install microsoft-visual-cpp-build-tools
-      displayName: Install Visual Studio 2015 CPP Build Tools
-    - template: conda-steps.yml
+    - task: UsePythonVersion@0
+    - bash: |
+        python3 -m pip install --upgrade pip
+        pip3 install cibuildwheel==1.4.2
+        cibuildwheel --output-dir wheelhouse .
+    - task: PublishBuildArtifacts@1
+      inputs: {pathtoPublish: 'wheelhouse'}
+
+- job: macos_wheel
+  variables:
+    CIBW_BUILD: cp3*-macosx_x86_64
+  pool: {vmImage: 'macOS-10.15'}
+  steps:
+    - task: UsePythonVersion@0
+    - bash: |
+        python3 -m pip install --upgrade pip
+        pip3 install cibuildwheel==1.4.2
+        cibuildwheel --output-dir wheelhouse .
+    - task: PublishBuildArtifacts@1
+      inputs: {pathtoPublish: 'wheelhouse'}
+
+- job: windows_wheel
+  pool: {vmImage: 'vs2017-win2016'}
+  steps:
+    - task: UsePythonVersion@0
+    - script: choco install vcpython27 -f -y
+      displayName: Install Visual C++ for Python 2.7
+    - bash: |
+        python -m pip install --upgrade pip
+        pip install cibuildwheel==1.4.2
+        cibuildwheel --output-dir wheelhouse .
+    - task: PublishBuildArtifacts@1
+      inputs: {pathtoPublish: 'wheelhouse'}

@@ -50,15 +50,15 @@ class CMakeBuild(build_ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
         cfg = 'Debug' if self.debug else 'Release'
 
-        if not os.path.exists(self.build_temp) or ext.extra_cmake_args:
-            os.makedirs(self.build_temp, exist_ok = True)
-            cmake_args = [
-                           '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
-                           '-DPYTHON_EXECUTABLE=' + sys.executable,
-                           '-DCMAKE_BUILD_TYPE=' + cfg
-                         ] + ext.extra_cmake_args
+        os.makedirs(self.build_temp, exist_ok = True)
+        cmake_args = [
+                        '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
+                        '-DPYTHON_EXECUTABLE=' + sys.executable,
+                        '-DCMAKE_BUILD_TYPE=' + cfg
+                        ] + ext.extra_cmake_args
 
-            subprocess.check_call(['cmake', ext.sourcedir] + cmake_args, cwd=self.build_temp)
+        cmake_srcdir = os.path.join(ext.sourcedir, 'lib', 'smurff-cpp', 'cmake')
+        subprocess.check_call(['cmake', cmake_srcdir] + cmake_args, cwd=self.build_temp)
 
         build_args = ['--config', cfg] + ext.extra_build_args
         subprocess.check_call(['cmake', '--build', '.' ] + build_args, cwd=self.build_temp)
@@ -89,9 +89,7 @@ except ValueError:
 
 setup(
     name = 'smurff',
-    packages = find_packages('src'),
-    package_dir={'':'src'},
-    scripts={'src/py_smurff'},
+    packages = [ 'smurff' ],
     version = git_describe_version(),
     url = "http://github.com/ExaScience/smurff",
     ext_modules=[CMakeExtension('smurff/wrapper', '../..', extra_cmake_args, extra_build_args)],
@@ -104,6 +102,6 @@ setup(
     author_email = "Tom.VanderAa@imec.be",
     classifiers = CLASSIFIERS,
     keywords = "bayesian factorization machine-learning high-dimensional side-information",
-    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'h5sparse' ]
+    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn' ]
 )
 

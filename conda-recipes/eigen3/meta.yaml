@@ -12,8 +12,6 @@ requirements:
     - {{ compiler("cxx") }}
     - {{ compiler("fortran") }} # [not win]
     - cmake
-    - mkl-devel                 # [not win]
-
 test:
   files:
     - test.cc
