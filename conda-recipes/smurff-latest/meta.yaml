@@ -4,6 +4,7 @@ package:
 
 source:
   git_url: https://github.com/ExaScience/smurff
+  git_rev: release-0.15
 
 build:
     number: 1

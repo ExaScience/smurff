@@ -46,7 +46,7 @@ jobs:
 
 - job: 'Conda_macOS'
   pool:
-    vmImage: 'macOS-10.14'
+    vmImage: 'macOS-10.15'
   variables:
     macOS_sdk_url: 'https://github.com/tvandera/MacOSX_SDKs/releases/download/v10.11.0.1/MacOSX10.9.sdk.tar.gz'
     macOS_sdk_filename: '$(Agent.TempDirectory)/MacOSX10.9.sdk.tar.gz'
@@ -56,33 +56,29 @@ jobs:
       sudo mkdir -p /opt
       sudo tar -xzvf $(macOS_sdk_filename) -C /opt
     displayName: 'Install MacOSX10.9.sdk'
-  - bash: echo "##vso[task.prependpath]$CONDA/bin"
-    displayName: Add conda to PATH
-  # On Hosted macOS, the agent user doesn't have ownership of Miniconda's installation directory/
-  # We need to take ownership if we want to update conda or install packages globally
-  - bash: sudo chown -R $USER $CONDA
-    displayName: Take ownership of conda installation
   - template: conda-steps.yml
 
-# - job: 'Conda_Windows'
-#   pool:
-#     vmImage: 'vs2017-win2016	'
-#   steps:
-#     - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
-#       displayName: Add conda to PATH
-#     - script: conda create --yes --quiet --name buildEnv conda-build
-#       displayName: Create Anaconda environment and install conda-build
-#     - script: |
-#         call activate buildEnv
-#         cd conda-recipes
-#         conda build --no-test  -c vanderaa smurff-latest
-#       displayName: Build using "conda build"
+- job: 'Conda_Windows'
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+    - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+      displayName: Add conda to PATH
+    - script: conda create --yes --quiet --name buildEnv conda-build
+      displayName: Create Anaconda environment and install conda-build
+    - script: |
+        call activate buildEnv
+        cd conda-recipes
+        conda build --no-test  -c vanderaa smurff-latest
+      displayName: Build using "conda build"
 
 
 - job: linux_wheel
   variables:
-    CIBW_BUILD: cp3*-manylinux_x86_64	
-    CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64
+    CIBW_BUILD: cp3*-manylinux_x86_64
+    CIBW_MANYLINUX_X86_64_IMAGE: 'vanderaa/manylinux2014_x86_64_smurff'
+    CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_OPENBLAS=ON'"
+    CIBW_TEST_COMMAND: 'python -m unittest discover {project}/python/smurff/test'
   pool: {vmImage: 'Ubuntu-16.04'}
   steps:
     - task: UsePythonVersion@0
@@ -96,25 +92,15 @@ jobs:
 - job: macos_wheel
   variables:
     CIBW_BUILD: cp3*-macosx_x86_64
+    CIBW_BEFORE_BUILD: 'brew install eigen openblas'
+    CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_OPENBLAS=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/openblas'  MACOSX_DEPLOYMENT_TARGET=10.9"
+    CIBW_TEST_COMMAND: 'python -m unittest discover {project}/python/smurff/test'
   pool: {vmImage: 'macOS-10.15'}
   steps:
     - task: UsePythonVersion@0
     - bash: |
         python3 -m pip install --upgrade pip
         pip3 install cibuildwheel==1.4.2
-        cibuildwheel --output-dir wheelhouse .
-    - task: PublishBuildArtifacts@1
-      inputs: {pathtoPublish: 'wheelhouse'}
-
-- job: windows_wheel
-  pool: {vmImage: 'vs2017-win2016'}
-  steps:
-    - task: UsePythonVersion@0
-    - script: choco install vcpython27 -f -y
-      displayName: Install Visual C++ for Python 2.7
-    - bash: |
-        python -m pip install --upgrade pip
-        pip install cibuildwheel==1.4.2
         cibuildwheel --output-dir wheelhouse .
     - task: PublishBuildArtifacts@1
       inputs: {pathtoPublish: 'wheelhouse'}
