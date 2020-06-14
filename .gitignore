@@ -13,4 +13,5 @@ dist
 *.csv
 .vscode
 SMURFF.code-workspace
-tests_output
+tests_output.eggs
+.eggs
