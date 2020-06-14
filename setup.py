@@ -40,7 +40,7 @@ class CMakeBuild(build_ext):
                         '-DCMAKE_BUILD_TYPE=' + cfg,
                         ] + ext.extra_cmake_args
 
-        cmake_srcdir = os.path.join(ext.sourcedir, 'lib', 'smurff-cpp', 'cmake')
+        cmake_srcdir = ext.sourcedir
         subprocess.check_call(['cmake', cmake_srcdir] + cmake_args, cwd=self.build_temp)
 
         build_args = ['--config', cfg] + ext.extra_build_args
@@ -95,7 +95,7 @@ setup(
     author_email = "Tom.VanderAa@imec.be",
     classifiers = CLASSIFIERS,
     keywords = "bayesian factorization machine-learning high-dimensional side-information",
-    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'hdf5' ]
-    setup_requires=['setuptools_scm''],
+    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'hdf5' ],
+    setup_requires=['setuptools_scm', 'pybind11' ],
 )
 
