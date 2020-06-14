@@ -6,6 +6,7 @@ MESSAGE("smurff")
 
 # OPTIONS
 
+OPTION(ENABLE_BLAS "Look for any BLAS" ON)
 OPTION(ENABLE_OPENBLAS "Look only for OPENBLAS library" OFF)
 OPTION(ENABLE_MKL "Look only for MKL library" OFF)
 
@@ -17,8 +18,9 @@ OPTION(ENABLE_VERBOSE_LINKER_LOG "Enable verbose linker log" OFF)
 
 OPTION(ENABLE_BOOST "Enable usage of Boost for program options" ON)
 
+OPTION(ENABLE_CMDLINE "Enable Command-Line Tools" ON)
+OPTION(ENABLE_TESTS "Enable C++ Unit Tests" ON)
 OPTION(ENABLE_PYTHON "Enable Python Wrapper" ON)
-
 OPTION(ENABLE_MPI "Enable MPI Support" OFF)
 
 SET(SMURFF_FLOAT_TYPE "double" CACHE STRING "Main compute type")
@@ -282,11 +284,11 @@ if(${ENABLE_OPENBLAS})
   configure_openblas()
   set(ALGEBRA_LIBS ${BLAS_LIBRARIES})
   set(ALGEBRA_LIB_NAME OPENBLAS)
-elseif(${ENABLE_MKL})
+elseif(ENABLE_MKL)
   configure_mkl()
   set(ALGEBRA_LIBS ${MKL_LIBRARIES})
   set(ALGEBRA_LIB_NAME MKL)
-else()
+elseif(ENABLE_BLAS)
   configure_lapack()
   set(ALGEBRA_LIBS ${LAPACKE_LIBRARIES} ${LAPACK_LIBRARIES})
   set(ALGEBRA_LIB_NAME LAPACK)
@@ -350,7 +352,9 @@ SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 add_subdirectory (cpp/SmurffCpp)
 
 # main executable
-add_subdirectory (cpp/Smurff)
+if(ENABLE_CMDLINE)
+  add_subdirectory (cpp/Smurff)
+endif()
 
 # MPI
 if(ENABLE_MPI)
@@ -358,7 +362,9 @@ if(ENABLE_MPI)
 endif()
 
 # tests
-add_subdirectory (cpp/Tests)
+if(ENABLE_TESTS)
+  add_subdirectory (cpp/Tests)
+endif()
 
 # python
 if(ENABLE_PYTHON)
