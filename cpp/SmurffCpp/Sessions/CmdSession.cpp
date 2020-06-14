@@ -243,7 +243,7 @@ Config parse_options(int argc, char *argv[])
 Config parse_options(int argc, char *argv[])
 {
     auto usage = []() {
-        std::cerr << "Usage:\n\tsmurff --" RESTORE_NAME " <saved_smurff.h5>\n\n"
+        std::cerr << "Usage:\n\tsmurff --" << RESTORE_NAME << " <saved_smurff.h5>\n\n"
                   << "(Limited smurff compiled w/o boost program options)" << std::endl;
         exit(0);
     };
@@ -260,14 +260,6 @@ Config parse_options(int argc, char *argv[])
         config.setRestoreName(RESTORE_NAME);
      }
 
-    //create new trainSession from config (passing command line arguments)
-    else if (std::string(argv[1]) == "--" + std::string(INI_NAME))
-    {
-        std::string ini_file(argv[2]);
-        bool success = config.restore(ini_file);
-        THROWERROR_ASSERT_MSG(success, "Could not load ini file '" + ini_file + "'");
-        config.setIniName(ini_file);
-    } 
     else
     {
         usage();
