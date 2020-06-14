@@ -79,12 +79,10 @@ jobs:
 #       displayName: Build using "conda build"
 
 
-
-
 - job: linux_wheel
   variables:
-    - CIBW_BUILD: cp3*-manylinux_x86_64	
-    - CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64
+    CIBW_BUILD: cp3*-manylinux_x86_64	
+    CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux2014_x86_64
   pool: {vmImage: 'Ubuntu-16.04'}
   steps:
     - task: UsePythonVersion@0

@@ -2,27 +2,10 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 from setuptools import find_packages
 
-
 import os
 import shutil
 import sys
 import subprocess
-
-from subprocess import Popen, PIPE
-
-def git_describe_version():
-    p = Popen(['git', 'describe', '--long'],
-                stdout=PIPE, stderr=PIPE)
-    p.stderr.close()
-    line = p.stdout.readlines()[0].strip().decode()
-    version, post, hash = line.split('-')
-    version = version.lstrip('v')
-
-    if (int(post)) != 0:
-        # v0.15.0-411-gd585b05e -> 0.15.0.post411
-        version = version + ".post" + post # v0.15.0-411-gd585b05e -> 
-
-    return version
 
 CLASSIFIERS = [
     "Development Status :: 4 - Beta",
@@ -90,9 +73,12 @@ except ValueError:
 setup(
     name = 'smurff',
     packages = [ 'smurff' ],
-    version = git_describe_version(),
+    use_scm_version={
+        'version_scheme': 'post-release',
+        'local_scheme': 'dirty-tag'
+    }
     url = "http://github.com/ExaScience/smurff",
-    ext_modules=[CMakeExtension('smurff/wrapper', '../..', extra_cmake_args, extra_build_args)],
+    ext_modules=[CMakeExtension('smurff/wrapper', '.', extra_cmake_args, extra_build_args)],
     cmdclass=dict(build_ext=CMakeBuild), 
     zip_safe = False,
     license = "MIT",
@@ -102,6 +88,7 @@ setup(
     author_email = "Tom.VanderAa@imec.be",
     classifiers = CLASSIFIERS,
     keywords = "bayesian factorization machine-learning high-dimensional side-information",
-    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn' ]
+    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'hdf5' ]
+    build_requires = [ 'numpy' ]
 )
 
