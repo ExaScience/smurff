@@ -20,8 +20,22 @@ jobs:
     - script: |
         sudo add-apt-repository ppa:lkoppel/robotics
         sudo apt-get update
-        sudo apt-get install -y ninja-build libblas-dev liblapack-dev liblapacke-dev libboost-all-dev libopenmpi-dev libeigen3-dev
+        sudo apt-get install -y wget ninja-build libblas-dev liblapack-dev liblapacke-dev libboost-all-dev libopenmpi-dev libeigen3-dev
+        sudo apt-get clean all
       displayName: Apt install dependencies
+    - script: |
+        wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.2.tar.gz 
+        tar xzf HighFive.tar.gz 
+        rm HighFive.tar.gz
+        cd HighFive*
+        mkdir build
+        cd build 
+        cmake ..
+        make -j2
+        sudo make install 
+        cd ../..
+        rm -r HighFive*
+      displayName: Install HighFive
     - script: |
         mkdir build.$(build.type)
       displayName: Make Build Directory
