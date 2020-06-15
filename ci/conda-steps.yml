@@ -8,5 +8,5 @@ steps:
     - script: |
         cd conda-recipes
         source activate buildEnv
-        conda build -c vanderaa smurff-latest
+        conda build -c vanderaa smurff
       displayName: Build using 'conda build'
