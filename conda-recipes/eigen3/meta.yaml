@@ -9,12 +9,10 @@ source:
 
 requirements:
   build:
-    - {{ compiler("cxx") }}
-    - {{ compiler("fortran") }} # [not win]
     - cmake
-test:
-  files:
-    - test.cc
+
+build:
+  number: 2
 
 about:
   home: http://eigen.tuxfamily.org/
