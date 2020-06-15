@@ -15,3 +15,5 @@ dist
 SMURFF.code-workspace
 tests_output.eggs
 .eggs
+tests_output
+wheelhouse
