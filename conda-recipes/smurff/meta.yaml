@@ -17,27 +17,31 @@ requirements:
     - {{ compiler('c') }}
     - llvm-openmp             # [osx]
   host:
-    - llvm-openmp            # [osx]
+    - llvm-openmp             # [osx]
     - intel-openmp
     - mkl-devel
     - eigen3
     - boost
     - libboost {{ libboost }}
-    - cython >=0.25
+    - pybind11
+    - highfive =2.2
+    - h5py
     - python {{ python }}
     - setuptools
+    - setuptools_scm
     - numpy >=1.13
   run:
-    - llvm-openmp              # [osx]
+    - python {{ python }}
     - intel-openmp
     - mkl
-    - libboost
-    - python
+    - libboost {{ libboost }}
     - numpy
     - scipy
     - pandas
     - scikit-learn
-    - matrix_io
+    - hdf5
+    - h5py
+    - h5sparse >=0.2.0
 
 about:
   home: https://github.com/ExaScience/smurff

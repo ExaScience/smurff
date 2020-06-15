@@ -11,6 +11,10 @@ requirements:
   build:
     - cmake
 
+test:
+  files:
+    - test.cc
+
 build:
   number: 2
 

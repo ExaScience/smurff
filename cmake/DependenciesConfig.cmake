@@ -85,7 +85,8 @@ macro(configure_mkl)
   
   add_definitions(-DEIGEN_USE_MKL_ALL)
   
-  message(STATUS MKL: ${MKL_LIBRARIES} )
+  message(STATUS "MKL libraries: ${MKL_LIBRARIES}" )
+  message(STATUS "MKL include: ${MKL_INCLUDE_DIR}" )
 endmacro(configure_mkl)
 
 macro(configure_eigen)

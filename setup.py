@@ -23,7 +23,6 @@ CLASSIFIERS = [
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir='', extra_cmake_args='', extra_build_args=''):
         Extension.__init__(self, name, sources=[])
-        print("Created CMake Extension:", vars(self))
         self.sourcedir = os.path.abspath(sourcedir)
         self.extra_cmake_args = extra_cmake_args.split()
         self.extra_build_args = extra_build_args.split()
