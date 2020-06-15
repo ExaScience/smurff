@@ -78,7 +78,7 @@ except ValueError:
 
 setup(
     name = 'smurff',
-    package_dir={'':'python/smurff'},
+    package_dir={'smurff':'python/smurff'},
     packages = [ 'smurff' ],
     use_scm_version={
         'version_scheme': 'post-release',
@@ -95,7 +95,7 @@ setup(
     author_email = "Tom.VanderAa@imec.be",
     classifiers = CLASSIFIERS,
     keywords = "bayesian factorization machine-learning high-dimensional side-information",
-    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'hdf5' ],
+    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'h5sparse' ],
     setup_requires=['setuptools_scm', 'pybind11' ],
 )
 

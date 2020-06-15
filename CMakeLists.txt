@@ -369,6 +369,6 @@ endif()
 # python
 if(ENABLE_PYTHON)
     configure_python()
-    add_subdirectory (python/smurff)
+    add_subdirectory (python)
 endif()
 
