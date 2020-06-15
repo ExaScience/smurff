@@ -20,7 +20,7 @@ macro(configure_openmp)
     find_package(OpenMP)
     if(${OPENMP_FOUND})
         message(STATUS "OpenMP found")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_RELEASE} ${OpenMP_CXX_FLAGS}")
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${OpenMP_CXX_FLAGS}")
         
         include_directories(${OpenMP_CXX_INCLUDE_DIRS})
 
