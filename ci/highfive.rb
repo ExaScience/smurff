@@ -8,7 +8,7 @@ class Highfive < Formula
   sha256 "964c722ba916259209083564405ef9ce073b15e9412955fef9281576ea9c5b85"
 
   depends_on "cmake" => :build
-  depends_on "boost" => [ :build, :optional, :test ]
+  depends_on "boost" => [ :build, :test ]
   depends_on "hdf5"
 
   def install
