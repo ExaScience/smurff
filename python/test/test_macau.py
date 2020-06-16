@@ -105,34 +105,6 @@ class TestMacau(unittest.TestCase):
         self.assertTrue(rmse < 0.5,
                         msg="Tensor factorization gave RMSE above 0.5 (%f)." % rmse)
 
-    def test_macau_tensor_univariate(self):
-
-        shape = [30, 4, 2]
-        A = np.random.randn(shape[0], 2)
-        B = np.random.randn(shape[1], 2)
-        C = np.random.randn(shape[2], 2)
-
-        idx = list( itertools.product(np.arange(shape[0]), np.arange(shape[1]), np.arange(shape[2])) )
-        df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
-        df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2, shape)
-
-        Acoo = scipy.sparse.coo_matrix(A)
-
-        predictions = smurff.macau(Ytrain,
-                                Ytest=Ytest,
-                                side_info=[Acoo, None, None],
-                                univariate = True,
-                                num_latent=4,
-                                verbose=verbose,
-                                burnin=200,
-                                nsamples=200)
-
-        rmse = smurff.calc_rmse(predictions)
-
-        self.assertTrue(rmse < 0.5,
-                        msg="Tensor factorization gave RMSE above 0.5 (%f)." % rmse)
-
 if __name__ == '__main__':
     for arg in sys.argv:
         if (arg == "-v" or arg == "--verbose"):

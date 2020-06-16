@@ -284,27 +284,6 @@ class TestSmurff(unittest.TestCase):
         self.assertTrue(rmse < 0.5,
                         msg="Tensor factorization gave RMSE above 0.5 (%f)." % rmse)
 
-    def test_macau_tensor_univariate(self):
-        A = np.random.randn(15, 2)
-        B = np.random.randn(3, 2)
-        C = np.random.randn(2, 2)
-
-        idx = list( itertools.product(np.arange(A.shape[0]), np.arange(B.shape[0]), np.arange(C.shape[0])) )
-        df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
-        df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2)
-
-        Acoo = scipy.sparse.coo_matrix(A)
-
-        predictions = smurff.MacauSession(Ytrain = Ytrain, Ytest = Ytest, 
-                                side_info =[ Acoo, None, None ], univariate = True,
-                                num_latent = 4, verbose = 0, burnin = 200, nsamples = 400).run()
-
-        rmse = smurff.calc_rmse(predictions)
-
-        self.assertTrue(rmse < 0.5,
-                        msg="Tensor factorization gave RMSE above 0.5 (%f)." % rmse)
-
     def test_macau_tensor_empty(self):
         A = np.random.randn(30, 2)
         B = np.random.randn(4, 2)
