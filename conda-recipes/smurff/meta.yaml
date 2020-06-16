@@ -1,14 +1,14 @@
-{% set data = load_setup_py_data(setup_file='../../setup.py', from_recipe_dir=True) %}
-
 package:
   name: smurff
-  version: {{ data.get('version') }}
+  version: {{ environ.get("GIT_DESCRIBE_TAG", "0.99.9").lstrip("v") }}
 
 source:
   path: ../..
 
 build:
-    number: 1
+    number: {{ GIT_DESCRIBE_NUMBER }}
+    ignore_run_exports:
+      - llvm-openmp
 
 requirements:
   build:
