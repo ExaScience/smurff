@@ -107,10 +107,14 @@ jobs:
   variables:
     CIBW_BUILD: cp3*-macosx_x86_64
     CIBW_BEFORE_BUILD: 'brew install eigen openblas'
-    CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_OPENBLAS=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/openblas'  MACOSX_DEPLOYMENT_TARGET=10.9"
+    CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_OPENBLAS=ON -DCMAKE_PREFIX_PATH=/usr/local/opt/openblas'"
     CIBW_TEST_COMMAND: 'python -m unittest discover {project}/python/test'
   pool: {vmImage: 'macOS-10.15'}
   steps:
+    - bash: |
+        brew install eigen openblas
+        brew install ci/highfive.rb
+      displayName: 'Install dependencies using HomeBrew'
     - task: UsePythonVersion@0
     - bash: |
         python3 -m pip install --upgrade pip
