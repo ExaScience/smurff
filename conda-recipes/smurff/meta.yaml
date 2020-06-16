@@ -21,7 +21,6 @@ requirements:
     - intel-openmp
     - mkl-devel
     - eigen3
-    - boost
     - libboost {{ libboost }}
     - pybind11
     - highfive =2.2
@@ -29,7 +28,7 @@ requirements:
     - python {{ python }}
     - setuptools
     - setuptools_scm
-    - numpy >=1.13
+    - numpy
   run:
     - python {{ python }}
     - intel-openmp
