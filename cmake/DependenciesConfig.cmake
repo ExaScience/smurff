@@ -114,17 +114,14 @@ endmacro(configure_highfive)
 macro(configure_boost)
   message ("Dependency check for boost...")
   if(${ENABLE_BOOST})
-      set (Boost_USE_STATIC_LIBS OFF)
-      set (Boost_USE_MULTITHREADED ON)
-      set (SMURFF_BOOST_COMPONENTS system program_options filesystem)
-
-      FIND_PACKAGE(Boost COMPONENTS ${SMURFF_BOOST_COMPONENTS} REQUIRED)
-
+      set(Boost_USE_STATIC_LIBS ON)
+      FIND_PACKAGE(Boost COMPONENTS system program_options filesystem REQUIRED)
 
       message("-- Found Boost_VERSION: ${Boost_VERSION}")
       message("-- Found Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
       message("-- Found Boost_LIBRARY_DIRS: ${Boost_LIBRARY_DIRS}")
-      add_definitions(-DHAVE_BOOST)
+      message("-- Found Boost_LIBRARIES: ${Boost_LIBRARIES}")
+      add_definitions(-DHAVE_BOOST -DBOOST_ALL_NO_LIB)
 
       include_directories(${Boost_INCLUDE_DIRS})
   else()
