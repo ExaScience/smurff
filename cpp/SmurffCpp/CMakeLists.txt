@@ -173,5 +173,5 @@ set(SMURFF_CPP_FILES ${HEADER_FILES}
 #SETUP OUTPUT
 
 add_library (smurff-cpp STATIC ${SMURFF_CPP_FILES})
-target_link_libraries(smurff-cpp HighFive)
+target_link_libraries(smurff-cpp HighFive ${Boost_LIBRARIES})
 
