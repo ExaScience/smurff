@@ -113,6 +113,7 @@ if (MSVC OR MSVC_IDE OR MSVC_VERSION OR MSVC60 OR MSVC70 OR MSVC71 OR MSVC80 OR 
    message( STATUS "MSVC12: " ${MSVC12} )
 
    add_definitions (/W3)
+   add_definitions (/w44267 /w44244)
 
    #hide some irritating c++ unsafe function warnings
    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
