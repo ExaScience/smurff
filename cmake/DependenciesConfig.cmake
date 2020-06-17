@@ -14,7 +14,10 @@ macro(configure_mpi)
 endmacro(configure_mpi)
 
 macro(configure_openmp)
-  if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+  if (MSVC)
+    message ("Skipped check for OpenMP (Windows)")
+    set(OPENMP_FOUND FALSE)
+  elseif(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     message ("Dependency check for OpenMP")
 
     find_package(OpenMP)
