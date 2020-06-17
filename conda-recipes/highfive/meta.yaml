@@ -12,10 +12,11 @@ build:
 requirements:
   build:
     - cmake
+    - {{compiler("cxx")}}
 
   host:
     - hdf5
-
+    
   run:
     - hdf5
 

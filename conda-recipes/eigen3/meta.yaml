@@ -10,7 +10,8 @@ source:
 requirements:
   build:
     - cmake
-
+    - {{compiler("cxx")}}
+    
 test:
   files:
     - test.cc
