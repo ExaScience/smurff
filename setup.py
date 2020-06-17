@@ -36,13 +36,22 @@ class CMakeBuild(build_ext):
         cmake_args = [
                         '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                         '-DPYTHON_EXECUTABLE=' + sys.executable,
-                        '-DCMAKE_BUILD_TYPE=' + cfg,
                         ] + ext.extra_cmake_args
+        build_args = ['--config', cfg] + ext.extra_build_args
 
+        if platform.system() == "Windows":
+            cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
+            if sys.maxsize > 2**32:
+                cmake_args += ['-A', 'x64']
+            build_args += ['--', '/m']
+        else:
+            cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
+            build_args += ['--', '-j2']
+      
         cmake_srcdir = ext.sourcedir
         subprocess.check_call(['cmake', cmake_srcdir] + cmake_args, cwd=self.build_temp)
 
-        build_args = ['--config', cfg] + ext.extra_build_args
+  
         subprocess.check_call(['cmake', '--build', '.' ] + build_args, cwd=self.build_temp)
 
         if install_binaries:
