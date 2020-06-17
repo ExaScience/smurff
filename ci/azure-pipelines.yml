@@ -100,6 +100,7 @@ jobs:
         python3 -m pip install --upgrade pip
         pip3 install cibuildwheel==1.4.2
         cibuildwheel --output-dir wheelhouse .
+      displayName: "Run cibuildwheel"
     - task: PublishBuildArtifacts@1
       inputs: {pathtoPublish: 'wheelhouse'}
 
@@ -111,7 +112,7 @@ jobs:
   pool: {vmImage: 'macOS-10.15'}
   steps:
     - bash: |
-        brew install eigen openblas
+        brew install eigen openblas pybind11 boost
         brew install ci/highfive.rb
       displayName: 'Install dependencies using HomeBrew'
     - task: UsePythonVersion@0
@@ -119,5 +120,6 @@ jobs:
         python3 -m pip install --upgrade pip
         pip3 install cibuildwheel==1.4.2
         cibuildwheel --output-dir wheelhouse .
+      displayName: "Run cibuildwheel"
     - task: PublishBuildArtifacts@1
       inputs: {pathtoPublish: 'wheelhouse'}
