@@ -40,7 +40,7 @@ static Config& prepareResultDir(Config &config, const std::string &dir)
   fs::path output_filename = output_dir / "output.h5";
  
   config.setSaveFreq(1);
-  config.setSaveName(output_filename.native());
+  config.setSaveName(output_filename.string());
   fs::remove_all(output_dir);
   fs::create_directory(output_dir);
   return config;
