@@ -112,7 +112,10 @@ jobs:
   pool: {vmImage: 'macOS-10.15'}
   steps:
     - bash: |
-        brew install eigen openblas pybind11 boost
+        brew install eigen
+        brew install openblas
+        brew install pybind11
+        brew install boost
         brew install ci/highfive.rb
       displayName: 'Install dependencies using HomeBrew'
     - task: UsePythonVersion@0
