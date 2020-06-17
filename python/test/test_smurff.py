@@ -108,9 +108,9 @@ class TestSmurff(unittest.TestCase):
 
         predictions = trainSession.run()
 
-        rmse = smurff.calc_rmse(predictions)
-        self.assertTrue(rmse > 0.55,
-                        msg="Probit factorization (with dense side) gave AUC below 0.55 (%f)." % rmse)
+        auc = smurff.calc_auc(predictions, 0.5)
+        self.assertTrue(auc > 0.55,
+                        msg="Probit factorization (with dense side) gave AUC below 0.55 (%f)." % auc)
 
     def test_macau_univariate(self):
         Y = scipy.sparse.rand(10, 20, 0.2)
