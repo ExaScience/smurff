@@ -1,10 +1,6 @@
 #include "Config.h"
 
-#ifdef _WINDOWS
-#include <windows.h>
-#else
-#include <unistd.h>
-#endif
+
 
 #include <set>
 #include <iostream>
