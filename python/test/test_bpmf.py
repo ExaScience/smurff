@@ -6,7 +6,7 @@ import smurff
 import itertools
 import collections
 
-verbose = 0
+verbose = 2
 
 class TestBPMF(unittest.TestCase):
 

@@ -8,7 +8,7 @@ import smurff
 import itertools
 import collections
 
-verbose = 0
+verbose = 2
 
 # Taken from BMF_PP/postprocess_posterior_samples
 def calc_posteriorMeanPrec(predict_session, axis):
