@@ -143,19 +143,9 @@ cdef TensorConfig* prepare_sparse_tensor(tensor, NoiseConfig noise_config, is_sc
     cdef vector[uint32_t] cpp_columns_vector
     cdef vector[double] cpp_values_vector
 
-    idx_column_names = list(filter(lambda c: df[c].dtype==np.int64 or df[c].dtype==np.int32, df.columns))
-    val_column_names = list(filter(lambda c: df[c].dtype==np.float32 or df[c].dtype==np.float64, df.columns))
-
-    if len(val_column_names) != 1:
-        error_msg = "tensor has {} float columns but must have exactly 1 value column.".format(len(val_column_names))
-        raise ValueError(error_msg)
-
-    idx = [i for c in idx_column_names for i in np.array(df[c], dtype=np.int32)]
-    val = np.array(df[val_column_names[0]],dtype=np.float64)
-
     cpp_dims_vector = shape
-    cpp_columns_vector = idx
-    cpp_values_vector = val
+    cpp_columns_vector = np.concatenate(tensor.idx)
+    cpp_values_vector = tensor.data
 
     return new TensorConfig(
             make_shared[vector[uint64_t]](cpp_dims_vector),

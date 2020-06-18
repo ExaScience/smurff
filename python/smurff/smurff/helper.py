@@ -12,32 +12,34 @@ class SparseTensor:
     """
        
     def __init__(self, data, shape = None):
-        if isinstance(data, SparseTensor):
+        if data is None:
+            self.shape = shape
+            self.data = None
+            self.idx = None
+        elif isinstance(data, SparseTensor):
+            self.idx  = data.idx
             self.data = data.data
-            self.nnz = data.nnz
 
             if shape is not None:
                 self.shape = shape
             else:
                 self.shape = data.shape
+
         elif isinstance(data, np.ndarray):
             self.shape = data.shape
-            self.nnz = data.size
-            self.data = pd.DataFrame({ 'v': data.flatten() })
-            for dim, idxs in enumerate(np.indices(self.shape)):
-                self.data["%d" % dim] = idxs.flatten()
+            self.idx = [ idx.flatten() for idx in np.indices(self.shape) ]
+            self.data = data.flatten()
 
         elif isinstance(data, pd.DataFrame):
-            self.data = data
-            self.nnz = len(data.index)
-
             idx_column_names = list(filter(lambda c: data[c].dtype==np.int64 or data[c].dtype==np.int32, data.columns))
             val_column_names = list(filter(lambda c: data[c].dtype==np.float32 or data[c].dtype==np.float64, data.columns))
-
 
             if len(val_column_names) != 1:
                 error_msg = "tensor has {} float columns but must have exactly 1 value column.".format(len(val_column_names))
                 raise ValueError(error_msg)
+
+            self.idx = [ np.array(data[c], dtype=np.int32) for c in idx_column_names ]
+            self.data = np.array(data[val_column_names[0]],dtype=np.float64)
 
             if shape is not None:
                 self.shape = shape
@@ -47,7 +49,11 @@ class SparseTensor:
             error_msg = "Unsupported sparse tensor data type: {}".format(data)
             raise ValueError(error_msg)
 
-        self.ndim = len(self.shape)
+    def ndim(self):
+        return len(self.shape)
+
+    def nnz(self):
+        return self.data.size
 
 class PyNoiseConfig:
     def __init__(self, noise_type = "fixed", precision = 5.0, sn_init = 1.0, sn_max = 10.0, threshold = 0.5): 

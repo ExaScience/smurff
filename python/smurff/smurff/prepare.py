@@ -72,10 +72,10 @@ def make_train_test_df(Y, ntest, shape = None):
               if integer, then indicates the number of test cells
        returns Ytrain, Ytest (type coo_matrix)
     """
-    if isinstance(Y, SparseTensor):
-        return make_train_test_df(Y.data, ntest, Y.shape)
+    if  isinstance(Y, pd.DataFrame):
+        return make_train_test_df(SparseTensor(Y), ntest, Y.shape)
 
-    if not isinstance(Y, pd.DataFrame):
+    if not isinstance(Y, SparseTensor):
         raise TypeError("Y should be DataFrame or SparseTensor.")
 
     if not isinstance(ntest, numbers.Real) or ntest < 0:
@@ -90,7 +90,13 @@ def make_train_test_df(Y, ntest, shape = None):
     train  = rperm[ntest:]
     test   = rperm[0:ntest]
 
-    Ytrain = SparseTensor(Y.iloc[train], shape)
-    Ytest = SparseTensor(Y.iloc[test], Ytrain.shape)
+    Ytrain = SparseTensor(None, Y.shape)
+    Ytest  = SparseTensor(None, Y.shape)
+
+    Ytrain.data = Y.data[train]
+    Ytest.data = Y.data[test]
+
+    Ytrain.idx = [ idx[train] for idx in Y.idx ]
+    Ytest.idx = [ idx[test] for idx in Y.idx ]
 
     return Ytrain, Ytest
