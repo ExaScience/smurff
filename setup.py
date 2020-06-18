@@ -5,6 +5,7 @@ from setuptools import find_packages
 import os
 import sys
 import subprocess
+import platform
 
 CLASSIFIERS = [
     "Development Status :: 4 - Beta",
@@ -20,6 +21,7 @@ CLASSIFIERS = [
     "Operating System :: MacOS"
 ]
 
+# taken from github.com/pybind/cmake_example
 class CMakeExtension(Extension):
     def __init__(self, name, sourcedir='', extra_cmake_args='', extra_build_args=''):
         Extension.__init__(self, name, sources=[])
