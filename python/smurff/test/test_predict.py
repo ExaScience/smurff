@@ -28,6 +28,9 @@ class TestPredictSession(unittest.TestCase):
 
         return session
 
+    def test_train_tensor(self):
+        self.run_train_session(3)
+
     def test_simple(self):
         train_session = self.run_train_session()
         predict_session = train_session.makePredictSession()
