@@ -61,7 +61,7 @@ macro(configure_openblas)
   find_package( BLAS REQUIRED )
   endif()
 
-  add_definitions(-DEIGEN_USE_BLAS -DEIGEN_USE_LAPACKEyy)
+  add_definitions(-DEIGEN_USE_BLAS -DEIGEN_USE_LAPACKE)
 
   message(STATUS BLAS: ${BLAS_LIBRARIES} )
  
