@@ -120,7 +120,20 @@ cdef TensorConfig* prepare_dense_tensor(tensor, NoiseConfig noise_config) except
     if not isinstance(tensor, DENSE_TENSOR_TYPES):
         error_msg = "Unsupported dense tensor data type: {}".format(tensor)
         raise ValueError(error_msg)
-    raise NotImplementedError()
+
+    cdef np.ndarray[np.double_t] vals = np.squeeze(np.asarray(tensor.flatten(order='F')))
+    cdef double* vals_begin = &vals[0]
+    cdef double* vals_end = vals_begin + vals.shape[0]
+    cdef vector[double]* vals_vector_ptr = new vector[double]()
+    vals_vector_ptr.assign(vals_begin, vals_end)
+    cdef shared_ptr[vector[double]] vals_vector_shared_ptr = shared_ptr[vector[double]](vals_vector_ptr)
+
+    cdef vector[uint64_t] cpp_dims_vector
+    cpp_dims_vector = tensor.shape
+
+    cdef TensorConfig* tensor_config_ptr = new TensorConfig(
+         make_shared[vector[uint64_t]](cpp_dims_vector), vals_vector_shared_ptr, noise_config)
+    return tensor_config_ptr        
 
 cdef TensorConfig* prepare_sparse_tensor(tensor, NoiseConfig noise_config, is_scarse) except +:
     shape = tensor.shape
