@@ -11,7 +11,7 @@ class TestPredictSession(unittest.TestCase):
     __name__ = "TestPredictSession"
 
     def run_train_session(self, nmodes = 2):
-        shape = range(5, 5*(nmodes+1), 5) # 5, 10, 15, ... 
+        shape = range(2, nmodes+2) # 2, 3, 4, ... 
         Y = np.random.rand(*shape)
         self.Ytrain, self.Ytest = smurff.make_train_test(Y, 0.5)
         priors = ['normal'] * nmodes
@@ -28,11 +28,8 @@ class TestPredictSession(unittest.TestCase):
 
         return session
 
-    def test_train_tensor(self):
-        self.run_train_session(3)
-
-    def test_simple(self):
-        train_session = self.run_train_session()
+    def run_predict_session(self, nmodes):
+        train_session = self.run_train_session(nmodes)
         predict_session = train_session.makePredictSession()
 
         p1 = sorted(train_session.getTestPredictions())
@@ -66,6 +63,9 @@ class TestPredictSession(unittest.TestCase):
         self.assertAlmostEqual(train_session.getRmseAvg(), p2_rmse_avg, places = 2)
         self.assertAlmostEqual(train_session.getRmseAvg(), p1_rmse_avg, places = 2)
 
+    def test_predict(self):
+        for nmodes in range(2,7): # 2, 3, ..., 6
+            self.run_predict_session(nmodes)
 
 if __name__ == '__main__':
     unittest.main()

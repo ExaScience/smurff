@@ -13,7 +13,7 @@
 namespace smurff
 {
    
-template <size_t MaxSize = 3>
+template <size_t MaxSize = 10>
 class PVec
 {
  private:
