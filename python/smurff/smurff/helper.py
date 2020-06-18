@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
+import scipy.sparse
 import math
+
+from .result import Prediction
 
 class SparseTensor:
     """Wrapper around a pandas DataFrame to represent a sparse tensor
@@ -49,11 +52,27 @@ class SparseTensor:
             error_msg = "Unsupported sparse tensor data type: {}".format(data)
             raise ValueError(error_msg)
 
+    @property        
     def ndim(self):
         return len(self.shape)
 
+    @property
     def nnz(self):
         return self.data.size
+
+    def toResult(self):
+        ret = []
+
+        for i in range(self.nnz):
+            coords = tuple([ self.idx[d][i] for d in range(self.ndim) ] )
+            val = self.data[i]
+            ret.append(Prediction(coords, val))
+
+        return ret
+    
+    def toMatrix(self):
+        assert self.ndim == 2
+        return scipy.sparse.coo_matrix( (self.data, (self.idx[0], self.idx[1]) ) )
 
 class PyNoiseConfig:
     def __init__(self, noise_type = "fixed", precision = 5.0, sn_init = 1.0, sn_max = 10.0, threshold = 0.5): 
