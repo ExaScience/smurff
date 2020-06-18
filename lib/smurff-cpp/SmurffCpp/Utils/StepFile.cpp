@@ -288,8 +288,12 @@ void StepFile::savePred(std::shared_ptr<const Result> m_pred) const
    //save predictions
    appendToStepFile(PRED_SEC_TAG, PRED_TAG, makePredFileName());
    appendToStepFile(PRED_SEC_TAG, PRED_STATE_TAG, makePredStateFileName());
-   appendToStepFile(PRED_SEC_TAG, PRED_AVG_TAG, makePredAvgFileName());
-   appendToStepFile(PRED_SEC_TAG, PRED_VAR_TAG, makePredVarFileName());
+
+   if (m_pred->m_dims.size() == 2)
+   {
+      appendToStepFile(PRED_SEC_TAG, PRED_AVG_TAG, makePredAvgFileName());
+      appendToStepFile(PRED_SEC_TAG, PRED_VAR_TAG, makePredVarFileName());
+   }
 }
 
 void StepFile::savePriors(const std::vector<std::shared_ptr<ILatentPrior> >& priors) const
