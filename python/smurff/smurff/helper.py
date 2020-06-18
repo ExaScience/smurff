@@ -24,9 +24,7 @@ class SparseTensor:
             self.shape = data.shape
             self.nnz = data.size
             self.data = pd.DataFrame({ 'v': data.flatten() })
-            print("df = ", self.data)
             for dim, idxs in enumerate(np.indices(self.shape)):
-                print("idxs[%d] = " % dim, idxs.flatten())
                 self.data["%d" % dim] = idxs.flatten()
 
         elif isinstance(data, pd.DataFrame):
