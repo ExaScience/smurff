@@ -229,17 +229,5 @@ class TestBPMF(unittest.TestCase):
         self.assertTrue(rmse < 0.5,
                         msg="Tensor factorization gave RMSE above 0.5 (%f)." % rmse)
 
-        Ytrain_df = Ytrain.data
-        Ytest_df = Ytest.data
-        Ytrain_sp = scipy.sparse.coo_matrix( (Ytrain_df.value, (Ytrain_df.A, Ytrain_df.B) ) )
-        Ytest_sp  = scipy.sparse.coo_matrix( (Ytest_df.value,  (Ytest_df.A, Ytest_df.B) ) )
-
-        results_mat = smurff.bpmf(Ytrain_sp,
-                                    Ytest=Ytest_sp,
-                                    num_latent=4,
-                                    verbose=verbose,
-                                    burnin=20,
-                                    nsamples=20)
-
 if __name__ == '__main__':
     unittest.main()

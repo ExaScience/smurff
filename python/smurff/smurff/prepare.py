@@ -83,10 +83,10 @@ def make_train_test_df(Y, ntest, shape = None):
 
     ## randomly spliting train-test
     if ntest < 1:
-        ntest = Y.shape[0] * ntest
+        ntest = Y.nnz * ntest
 
     ntest  = int(round(ntest))
-    rperm  = np.random.permutation(Y.shape[0])
+    rperm  = np.random.permutation(Y.nnz)
     train  = rperm[ntest:]
     test   = rperm[0:ntest]
 
