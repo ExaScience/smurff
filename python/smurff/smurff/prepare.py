@@ -35,7 +35,13 @@ def make_train_test(Y, ntest, shape = None):
         return make_train_test_df(Y, ntest, shape)
 
     if isinstance(Y, np.ndarray):
-        _, Ytest = make_train_test(sp.sparse.coo_matrix(Y), ntest, shape)
+        nmodes = len(Y.shape)
+        if (nmodes > 2):
+            Ysparse = SparseTensor(Y)
+        else:
+            Ysparse = sp.sparse.coo_matrix(Y)
+
+        _, Ytest = make_train_test(Ysparse, ntest, shape)
         return Y, Ytest
     
     if not sp.sparse.issparse(Y):
@@ -66,8 +72,12 @@ def make_train_test_df(Y, ntest, shape = None):
               if integer, then indicates the number of test cells
        returns Ytrain, Ytest (type coo_matrix)
     """
-    if type(Y) != pd.core.frame.DataFrame:
-        raise TypeError("Y should be DataFrame.")
+    if isinstance(Y, SparseTensor):
+        return make_train_test_df(Y.data, ntest, Y.shape)
+
+    if not isinstance(Y, pd.DataFrame):
+        raise TypeError("Y should be DataFrame or SparseTensor.")
+
     if not isinstance(ntest, numbers.Real) or ntest < 0:
         raise TypeError("ntest has to be a non-negative number (number or ratio of test samples).")
 
