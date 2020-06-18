@@ -186,7 +186,11 @@ cdef (shared_ptr[TensorConfig], shared_ptr[TensorConfig]) prepare_train_and_test
 
     # Check train and test data for mismatch
     if test is not None:
-        if isinstance(train, MATRIX_TYPES) and (not isinstance(test, MATRIX_TYPES)):
+        if isinstance(train, MATRIX_TYPES) and isinstance(test, MATRIX_TYPES):
+            pass
+        elif isinstance(train, TENSOR_TYPES) and isinstance(test, TENSOR_TYPES):
+            pass
+        else:
             error_msg = "Train and test data must be the same type: {} != {}".format(type(train), type(test))
             raise ValueError(error_msg)
         if isinstance(train, MATRIX_TYPES) and train.shape != test.shape:
