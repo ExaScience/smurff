@@ -246,7 +246,7 @@ class PredictSession:
         """        
         return self.predict()
 
-    def predict_some(self, test_matrix):
+    def predict_some(self, test_matrix_or_tensor):
         """Computes prediction for all elements in a sparse test matrix
 
         Parameters
@@ -260,7 +260,7 @@ class PredictSession:
             list of :class:`Prediction` objects.
 
         """        
-        predictions = Prediction.fromTestMatrix(test_matrix)
+        predictions = Prediction.fromTestMatrix(test_matrix_or_tensor)
 
         for s in self.samples():
             for p in predictions:
