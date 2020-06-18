@@ -1,2 +1,2 @@
-%CONDA_PREFIX%\Library\libexec\tests ~[random]
+%CONDA_PREFIX%\libexec\tests ~[random]
 if errorlevel 1 exit 1
