@@ -10,10 +10,10 @@ class TestPredictSession(unittest.TestCase):
     # Python 2.7 @unittest.skip fix
     __name__ = "TestPredictSession"
 
-    def run_train_session(self):
-        Y = scipy.sparse.rand(15, 10, 0.2)
+    def run_train_session(self, nmodes = 2):
+        shape = range(5, 5*(nmodes+1), 5) # 5, 10, 15, ... 
+        Y = np.random.rand(*shape)
         self.Ytrain, self.Ytest = smurff.make_train_test(Y, 0.5)
-        nmodes = len(self.Ytrain.shape)
         priors = ['normal'] * nmodes
 
         session = smurff.TrainSession(priors = priors, num_latent=4,
