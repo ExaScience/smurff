@@ -277,7 +277,7 @@ class TestSmurff(unittest.TestCase):
 
         predictions = smurff.smurff(Ytrain = Ytrain, Ytest = Ytest, priors = ['macau', 'normal', 'normal'],
                                 side_info =[ Acoo, None, None ],
-                                num_latent = 4, verbose = 2, burnin = 20, nsamples = 20)
+                                num_latent = 4, verbose = 2, burnin = 200, nsamples = 200)
 
         rmse = smurff.calc_rmse(predictions)
 
