@@ -2,6 +2,8 @@ from scipy import sparse
 import math
 from sklearn.metrics import mean_squared_error, roc_auc_score
 
+from . import helper
+
 def calc_rmse(predictions):
     return math.sqrt(mean_squared_error([p.val for p in predictions], [p.pred_avg for p in predictions]))
 
@@ -30,7 +32,7 @@ class Prediction:
 
     """
     @staticmethod
-    def fromTestMatrix(test_matrix):
+    def fromTestMatrix(test_matrix_or_tensor):
         """Creates a list of predictions from a scipy sparse matrix"
 
         Parameters
@@ -44,7 +46,12 @@ class Prediction:
 
         """
 
-        return [ Prediction((i, j), v) for i,j,v in zip(*sparse.find(test_matrix)) ]
+        if sparse.issparse(test_matrix_or_tensor):
+            return [ Prediction((i, j), v) for i,j,v in zip(*sparse.find(test_matrix_or_tensor)) ]
+        elif isinstance(test_matrix_or_tensor, helper.SparseTensor):
+            return test_matrix_or_tensor.toResult()
+        else:
+            raise ValueError("Expecting sparse Matrix or Tensor")
     
     def __init__(self, coords, val,  pred_1sample = float("nan"), pred_avg = float("nan"), var = float("nan"), nsamples = -1):
         self.coords = coords

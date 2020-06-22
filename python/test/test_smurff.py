@@ -99,9 +99,15 @@ class TestSmurff(unittest.TestCase):
         trainSession = smurff.TrainSession(priors=['macau', 'normal'],
                                 num_latent=4,
                                 threshold=threshold,
+<<<<<<< HEAD:python/test/test_smurff.py
                                 burnin=20,
                                 nsamples=20,
                                 verbose = 2)
+=======
+                                burnin=200,
+                                nsamples=200,
+                                verbose=False)
+>>>>>>> tensorpredict:python/smurff/test/test_smurff.py
 
         trainSession.addTrainAndTest(Ytrain, Ytest, smurff.ProbitNoise(threshold))
         trainSession.addSideInfo(0, A, direct=True)
@@ -164,19 +170,20 @@ class TestSmurff(unittest.TestCase):
         self.assertEqual(diff, 0.0)
 
     def test_make_train_test_df(self):
+        nnz = 10 * 8 * 3
         idx = list( itertools.product(np.arange(10), np.arange(8), np.arange(3) ))
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
-        df["value"] = np.arange(10.0 * 8.0 * 3.0)
+        df["value"] = np.arange(float(nnz))
 
         Ytr, Yte = smurff.make_train_test_df(df, 0.4)
-        self.assertEqual(Ytr.data.shape[0], df.shape[0] * 0.6)
-        self.assertEqual(Yte.data.shape[0], df.shape[0] * 0.4)
+        self.assertEqual(Ytr.nnz, nnz * 0.6)
+        self.assertEqual(Yte.nnz, nnz * 0.4)
 
         A1 = np.zeros( (10, 8, 3) )
         A2 = np.zeros( (10, 8, 3) )
         A1[df.A, df.B, df.C] = df.value
-        A2[Ytr.data.A, Ytr.data.B, Ytr.data.C] = Ytr.data.value
-        A2[Yte.data.A, Yte.data.B, Yte.data.C] = Yte.data.value
+        A2[Ytr.idx[0], Ytr.idx[1], Ytr.idx[2]] = Ytr.data
+        A2[Yte.idx[0], Yte.idx[1], Yte.idx[2]] = Yte.data
 
         self.assertTrue(np.allclose(A1, A2))
 
@@ -246,38 +253,6 @@ class TestSmurff(unittest.TestCase):
                                 verbose = 2,
                                 burnin=20,
                                 nsamples=20)
-
-        rmse = smurff.calc_rmse(predictions)
-
-        self.assertTrue(rmse < 0.5,
-                        msg="Tensor factorization gave RMSE above 0.5 (%f)." % rmse)
-
-        Ytrain_sp = scipy.sparse.coo_matrix( (Ytrain.data.value, (Ytrain.data.A, Ytrain.data.B) ) )
-        Ytest_sp  = scipy.sparse.coo_matrix( (Ytest.data.value,  (Ytest.data.A, Ytest.data.B) ) )
-
-        results_mat = smurff.smurff(Ytrain_sp,
-                                    Ytest=Ytest_sp,
-                                    priors=['normal', 'normal'],
-                                    num_latent=4,
-                                    verbose = 2,
-                                    burnin=20,
-                                    nsamples=20)
-
-    def test_macau_tensor(self):
-        A = np.random.randn(15, 2)
-        B = np.random.randn(3, 2)
-        C = np.random.randn(2, 2)
-
-        idx = list( itertools.product(np.arange(A.shape[0]), np.arange(B.shape[0]), np.arange(C.shape[0])) )
-        df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
-        df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2)
-
-        Acoo = scipy.sparse.coo_matrix(A)
-
-        predictions = smurff.smurff(Ytrain = Ytrain, Ytest = Ytest, priors = ['macau', 'normal', 'normal'],
-                                side_info =[ Acoo, None, None ],
-                                num_latent = 4, verbose = 2, burnin = 200, nsamples = 200)
 
         rmse = smurff.calc_rmse(predictions)
 

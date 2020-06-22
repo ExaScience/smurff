@@ -12,7 +12,7 @@
 
 namespace smurff
 {
-const int MaxDims = 3;
+const int MaxDims = 10;
 
    
 template <size_t MaxSize = MaxDims>

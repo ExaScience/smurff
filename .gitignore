@@ -9,6 +9,7 @@ MANIFEST
 dist
 .DS_Store
 *.egg-info
+.eggs
 *.so
 *.csv
 .vscode
