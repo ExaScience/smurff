@@ -21,7 +21,7 @@ requirements:
     - intel-openmp
     - mkl-devel
     - eigen3
-    - libboost {{ libboost }}
+    - libboost
     - pybind11
     - highfive =2.2
     - h5py
@@ -33,7 +33,6 @@ requirements:
     - python {{ python }}
     - intel-openmp
     - mkl
-    - libboost {{ libboost }}
     - numpy
     - scipy
     - pandas
@@ -41,6 +40,14 @@ requirements:
     - hdf5
     - h5py
     - h5sparse >=0.2.0
+  
+test:
+  requires:
+    - parameterized
+  source_files:
+    - python/test/*.py
+  commands:
+    - python -m unittest discover -v python/test
 
 about:
   home: https://github.com/ExaScience/smurff
