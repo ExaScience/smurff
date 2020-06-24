@@ -53,6 +53,8 @@ def make_train_test(Y, ntest, shape = None, seed = None):
     if ntest < 1:
         ntest = Y.nnz * ntest
     ntest = int(round(ntest))
+    ntest = max(1,ntest)
+
     np.random.seed(seed)
     rperm = np.random.permutation(Y.nnz)
     train = rperm[ntest:]
@@ -85,7 +87,9 @@ def make_train_test_df(Y, ntest, shape = None):
     if ntest < 1:
         ntest = Y.nnz * ntest
 
-    ntest  = int(round(ntest))
+    ntest = int(round(ntest))
+    ntest = max(1,ntest)
+
     rperm  = np.random.permutation(Y.nnz)
     train  = rperm[ntest:]
     test   = rperm[0:ntest]
