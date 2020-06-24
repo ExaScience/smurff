@@ -81,7 +81,7 @@ class SparseTensor(wrapper.SparseTensor):
         return tuple([ self.columns[d][i] for d in range(self.ndim) ])
 
     def toResult(self):
-        return [ Prediction(coords(i), val) for i, val in enumerate(self.values) ]
+        return [ Prediction(self.coords(i), val) for i, val in enumerate(self.values) ]
     
     def toMatrix(self):
         assert self.ndim == 2
