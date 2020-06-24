@@ -1,4 +1,5 @@
 import unittest
+from parameterized import parameterized
 import numpy as np
 import pandas as pd
 import scipy.sparse
@@ -10,10 +11,12 @@ class TestPredictSession(unittest.TestCase):
     # Python 2.7 @unittest.skip fix
     __name__ = "TestPredictSession"
 
-    def run_train_session(self, nmodes = 2):
+    def run_train_session(self, nmodes, sparse):
         shape = range(2, nmodes+2) # 2, 3, 4, ... 
         Y = np.random.rand(*shape)
-        self.Ytrain, self.Ytest = smurff.make_train_test(Y, 0.5)
+        if sparse: # make Y SparseTensor through make_train_test
+            _, Y = smurff.make_train_test(Y, 0.5)
+        self.Ytrain, self.Ytest = smurff.make_train_test(Y, 0.1)
         priors = ['normal'] * nmodes
 
         trainSession = smurff.TrainSession(priors = priors, num_latent=4,
@@ -28,8 +31,8 @@ class TestPredictSession(unittest.TestCase):
 
         return trainSession
 
-    def run_predict_session(self, nmodes):
-        train_session = self.run_train_session(nmodes)
+    def run_predict_session(self, nmodes, sparse):
+        train_session = self.run_train_session(nmodes, sparse)
         predict_session = train_session.makePredictSession()
 
         p1 = sorted(train_session.getTestPredictions())
@@ -63,9 +66,13 @@ class TestPredictSession(unittest.TestCase):
         self.assertAlmostEqual(train_session.getRmseAvg(), p2_rmse_avg, places = 2)
         self.assertAlmostEqual(train_session.getRmseAvg(), p1_rmse_avg, places = 2)
 
-    def test_predict(self):
-        for nmodes in range(2,7): # 2, 3, ..., 6
-            self.run_predict_session(nmodes)
+    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,7))) # 2, 3, ..., 6
+    def test_predict_dense(self, name, nmodes):
+        self.run_predict_session(nmodes, False)
+
+    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,7))) # 2, 3, ..., 6
+    def test_predict_sparse(self, name, nmodes):
+        self.run_predict_session(nmodes, True)
 
 if __name__ == '__main__':
     unittest.main()

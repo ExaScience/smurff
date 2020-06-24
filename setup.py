@@ -107,5 +107,6 @@ setup(
     keywords = "bayesian factorization machine-learning high-dimensional side-information",
     install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'h5sparse' ],
     setup_requires=['setuptools_scm', 'pybind11' ],
+    tests_require=['parameterized' ],
 )
 
