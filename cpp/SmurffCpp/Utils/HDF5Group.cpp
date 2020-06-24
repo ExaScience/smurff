@@ -154,7 +154,23 @@ void HDF5Group::write(const std::string& section, const std::string& tag, const 
 
 void HDF5Group::write(const std::string& section, const std::string& tag, const SparseTensor &X)
 {
-   THROWERROR_NOTIMPL();
+   if (!m_group.exist(section))
+      m_group.createGroup(section);
+
+   h5::Group sparse_group = m_group.getGroup(section).createGroup(tag);
+
+   sparse_group.createAttribute<std::string>("h5sparse_format", "coo");
+   const auto &shape = X.getDims();
+   sparse_group.createAttribute<SparseTensor::dims_type>("h5sparse_shape", h5::DataSpace::From(shape)).write(shape);
+
+   auto data = sparse_group.createDataSet<SparseTensor::value_type>("data", h5::DataSpace(X.getNNZ()));
+   data.write(X.getValues().data());
+
+   for(size_t i = 0; i < X.getNModes(); ++i)
+   {
+      auto indices = sparse_group.createDataSet<SparseTensor::index_type>("indices_" + std::to_string(i), h5::DataSpace(X.getNNZ()));
+      indices.write(X.getColumn(i).data());
+   }
 }
 
 
