@@ -18,11 +18,10 @@ namespace smurff {
    {
    protected:
       h5::Group m_group;
-
-   private:
       h5::Group getGroup(const std::string &) const;
       h5::Group addGroup(const std::string &);
 
+   private:
       template <typename T>
       T getInternal(const std::string &section, const std::string& tag, const T &default_value) const
       {

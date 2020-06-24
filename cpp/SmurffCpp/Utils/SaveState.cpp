@@ -134,14 +134,14 @@ bool SaveState::hasAggr(std::uint64_t index) const
 
 void SaveState::readAggr(std::uint64_t index, int &num, Matrix &sum, Matrix &dot) const
 {
-   m_group.getGroup(LATENTS_SEC_TAG).getAttribute(POST_NUM_PREFIX + std::to_string(index)).read(num);
+   getGroup(LATENTS_SEC_TAG).getAttribute(POST_NUM_PREFIX + std::to_string(index)).read(num);
    read(LATENTS_SEC_TAG, POST_SUM_PREFIX + std::to_string(index), sum);
    read(LATENTS_SEC_TAG, POST_DOT_PREFIX + std::to_string(index), dot);
 }
 
 void SaveState::putAggr(std::uint64_t index, int num, const Matrix &sum, const Matrix &dot)
 {
-   m_group.getGroup(LATENTS_SEC_TAG).createAttribute(POST_NUM_PREFIX + std::to_string(index), num);
+   addGroup(LATENTS_SEC_TAG).createAttribute(POST_NUM_PREFIX + std::to_string(index), num);
    write(LATENTS_SEC_TAG, POST_SUM_PREFIX + std::to_string(index), sum);
    write(LATENTS_SEC_TAG, POST_DOT_PREFIX + std::to_string(index), dot);
 }
@@ -167,7 +167,7 @@ bool SaveState::hasPred() const
 void SaveState::putPredState(double rmse_avg, double rmse_1sample, double auc_avg, double auc_1sample,
                             int sample_iter, int burnin_iter)
 {
-   auto pred_group = m_group.getGroup(PRED_SEC_TAG);
+   auto pred_group = addGroup(PRED_SEC_TAG);
    pred_group.createAttribute<double>(RMSE_AVG_TAG, rmse_avg);
    pred_group.createAttribute<double>(RMSE_1SAMPLE_TAG, rmse_1sample);
    pred_group.createAttribute<double>(AUC_AVG_TAG, auc_avg);
@@ -179,7 +179,7 @@ void SaveState::putPredState(double rmse_avg, double rmse_1sample, double auc_av
 void SaveState::getPredState(
    double &rmse_avg, double &rmse_1sample, double &auc_avg, double &auc_1sample, int &sample_iter, int &burnin_iter) const
 {
-   auto pred_group = m_group.getGroup(PRED_SEC_TAG);
+   auto pred_group = getGroup(PRED_SEC_TAG);
    pred_group.getAttribute(RMSE_AVG_TAG).read(rmse_avg);
    pred_group.getAttribute(RMSE_1SAMPLE_TAG).read(rmse_1sample);
    pred_group.getAttribute(AUC_AVG_TAG).read(auc_avg);
