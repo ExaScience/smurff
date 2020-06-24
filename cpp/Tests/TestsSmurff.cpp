@@ -138,7 +138,9 @@ struct SmurffTest {
     double actualRmseAvg = trainSession->getRmseAvg();
     const std::vector<ResultItem> &actualResults = trainSession->getResultItems();
 
-    PRINT_ACTUAL_RESULTS(nr)
+    if(expectedResults.find(nr) == expectedResults.end())
+        FAIL("Expected results for nr " << nr << " not found\n");
+  
     double &expectedRmseAvg = expectedResults[nr].rmseAvg;
     auto &expectedResultItems = expectedResults[nr].resultItems;
 
