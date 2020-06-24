@@ -25,6 +25,7 @@ extern smurff::DenseTensor trainDenseTensor3d;
 // sparse train data
 extern smurff::SparseMatrix trainSparseMatrix;
 extern smurff::SparseTensor trainSparseTensor2d;
+extern smurff::SparseTensor trainSparseTensor3d;
 
 // sparse test data
 extern smurff::SparseMatrix testSparseMatrix;

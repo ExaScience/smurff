@@ -432,8 +432,6 @@ TEST_CASE("train_dense_3d_tensor_test_sparse_3d_tensor_normal_normal_none_none",
       .runAndCheck(2110);
 }
 
-//=================================================================
-
 TEST_CASE("train_dense_3d_tensor_test_sparse_3d_tensor_spikeandslab_spikeandslab_none_none",
           TAG_THREE_DIMENTIONAL_TENSOR_TESTS) {
 
@@ -442,10 +440,6 @@ TEST_CASE("train_dense_3d_tensor_test_sparse_3d_tensor_spikeandslab_spikeandslab
       .runAndCheck(2164);
 }
 
-//=================================================================
-
-// not sure if this test produces correct results
-
 TEST_CASE("train_dense_3d_tensor_test_sparse_3d_tensor_macau_normal_row_dense_side_info_none",
           TAG_THREE_DIMENTIONAL_TENSOR_TESTS) {
   SmurffTest(trainDenseTensor3d, testSparseTensor3d, {PriorTypes::macau, PriorTypes::normal, PriorTypes::normal})
@@ -453,16 +447,40 @@ TEST_CASE("train_dense_3d_tensor_test_sparse_3d_tensor_macau_normal_row_dense_si
       .runAndCheck(2222);
 }
 
-//=================================================================
-
-// not sure if this test produces correct results
-
 TEST_CASE("train_dense_3d_tensor_test_sparse_3d_tensor_macauone_normal_row_dense_side_info_none",
           TAG_THREE_DIMENTIONAL_TENSOR_TESTS "[!mayfail]") {
   SmurffTest(trainDenseTensor3d, testSparseTensor3d, {PriorTypes::macauone, PriorTypes::normal, PriorTypes::normal})
       .addSideInfo(0, rowSideDenseMatrix3d)
       .runAndCheck(2280);
 }
+//=================================================================
 
+TEST_CASE("train_sparse_3d_tensor_test_sparse_3d_tensor_normal_normal_none_none",
+          TAG_THREE_DIMENTIONAL_TENSOR_TESTS) {
+  SmurffTest(trainSparseTensor3d, testSparseTensor3d, {PriorTypes::normal, PriorTypes::normal, PriorTypes::normal})
+      .runAndCheck(3110);
+}
+
+TEST_CASE("train_sparse_3d_tensor_test_sparse_3d_tensor_spikeandslab_spikeandslab_none_none",
+          TAG_THREE_DIMENTIONAL_TENSOR_TESTS) {
+
+  SmurffTest(trainSparseTensor3d, testSparseTensor3d,
+             {PriorTypes::spikeandslab, PriorTypes::spikeandslab, PriorTypes::spikeandslab})
+      .runAndCheck(3164);
+}
+
+TEST_CASE("train_sparse_3d_tensor_test_sparse_3d_tensor_macau_normal_row_dense_side_info_none",
+          TAG_THREE_DIMENTIONAL_TENSOR_TESTS) {
+  SmurffTest(trainSparseTensor3d, testSparseTensor3d, {PriorTypes::macau, PriorTypes::normal, PriorTypes::normal})
+      .addSideInfo(0, rowSideDenseMatrix3d)
+      .runAndCheck(3222);
+}
+
+TEST_CASE("train_sparse_3d_tensor_test_sparse_3d_tensor_macauone_normal_row_dense_side_info_none",
+          TAG_THREE_DIMENTIONAL_TENSOR_TESTS "[!mayfail]") {
+  SmurffTest(trainSparseTensor3d, testSparseTensor3d, {PriorTypes::macauone, PriorTypes::normal, PriorTypes::normal})
+      .addSideInfo(0, rowSideDenseMatrix3d)
+      .runAndCheck(3280);
+}
 } // namespace test
 } // namespace smurff

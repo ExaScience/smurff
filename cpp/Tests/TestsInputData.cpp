@@ -24,6 +24,9 @@ smurff::Matrix trainDenseMatrix(mu::dense_to_eigen(trainDenseTensor2d));
 // sparse train data (matrix/tensor 2d)
 smurff::SparseTensor trainSparseTensor2d({3, 4}, {{0, 0, 0, 0, 2, 2, 2, 2}, {0, 1, 2, 3, 0, 1, 2, 3}},
                                          {1., 2., 3., 4., 9., 10., 11., 12.});
+smurff::SparseTensor trainSparseTensor3d({2, 3, 4},
+                                        {{0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 2, 2, 2, 2}, {0, 1, 2, 3, 0, 1, 2, 3}},
+                                        {1., 2., 3., 4., 9., 10., 11., 12.});
 smurff::SparseMatrix trainSparseMatrix(mu::sparse_to_eigen(trainSparseTensor2d));
 
 // sparse test data (matrix/tensor 2d/tensor 3d)
