@@ -7,7 +7,7 @@ import itertools
 import collections
 import sys
 
-verbose = 2
+verbose = 0
 
 class TestMacau(unittest.TestCase):
 

@@ -6,7 +6,7 @@ import smurff
 import itertools
 import collections
 
-verbose = 2
+verbose = 0
 
 class TestNoiseModels():
     # Python 2.7 @unittest.skip fix

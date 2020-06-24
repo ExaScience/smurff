@@ -41,8 +41,7 @@ def make_train_test(Y, ntest, shape = None, seed = None):
         else:
             Ysparse = sp.sparse.coo_matrix(Y)
 
-        _, Ytest = make_train_test(Ysparse, ntest, shape)
-        return Y, Ytest
+        return make_train_test(Ysparse, ntest, shape)
     
     if not sp.sparse.issparse(Y):
         raise TypeError("Unsupported Y type: " + str(type(Y)))
@@ -91,13 +90,12 @@ def make_train_test_df(Y, ntest, shape = None):
     train  = rperm[ntest:]
     test   = rperm[0:ntest]
 
-    Ytrain = SparseTensor(None, Y.shape)
-    Ytest  = SparseTensor(None, Y.shape)
+    Ytrain = SparseTensor(
+        ( Y.values[train], [ idx[train] for idx in Y.columns ] ),
+        Y.shape)
 
-    Ytrain.data = Y.data[train]
-    Ytest.data = Y.data[test]
-
-    Ytrain.idx = [ idx[train] for idx in Y.idx ]
-    Ytest.idx = [ idx[test] for idx in Y.idx ]
+    Ytest  = SparseTensor(
+        ( Y.values[test], [ idx[test] for idx in Y.columns ] ),
+        Y.shape)
 
     return Ytrain, Ytest

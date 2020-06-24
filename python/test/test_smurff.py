@@ -6,6 +6,8 @@ import smurff
 import itertools
 import collections
 
+verbose = 0
+
 class TestSmurff(unittest.TestCase):
 
     # Python 2.7 @unittest.skip fix
@@ -18,7 +20,7 @@ class TestSmurff(unittest.TestCase):
                                 Ytest=Ytest,
                                 priors=['normal', 'normal'],
                                 num_latent=4,
-                                verbose = 2,
+                                verbose=verbose,
                                 burnin=50,
                                 nsamples=50)
         self.assertEqual(Ytest.nnz, len(predictions))
@@ -33,7 +35,7 @@ class TestSmurff(unittest.TestCase):
                       num_latent=10,
                       burnin=10,
                       nsamples=15,
-                      verbose = 2)
+                      verbose=verbose)
 
     def test_macau(self):
         Ydense  = np.random.rand(10, 20)
@@ -51,7 +53,7 @@ class TestSmurff(unittest.TestCase):
                                 direct=True,
                                 # side_info_noises=[[('fixed', 1.0, None, None, None)], [('adaptive', None, 0.5, 1.0, None)]],
                                 num_latent=4,
-                                verbose = 2,
+                                verbose=verbose,
                                 burnin=50,
                                 nsamples=50)
         #self.assertEqual(Ytest.nnz, len(predictions))
@@ -69,7 +71,7 @@ class TestSmurff(unittest.TestCase):
                       num_latent=5,
                       burnin=10,
                       nsamples=5,
-                      verbose = 2)
+                      verbose=verbose)
 
     def test_macau_dense(self):
         Y  = scipy.sparse.rand(15, 10, 0.2)
@@ -83,7 +85,7 @@ class TestSmurff(unittest.TestCase):
                       num_latent=5,
                       burnin=10,
                       nsamples=5,
-                      verbose = 2)
+                      verbose=verbose)
 
     def test_macau_dense_probit(self):
         A = np.random.randn(25, 2)
@@ -99,15 +101,9 @@ class TestSmurff(unittest.TestCase):
         trainSession = smurff.TrainSession(priors=['macau', 'normal'],
                                 num_latent=4,
                                 threshold=threshold,
-<<<<<<< HEAD:python/test/test_smurff.py
-                                burnin=20,
-                                nsamples=20,
-                                verbose = 2)
-=======
                                 burnin=200,
                                 nsamples=200,
                                 verbose=False)
->>>>>>> tensorpredict:python/smurff/test/test_smurff.py
 
         trainSession.addTrainAndTest(Ytrain, Ytest, smurff.ProbitNoise(threshold))
         trainSession.addSideInfo(0, A, direct=True)
@@ -130,7 +126,7 @@ class TestSmurff(unittest.TestCase):
                                 side_info=[side1, side2],
                                 direct=True,
                                 num_latent=4,
-                                verbose = 2,
+                                verbose=verbose,
                                 burnin=50,
                                 nsamples=50)
         self.assertEqual(Ytest.nnz, len(predictions))
@@ -150,7 +146,7 @@ class TestSmurff(unittest.TestCase):
                       num_latent=10,
                       burnin=10,
                       nsamples=15,
-                      verbose = 2)
+                      verbose=verbose)
 
     def test_bpmf_emptytest_probit(self):
         X = scipy.sparse.rand(15, 10, 0.2)
@@ -160,7 +156,7 @@ class TestSmurff(unittest.TestCase):
                       num_latent=10,
                       burnin=10,
                       nsamples=15,
-                      verbose = 2)
+                      verbose=verbose)
 
     def test_make_train_test(self):
         X = scipy.sparse.rand(15, 10, 0.2)
@@ -182,8 +178,8 @@ class TestSmurff(unittest.TestCase):
         A1 = np.zeros( (10, 8, 3) )
         A2 = np.zeros( (10, 8, 3) )
         A1[df.A, df.B, df.C] = df.value
-        A2[Ytr.idx[0], Ytr.idx[1], Ytr.idx[2]] = Ytr.data
-        A2[Yte.idx[0], Yte.idx[1], Yte.idx[2]] = Yte.data
+        A2[Ytr.columns[0], Ytr.columns[1], Ytr.columns[2]] = Ytr.values
+        A2[Yte.columns[0], Yte.columns[1], Yte.columns[2]] = Yte.values
 
         self.assertTrue(np.allclose(A1, A2))
 
@@ -209,7 +205,7 @@ class TestSmurff(unittest.TestCase):
                                 Ytest=Ytest,
                                 priors=['normal', 'normal', 'normal'],
                                 num_latent=4,
-                                verbose = 2,
+                                verbose=verbose,
                                 burnin=50,
                                 nsamples=50)
 
@@ -227,7 +223,7 @@ class TestSmurff(unittest.TestCase):
                                 Ytest=Ytest,
                                 priors=['normal', 'normal', 'normal'],
                                 num_latent=4,
-                                verbose = 2,
+                                verbose=verbose,
                                 burnin=20,
                                 nsamples=20)
 
@@ -250,7 +246,7 @@ class TestSmurff(unittest.TestCase):
                                 Ytest=Ytest,
                                 priors=['normal', 'normal', 'normal'],
                                 num_latent=4,
-                                verbose = 2,
+                                verbose=verbose,
                                 burnin=20,
                                 nsamples=20)
 
@@ -275,14 +271,14 @@ class TestSmurff(unittest.TestCase):
                            num_latent=2,
                            burnin=5,
                            nsamples=5,
-                           verbose = 2)
+                           verbose=verbose)
 
         self.assertFalse(predictions)
 
     def test_threads(self):
         Y = scipy.sparse.rand(10, 20, 0.2)
         for t in range(7): # 1, 2, 4, 8, 16, 32, 64
-            smurff.smurff(Y, priors=['normal', 'normal'], num_latent=4, num_threads=2**t, verbose = 2, burnin=5, nsamples=5)
+            smurff.smurff(Y, priors=['normal', 'normal'], num_latent=4, num_threads=2**t, verbose=verbose, burnin=5, nsamples=5)
 
 if __name__ == '__main__':
     unittest.main()

@@ -4,7 +4,7 @@ import pandas as pd
 import scipy.sparse
 import smurff
 
-verbose = 2
+verbose = 0
 
 class TestPredictSession(unittest.TestCase):
     # Python 2.7 @unittest.skip fix

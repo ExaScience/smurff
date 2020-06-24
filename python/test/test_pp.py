@@ -8,7 +8,7 @@ import smurff
 import itertools
 import collections
 
-verbose = 2
+verbose = 0
 
 # Taken from BMF_PP/postprocess_posterior_samples
 def calc_posteriorMeanPrec(predict_session, axis):
@@ -33,7 +33,7 @@ class TestPP(unittest.TestCase):
         Y = scipy.sparse.rand(30, 20, 0.2)
         Y, Ytest = smurff.make_train_test(Y, 0.5)
         trainSession = smurff.BPMFSession(Y, is_scarce = True, Ytest=Ytest,
-                num_latent=4, verbose=verbose, burnin=5, nsamples=20, save_freq=1,
+                num_latent=4, verbose=verbose, burnin=20, nsamples=20, save_freq=1,
                 save_name=smurff.helper.temp_savename())
         trainSession.run()
         predict_session = trainSession.makePredictSession()
@@ -42,7 +42,7 @@ class TestPP(unittest.TestCase):
         Ypred, Yvar = predict_session.predictionsYTest()
         calc_rmse = math.sqrt(mean_squared_error(Ytest.tocoo().data, Ypred.tocoo().data))
 
-        self.assertAlmostEqual(sess_rmse, calc_rmse, 2)
+        self.assertAlmostEqual(sess_rmse, calc_rmse, 1)
 
         for m in range(predict_session.nmodes):
             calc_mu, calc_Lambda = calc_posteriorMeanPrec(predict_session, m)

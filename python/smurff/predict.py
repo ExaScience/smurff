@@ -101,7 +101,6 @@ class PredictSession:
         self.nmodes = int(self.options['num_priors'])
         self.num_latent = int(self.options["num_latent"])
         self.data_shape = self.h5_file["config/train/data"].shape
-        assert self.nmodes == 2
 
         self.samples = []
         for name in self.h5_file.keys():
