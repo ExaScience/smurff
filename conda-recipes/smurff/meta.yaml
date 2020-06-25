@@ -39,7 +39,7 @@ requirements:
     - scikit-learn
     - hdf5
     - h5py
-    - h5sparse >=0.2.0
+    - h5sparse-tensor >=0.2.2
   
 test:
   requires:
