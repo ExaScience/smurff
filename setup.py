@@ -39,7 +39,7 @@ class CMakeBuild(build_ext):
                         '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                         '-DPYTHON_EXECUTABLE=' + sys.executable,
                         '-DENABLE_PYTHON=ON',
-                        ] + ext.extra_cmake_args
+                        ]
         build_args = ['--config', cfg]
 
         if platform.system() == "Windows":
@@ -48,7 +48,8 @@ class CMakeBuild(build_ext):
                 cmake_args += ['-A', 'x64']
         else:
             cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
-            
+
+        cmake_args += ext.extra_cmake_args 
         build_args += ['--'] + ext.extra_build_args
       
         cmake_srcdir = ext.sourcedir
