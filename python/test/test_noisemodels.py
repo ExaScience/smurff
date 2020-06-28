@@ -1,144 +1,78 @@
-import unittest
 import numpy as np
-import pandas as pd
 import scipy.sparse
 import smurff
-import itertools
-import collections
+import pytest
 
 verbose = 0
+seed = 1234
 
-class TestNoiseModels():
-    # Python 2.7 @unittest.skip fix
-    __name__ = "TestNoiseModels"
-
-    def run_session(self, noise_model):
-        Ytrain, Ytest = self.train_test()
-        si = self.side_info()
-
-        nmodes = len(Ytrain.shape)
-        priors = ['normal'] * nmodes
-        if si is not None:
-            priors[0] = 'macau'
-
-        trainSession = smurff.TrainSession(priors = priors, num_latent=10, burnin=10, nsamples=15, verbose=verbose)
-
-        if si is None:
-            trainSession.addTrainAndTest(Ytrain, Ytest, noise_model)
-        elif (isinstance(noise_model, smurff.ProbitNoise) or 
-             isinstance(noise_model, smurff.AdaptiveNoise)) and \
-             not isinstance(noise_model, smurff.SampledNoise) :
-            trainSession.addSideInfo(0, si, direct=True)
-            trainSession.addTrainAndTest(Ytrain, Ytest, noise_model)
-        else:
-            trainSession.addSideInfo(0, si, noise_model, direct=True)
-            trainSession.addTrainAndTest(Ytrain, Ytest)
-
-        trainSession.init()
-        while trainSession.step():
-            pass
-
-        predictions = trainSession.getTestPredictions()
-        self.assertEqual(Ytest.nnz, len(predictions))
-        self.assertLess(trainSession.getRmseAvg(), 10.)
-        return predictions
-
-    # 5 different noise configs
-
-    def test_fixed5(self):
-        self.run_session(smurff.FixedNoise(5.0))
-
-    def test_fixed10(self):
-        self.run_session(smurff.FixedNoise(10.0))
-
-    def test_adaptive1(self):
-        self.run_session(smurff.AdaptiveNoise(1.0, 10))
-
-    def test_adaptive10(self):
-        self.run_session(smurff.AdaptiveNoise(10.0, 100.0))
-
-    def test_probit(self):
-        self.run_session(smurff.ProbitNoise(0.0))
-#
-# 2 different types of train&test
-#
-
-class TestNoiseModelsMatrix():
-   def train_test(self):
-       Y = scipy.sparse.rand(15, 10, 0.2)
-       Y, Ytest = smurff.make_train_test(Y, 0.5)
-       return Y, Ytest
-
-class TestNoiseModelsTensor():
-    def train_test(self):
-        np.random.seed(1234)
-        train_df = pd.DataFrame({
-            "A": np.random.randint(0, 15, 7),
-            "B": np.random.randint(0, 4,  7),
-            "C": np.random.randint(0, 3,  7),
-            "value": np.random.randn(7)
-        })
-        test_df = pd.DataFrame({
-            "A": np.random.randint(0, 15, 5),
-            "B": np.random.randint(0, 4,  5),
-            "C": np.random.randint(0, 3,  5),
-            "value": np.random.randn(5)
-        })
-
-        shape = [15, 4, 3]
-        Ytrain = smurff.SparseTensor(train_df, shape = shape)
-        Ytest  = smurff.SparseTensor(test_df, shape = shape)
-
-        return Ytrain, Ytest
-
-
-#
 # 4 different types of side info
-#
-class TestNoiseModelsBPMF():
-    def side_info(self):
-        return None
+def no_side_info(U):
+    return None
 
-class TestNoiseModelsMacauSparse():
-    def side_info(self):
-        return scipy.sparse.rand(15, 2, 0.5)
+def sparse_side_info(U):
+    return smurff.make_sparse(U, 0.5, seed=seed)
 
-class TestNoiseModelsMacauSparseBin():
-    def side_info(self):
-        F = scipy.sparse.rand(15, 2, 0.5)
-        F.data[:] = 1
-        return F
- 
-class TestNoiseModelsMacauDense():
-    def side_info(self):
-        return np.random.randn(15, 2)
+def binary_side_info(U):
+    F = smurff.make_sparse(U, 0.5, seed=seed)
+    F.data[:] = 1
+    return F
 
-#
-# Now make all combinations
-#
-class TestNoiseModelsMatrixBPMF(unittest.TestCase, TestNoiseModels, TestNoiseModelsMatrix, TestNoiseModelsBPMF):
-    pass
+def dense_side_info(U):
+    return U
 
-class TestNoiseModelsMatrixMacauSparse(unittest.TestCase, TestNoiseModels, TestNoiseModelsMatrix, TestNoiseModelsMacauSparse):
-    pass
+# 5 different noise configs
+def noise_fixed5():
+    return smurff.FixedNoise(5.0)
 
-class TestNoiseModelsMatrixMacauSparseBin(unittest.TestCase, TestNoiseModels, TestNoiseModelsMatrix, TestNoiseModelsMacauSparseBin):
-    pass
+def noise_fixed10():
+    return smurff.FixedNoise(10.0)
 
-class TestNoiseModelsMatrixMacauDense(unittest.TestCase, TestNoiseModels, TestNoiseModelsMatrix, TestNoiseModelsMacauDense):
-    pass
+def noise_adaptive1():
+    return smurff.AdaptiveNoise(1.0, 10)
 
-class TestNoiseModelsTensorBPMF(unittest.TestCase, TestNoiseModels, TestNoiseModelsTensor, TestNoiseModelsBPMF):
-    pass
+def noise_adaptive10():
+    return smurff.AdaptiveNoise(10.0, 100.0)
 
-class TestNoiseModelsTensorMacauSparse(unittest.TestCase, TestNoiseModels, TestNoiseModelsTensor, TestNoiseModelsMacauSparse):
-    pass
+def noise_probit():
+    return smurff.ProbitNoise(.0)
 
-class TestNoiseModelsTensorMacauSparseBin(unittest.TestCase, TestNoiseModels, TestNoiseModelsTensor, TestNoiseModelsMacauSparseBin):
-    pass
+def train_test(density, nmodes, side_info):
+    np.random.seed(seed)
+    Us = [ np.random.randn(i*5, 1) for i in range(1,nmodes+1) ]
+    subscripts = [ [i+1, 0] for i in range(nmodes) ]
+    Y = np.einsum(*[j for i in zip(Us,subscripts) for j in i]) 
+    if density < 1.:
+        _, Y = smurff.make_train_test(Y, density, seed=seed)
+    Ytrain, Ytest = smurff.make_train_test(Y, 0.5, seed=seed)
+    return Ytrain, Ytest, side_info(Us[0])
 
-class TestNoiseModelsTensorMacauDense(unittest.TestCase, TestNoiseModels, TestNoiseModelsTensor, TestNoiseModelsMacauDense):
-    pass
-  
-if __name__ == '__main__':
-    unittest.main()
+@pytest.mark.parametrize('density', [1.0, 0.5])
+@pytest.mark.parametrize('nmodes', [2, 3, 4])
+@pytest.mark.parametrize('side_info', [no_side_info, sparse_side_info, binary_side_info, dense_side_info])
+@pytest.mark.parametrize('noise_model', [noise_probit, noise_fixed5, noise_fixed10, noise_adaptive10, noise_adaptive1])
+def test_noise_model(density, nmodes, side_info, noise_model):
+    Ytrain, Ytest, si = train_test(density, nmodes, side_info)
+    nm = noise_model()
+
+    priors = ['normal'] * nmodes
+    if si is not None:
+        priors[0] = 'macau'
+
+    trainSession = smurff.TrainSession(priors = priors, num_latent=4, burnin=100, nsamples=100, threshold=.0, seed=seed, num_threads = 1, verbose=verbose)
+
+    trainSession.addTrainAndTest(Ytrain, Ytest, nm)
+    if not si is None:
+        trainSession.addSideInfo(0, si, smurff.SampledNoise(1.), direct=True)
+
+    trainSession.init()
+    while trainSession.step():
+        pass
+
+    predictions = trainSession.getTestPredictions()
+    assert Ytest.nnz == len(predictions)
+    if isinstance(nm, smurff.ProbitNoise):
+        assert trainSession.getStatus().auc_avg > 0.6
+    else:
+        assert trainSession.getRmseAvg() < 10.
+    return predictions
