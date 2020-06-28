@@ -7,7 +7,7 @@ import numbers
 from .helper import SparseTensor
 
 def make_sparse(Y, nnz, shape = None, seed = None):
-    Ytr, Yte = make_sparse(Y, nnz, shape, seed)
+    Ytr, Yte = make_train_test(Y, nnz, shape, seed)
     return Yte
 
 def make_train_test(Y, ntest, shape = None, seed = None):

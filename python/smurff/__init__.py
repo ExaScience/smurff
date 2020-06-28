@@ -2,7 +2,7 @@ from .trainsession import TrainSession
 from .helper import SparseTensor
 from .helper import FixedNoise, SampledNoise, AdaptiveNoise, ProbitNoise
 from .helper import temp_savename
-from .prepare import make_train_test
+from .prepare import make_train_test, make_sparse
 from .result import Prediction, calc_rmse, calc_auc
 from .predict import PredictSession
 from .datasets import load_chembl
