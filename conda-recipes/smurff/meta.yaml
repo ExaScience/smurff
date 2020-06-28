@@ -44,6 +44,7 @@ requirements:
   
 test:
   requires:
+    - parameterized
     - pytest
   source_files:
     - python/test/*.py
