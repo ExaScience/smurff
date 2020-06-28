@@ -94,7 +94,7 @@ class TestSmurff(unittest.TestCase):
         idx = list( itertools.product(np.arange(A.shape[0]), np.arange(B.shape[0])) )
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B"])
         df["value"] = (np.array([ np.sum(A[i[0], :] * B[i[1], :]) for i in idx ]) > 0.0).astype(np.float64)
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2)
+        Ytrain, Ytest = smurff.make_train_test(df, 0.2)
 
         threshold = 0.5  # since we sample from mu(0,1)
         
@@ -165,13 +165,13 @@ class TestSmurff(unittest.TestCase):
         diff = np.linalg.norm( (X - Xtr - Xte).todense() )
         self.assertEqual(diff, 0.0)
 
-    def test_make_train_test_df(self):
+    def test_make_train_test(self):
         nnz = 10 * 8 * 3
         idx = list( itertools.product(np.arange(10), np.arange(8), np.arange(3) ))
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
         df["value"] = np.arange(float(nnz))
 
-        Ytr, Yte = smurff.make_train_test_df(df, 0.4)
+        Ytr, Yte = smurff.make_train_test(df, 0.4)
         self.assertEqual(Ytr.nnz, nnz * 0.6)
         self.assertEqual(Yte.nnz, nnz * 0.4)
 
@@ -217,7 +217,7 @@ class TestSmurff(unittest.TestCase):
         idx = list( itertools.product(np.arange(A.shape[0]), np.arange(B.shape[0]), np.arange(C.shape[0])) )
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
         df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2)
+        Ytrain, Ytest = smurff.make_train_test(df, 0.2)
 
         predictions = smurff.smurff(Ytrain,
                                 Ytest=Ytest,
@@ -240,7 +240,7 @@ class TestSmurff(unittest.TestCase):
         idx = list( itertools.product(np.arange(A.shape[0]), np.arange(B.shape[0]), np.arange(C.shape[0])) )
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
         df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2)
+        Ytrain, Ytest = smurff.make_train_test(df, 0.2)
 
         predictions = smurff.smurff(Ytrain,
                                 Ytest=Ytest,

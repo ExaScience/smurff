@@ -87,7 +87,7 @@ class TestMacau(unittest.TestCase):
         idx = list( itertools.product(np.arange(shape[0]), np.arange(shape[1]), np.arange(shape[2])) )
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
         df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2, shape = shape)
+        Ytrain, Ytest = smurff.make_train_test(df, 0.2, shape = shape)
 
         Acoo = scipy.sparse.coo_matrix(A)
 
@@ -115,7 +115,7 @@ class TestMacau(unittest.TestCase):
         idx = list( itertools.product(np.arange(shape[0]), np.arange(shape[1]), np.arange(shape[2])) )
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
         df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2, shape)
+        Ytrain, Ytest = smurff.make_train_test(df, 0.2, shape)
 
         Acoo = scipy.sparse.coo_matrix(A)
 

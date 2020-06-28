@@ -178,7 +178,7 @@ class TestBPMF(unittest.TestCase):
         idx = list( itertools.product(np.arange(A.shape[0]), np.arange(B.shape[0]), np.arange(C.shape[0])) )
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
         df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2)
+        Ytrain, Ytest = smurff.make_train_test(df, 0.2)
 
         predictions = smurff.bpmf(Ytrain,
                                 Ytest=Ytest,
@@ -200,7 +200,7 @@ class TestBPMF(unittest.TestCase):
         idx = list( itertools.product(np.arange(A.shape[0]), np.arange(B.shape[0]), np.arange(C.shape[0])) )
         df  = pd.DataFrame( np.asarray(idx), columns=["A", "B", "C"])
         df["value"] = np.array([ np.sum(A[i[0], :] * B[i[1], :] * C[i[2], :]) for i in idx ])
-        Ytrain, Ytest = smurff.make_train_test_df(df, 0.2)
+        Ytrain, Ytest = smurff.make_train_test(df, 0.2)
 
         predictions = smurff.bpmf(Ytrain,
                                 Ytest=Ytest,
