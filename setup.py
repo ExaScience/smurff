@@ -40,7 +40,7 @@ class CMakeBuild(build_ext):
                         '-DPYTHON_EXECUTABLE=' + sys.executable,
                         '-DENABLE_PYTHON=ON',
                         ]
-        build_args = ['--config', cfg]
+        build_args = ['--config', cfg, '--parallel']
 
         if platform.system() == "Windows":
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
