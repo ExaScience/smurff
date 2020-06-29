@@ -39,7 +39,7 @@ def noise_probit():
 
 def train_test(density, nmodes, side_info):
     np.random.seed(seed)
-    Us = [ np.random.randn(i*5, 1) for i in range(1,nmodes+1) ]
+    Us = [ np.random.randn(i*10, 1) for i in range(1,nmodes+1) ]
     subscripts = [ [i+1, 0] for i in range(nmodes) ]
     Y = np.einsum(*[j for i in zip(Us,subscripts) for j in i]) 
     if density < 1.:
