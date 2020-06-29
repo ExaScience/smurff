@@ -14,8 +14,8 @@ def sparse_side_info(U):
     return smurff.make_sparse(U, 0.5, seed=seed)
 
 def binary_side_info(U):
-    F = smurff.make_sparse(U, 0.5, seed=seed)
-    F.data[:] = 1
+    F = np.digitize(U, bins = [.0])
+    F = scipy.sparse.coo_matrix(F)
     return F
 
 def dense_side_info(U):
@@ -59,7 +59,7 @@ def test_noise_model(density, nmodes, side_info, noise_model):
     if si is not None:
         priors[0] = 'macau'
 
-    trainSession = smurff.TrainSession(priors = priors, num_latent=4, burnin=100, nsamples=100, threshold=.0, seed=seed, num_threads = 1, verbose=verbose)
+    trainSession = smurff.TrainSession(priors = priors, num_latent=4, burnin=10, nsamples=10, threshold=.0, seed=seed, num_threads = 1, verbose=verbose)
 
     trainSession.addTrainAndTest(Ytrain, Ytest, nm)
     if not si is None:
