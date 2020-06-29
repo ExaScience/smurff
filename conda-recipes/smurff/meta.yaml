@@ -31,7 +31,7 @@ requirements:
     - numpy
   run:
     - python {{ python }}
-    - intel-openmp
+    - intel-openmp # [not win]
     - mkl
     - libboost {{ libboost }} # [not win]
     - numpy
