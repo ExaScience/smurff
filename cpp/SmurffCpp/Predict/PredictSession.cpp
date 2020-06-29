@@ -259,7 +259,7 @@ std::shared_ptr<Result> PredictSession::predict(const DataConfig &Y)
 {
     auto res = std::make_shared<Result>(Y);
 
-    for (const auto s : m_stepfiles)
+    for (const auto &s : m_stepfiles)
     {
         Model model;
         restoreModel(model, s);
