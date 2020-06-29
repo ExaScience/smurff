@@ -9,6 +9,7 @@ import itertools
 import collections
 
 verbose = 0
+seed = 1234
 
 # Taken from BMF_PP/postprocess_posterior_samples
 def calc_posteriorMeanPrec(predict_session, axis):
@@ -30,19 +31,25 @@ def calc_posteriorMeanPrec(predict_session, axis):
 
 class TestPP(unittest.TestCase):
     def test_bmf_pp(self):
+        np.random.seed(seed)
         Y = scipy.sparse.rand(30, 20, 0.2)
-        Y, Ytest = smurff.make_train_test(Y, 0.5)
+        Y, Ytest = smurff.make_train_test(Y, 0.5, seed=seed)
         trainSession = smurff.BPMFSession(Y, is_scarce = True, Ytest=Ytest,
                 num_latent=4, verbose=verbose, burnin=20, nsamples=20, save_freq=1,
-                save_name=smurff.helper.temp_savename())
+                seed = seed, save_name=smurff.helper.temp_savename())
         trainSession.run()
         predict_session = trainSession.makePredictSession()
 
         sess_rmse = float(predict_session.statsYTest()["rmse_avg"])
         Ypred, Yvar = predict_session.predictionsYTest()
-        calc_rmse = math.sqrt(mean_squared_error(Ytest.tocoo().data, Ypred.tocoo().data))
 
-        self.assertAlmostEqual(sess_rmse, calc_rmse, 1)
+        Yt_i, Yt_j, Yt_v = scipy.sparse.find(Ytest)
+        Yp_i, Yp_j, Yp_v = scipy.sparse.find(Ypred)
+        assert (Yp_i == Yt_i).all() and (Yp_j == Yt_j).all()
+
+        calc_rmse = math.sqrt(mean_squared_error(Yt_v, Yp_v))
+
+        self.assertAlmostEqual(sess_rmse, calc_rmse, 4)
 
         for m in range(predict_session.nmodes):
             calc_mu, calc_Lambda = calc_posteriorMeanPrec(predict_session, m)
