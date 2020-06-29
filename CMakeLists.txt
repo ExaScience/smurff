@@ -11,7 +11,8 @@ OPTION(ENABLE_OPENBLAS "Look only for OPENBLAS library" OFF)
 OPTION(ENABLE_MKL "Look only for MKL library" OFF)
 
 OPTION(ENABLE_PROFILING "Enable performance counters" OFF)
-OPTION(ENABLE_ASAN "Enable address sanitizer in Debug mode" OFF)
+OPTION(ENABLE_ASAN "Enable address sanitizer" OFF)
+OPTION(ENABLE_TSAN "Enable thread sanitizer" OFF)
 
 OPTION(ENABLE_VERBOSE_COMPILER_LOG "Enable verbose compilation log" OFF)
 OPTION(ENABLE_VERBOSE_LINKER_LOG "Enable verbose linker log" OFF)
@@ -135,9 +136,14 @@ elseif (CMAKE_COMPILER_IS_GNUCXX OR APPLE)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-unknown-pragmas -Wnon-virtual-dtor -Wno-parentheses -fPIC")
    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-unknown-pragmas -fPIC")
 
-   if (${ENABLE_ASAN})
-       set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
-       set (CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+   if (ENABLE_ASAN)
+      add_compile_options(-fno-omit-frame-pointer -fsanitize=address)
+      add_link_options(-fno-omit-frame-pointer -fsanitize=address)
+   endif()
+   
+   if (ENABLE_TSAN)
+      add_compile_options(-fno-omit-frame-pointer -fsanitize=thread)
+      add_link_options(-fno-omit-frame-pointer -fsanitize=thread)
    endif()
 
 else()
