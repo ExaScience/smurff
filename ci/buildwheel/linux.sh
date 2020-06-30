@@ -5,5 +5,6 @@ export CIBW_ENVIRONMENT='CMAKE_ARGS="-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DE
 export CIBW_MANYLINUX_X86_64_IMAGE=vanderaa/manylinux2014_x86_64_smurff
 export CIBW_TEST_COMMAND='pytest {project}/python/test'
 export CIBW_TEST_REQUIRES='parameterized pytest'
+export CIBW_BUILD_VERBOSITY=1
 
 cibuildwheel --platform linux .
