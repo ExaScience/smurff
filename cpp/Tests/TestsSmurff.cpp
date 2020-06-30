@@ -24,7 +24,7 @@ namespace test {
 // Code for printing test results that can then be copy-pasted into tests as
 // expected results
 static void printActualResults(int nr, double actualRmseAvg, const std::vector<smurff::ResultItem> &actualResults) {
-  static const char *fname = "TestsSmurff_ExpectedResults.h";
+  static const char *fname = "TestsSmurff_ExpectedResults.h.generated";
   static bool cleanup = true;
 
   if (cleanup) {

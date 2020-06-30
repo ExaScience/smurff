@@ -13,7 +13,7 @@
 
 static const int N = 10;
 static bool cleanup = true;
-static const char *fname = "TestsRandom_ExpectedResults.h";
+static const char *fname = "TestsRandom_ExpectedResults.h.generated";
 
 #include "TestsRandom_ExpectedResults.h"
 

@@ -18,3 +18,4 @@ tests_output.eggs
 .eggs
 tests_output
 wheelhouse
+*.generated
