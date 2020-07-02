@@ -97,6 +97,7 @@ jobs:
     CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DENABLE_TESTS=OFF'"
     CIBW_TEST_REQUIRES: 'pytest parameterized'
     CIBW_TEST_COMMAND: 'pytest {project}/python/test'
+    CIBW_BUILD_VERBOSITY: 1
   pool: {vmImage: 'Ubuntu-16.04'}
   steps:
     - task: UsePythonVersion@0
@@ -114,6 +115,7 @@ jobs:
     CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DENABLE_TESTS=OFF -DCMAKE_PREFIX_PATH=/usr/local/opt/lapack'"
     CIBW_TEST_REQUIRES: 'pytest parameterized'
     CIBW_TEST_COMMAND: 'pytest {project}/python/test'
+    CIBW_BUILD_VERBOSITY: 1
   pool: {vmImage: 'macOS-10.15'}
   steps:
     - bash: |
