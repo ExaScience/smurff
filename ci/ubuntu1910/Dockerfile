@@ -19,6 +19,7 @@ RUN apt-get update && \
        python3-scipy python3-pandas \
        python3-joblib python3-sklearn \
        python3-h5py \
+       python3-pytest python3-parameterized \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.2.tar.gz && \
