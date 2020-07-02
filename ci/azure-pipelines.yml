@@ -91,8 +91,18 @@ jobs:
 
 
 - job: linux_wheel
+  strategy:
+    matrix:
+      Python35:
+        PYTHON_VERSION: '35'
+      Python36:
+        PYTHON_VERSION: '36'
+      Python37:
+        PYTHON_VERSION: '37'
+      Python38:
+        PYTHON_VERSION: '38'
   variables:
-    CIBW_BUILD: cp3*-manylinux_x86_64
+    CIBW_BUILD: cp$(PYTHON_VERSION)-manylinux_x86_64
     CIBW_MANYLINUX_X86_64_IMAGE: 'vanderaa/manylinux2014_x86_64_smurff'
     CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DENABLE_TESTS=OFF'"
     CIBW_TEST_REQUIRES: 'pytest parameterized'
@@ -110,8 +120,19 @@ jobs:
       inputs: {pathtoPublish: 'wheelhouse'}
 
 - job: macos_wheel
+  strategy:
+    matrix:
+      Python35:
+        PYTHON_VERSION: '35'
+      Python36:
+        PYTHON_VERSION: '36'
+      Python37:
+        PYTHON_VERSION: '37'
+      Python38:
+        PYTHON_VERSION: '38'
+
   variables:
-    CIBW_BUILD: cp3*-macosx_x86_64
+    CIBW_BUILD: cp$(PYTHON_VERSION)-macosx_x86_64
     CIBW_ENVIRONMENT: "CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DENABLE_TESTS=OFF -DCMAKE_PREFIX_PATH=/usr/local/opt/lapack'"
     CIBW_TEST_REQUIRES: 'pytest parameterized'
     CIBW_TEST_COMMAND: 'pytest {project}/python/test'
