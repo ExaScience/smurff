@@ -20,6 +20,6 @@ for PYVER in "3.5.9" "3.6.10" "3.7.7" "3.8.2"; do
   python setup.py bdist_wheel
 done
 
-mkdir -p fixed_wheels
-delocate-wheel -w fixed_wheels dist/*.whl
+mkdir -p wheelhouse
+delocate-wheel -w wheelhouse dist/*.whl
 
