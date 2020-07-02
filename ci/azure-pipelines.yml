@@ -4,6 +4,9 @@ trigger:
   - tensorpredict
   - v*
 
+variables:
+  CPU_COUNT: 2
+
 jobs:
 - job: 'Ubuntu_1604_Apt'
   pool:
