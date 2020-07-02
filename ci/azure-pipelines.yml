@@ -19,6 +19,10 @@ jobs:
         build.type: 'Debug'
       Release:
         build.type: 'Release'
+      RelNoOpenMP:
+        build.type: 'RelNoOpenMP'
+      RelWithDebInfo:
+        build.type: 'RelWithDebInfo'
 
   steps:
     - script: |
