@@ -115,7 +115,6 @@ bool TrainSession::step()
 
     if (isStep)
     {
-        bool deps[MaxDims];
         auto starti = tick();
         for (unsigned i=0; i<m_priors.size(); ++i)
         {
