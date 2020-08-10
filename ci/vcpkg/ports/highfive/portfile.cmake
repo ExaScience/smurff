@@ -21,4 +21,4 @@ vcpkg_configure_cmake(
 vcpkg_install_cmake()
 
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug)
-configure_file("${CURRENT_BUILDTREES_DIR}/src/v2.2.1-8c044b9331/LICENSE" "${CURRENT_PACKAGES_DIR}/share/highfive/copyright" COPYONLY)
+file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/highfive RENAME copyright)
