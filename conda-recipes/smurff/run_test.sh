@@ -1,2 +1,2 @@
 $PREFIX/libexec/tests
-$PYTHON -m unittest discover -v python/test
+$PYTHON pytest -v python/test
