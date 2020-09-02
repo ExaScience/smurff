@@ -19,3 +19,4 @@ blas_impl:
 pin_run_as_build:
   libboost: x.x
   numpy: x.x
+  hdf5: x.x.x
