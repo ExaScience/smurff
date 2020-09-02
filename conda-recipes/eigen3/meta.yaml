@@ -4,8 +4,8 @@ package:
 
 source:
   fn: eigen3-3.3.7.tar.gz
-  url: http://bitbucket.org/eigen/eigen/get/3.3.7.tar.gz
-  sha1: 743c1dc00c6680229d8cc87d44debe5a71d15c01
+  url: https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
+  sha1: 3e8ab94ff389ae4b3103f5dda77c826d85b9c1d5
 
 requirements:
   build:
