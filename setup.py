@@ -42,7 +42,7 @@ class CMakeBuild(build_ext):
                         ]
         build_args = ['--config', cfg, '--parallel']
         if "CPU_COUNT" in os.environ:
-            build_args += os.environ.get("CPU_COUNT")
+            build_args.append(os.environ.get("CPU_COUNT"))
 
         if platform.system() == "Windows":
             cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(cfg.upper(), extdir)]
