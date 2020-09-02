@@ -81,6 +81,16 @@ jobs:
   - template: conda-steps.yml
 
 - job: 'Conda_Windows'
+  strategy:
+    matrix:
+      Python35:
+        PYTHON_VERSION: '3.5'
+      Python36:
+        PYTHON_VERSION: '3.6'
+      Python37:
+        PYTHON_VERSION: '3.7'
+      Python38:
+        PYTHON_VERSION: '3.8'
   pool:
     vmImage: 'vs2017-win2016'
   steps:
@@ -91,7 +101,7 @@ jobs:
     - script: |
         call activate buildEnv
         cd conda-recipes
-        conda build -c vanderaa --output-folder ../conda_packages smurff
+        conda build --python $(PYTHON_VERSION) -c vanderaa --output-folder ../conda_packages smurff
       displayName: Build using "conda build"
     - task: PublishBuildArtifacts@1
       inputs: {pathtoPublish: 'conda_packages'}
