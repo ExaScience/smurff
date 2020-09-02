@@ -61,12 +61,28 @@ jobs:
       displayName: 'Run tests'
 
 - job: 'Conda_Linux'
+  strategy:
+    matrix:
+      Python36:
+        PYTHON_VERSION: '3.6'
+      Python37:
+        PYTHON_VERSION: '3.7'
+      Python38:
+        PYTHON_VERSION: '3.5'
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
     - template: conda-steps.yml
 
 - job: 'Conda_macOS'
+  strategy:
+    matrix:
+      Python36:
+        PYTHON_VERSION: '3.6'
+      Python37:
+        PYTHON_VERSION: '3.7'
+      Python38:
+        PYTHON_VERSION: '3.5'
   pool:
     vmImage: 'macOS-10.15'
   variables:
@@ -83,8 +99,6 @@ jobs:
 - job: 'Conda_Windows'
   strategy:
     matrix:
-      Python35:
-        PYTHON_VERSION: '3.5'
       Python36:
         PYTHON_VERSION: '3.6'
       Python37:
