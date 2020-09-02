@@ -1,2 +1,2 @@
 $PREFIX/libexec/tests
-$PYTHON pytest -v python/test
+$PYTHON -m pytest -v python/test
