@@ -68,7 +68,7 @@ jobs:
       Python37:
         PYTHON_VERSION: '3.7'
       Python38:
-        PYTHON_VERSION: '3.5'
+        PYTHON_VERSION: '3.8'
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
@@ -82,7 +82,7 @@ jobs:
       Python37:
         PYTHON_VERSION: '3.7'
       Python38:
-        PYTHON_VERSION: '3.5'
+        PYTHON_VERSION: '3.8'
   pool:
     vmImage: 'macOS-10.15'
   variables:
