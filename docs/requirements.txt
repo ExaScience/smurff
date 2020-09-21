@@ -2,7 +2,4 @@ ipython
 sphinx>=1.4
 ipykernel
 nbsphinx
-pandas
-numpy
-scipy
-scikit-learn
+smurff
