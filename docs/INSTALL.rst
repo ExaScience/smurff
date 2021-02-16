@@ -35,14 +35,19 @@ Python Requirements
 
 As in setup.py:
 
-   install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'h5sparse-tensor' ],
-   setup_requires = ['setuptools_scm', 'pybind11' ],
+    install_requires = [ 'numpy', 'scipy', 'pandas', 'scikit-learn', 'h5sparse-tensor' ],
+    setup_requires = ['setuptools_scm', 'pybind11' ],
 
 Compile using setup.py
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Running `setup.py install` will run CMake to configure, compile and install SMURFF.
-Extra arguments to CMake can be passed with `setup.py --extra-cmake-args <...> install`
+Running 
+    setup.py install
+
+will run CMake to configure, compile and install SMURFF.
+Extra arguments to CMake can be passed with 
+    setup.py --extra-cmake-args <...> install
+    
 or by setting the `CMAKE_ARGS` environment variables.
 
 CMake Options
