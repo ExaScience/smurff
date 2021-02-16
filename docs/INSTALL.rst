@@ -1,15 +1,15 @@
 Compilation of SMURFF
-====================
+=====================
 
-Note: the easiest way to install SMURFF is to use
-`Conda <https://conda.io>`__:
+Note: the easiest way to install SMURFF is not to build it yourself. Install the binary 
+`Conda <https://conda.io>`__ package:
 
 .. code:: bash
 
     conda install -c vanderaa smurff
 
-Using `conda build`
--------------------
+Compilation using `conda build`
+-------------------------------
 
 Conda build works on Linux, macOS and Windows. Execute
 
@@ -19,8 +19,11 @@ Conda build works on Linux, macOS and Windows. Execute
    
 in the `conda-recipes` directory.
 
+Compilation using CMake
+-----------------------
+
 C++ Requirements
-----------------
+~~~~~~~~~~~~~~~~
 
 - CMake 3.6 or later
 - Eigen3 version 3.3.7 or later 
@@ -28,7 +31,7 @@ C++ Requirements
 - Boost 1.5x or newer
 
 Python Requirements
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 As in setup.py:
 
@@ -36,7 +39,7 @@ As in setup.py:
    setup_requires = ['setuptools_scm', 'pybind11' ],
 
 Compile using setup.py
-----------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 Running `setup.py install` will run CMake to configure, compile and install SMURFF.
 Extra arguments to CMake can be passed with `setup.py --extra-cmake-args <...> install`
@@ -61,12 +64,12 @@ CMake Options
    - ENABLE\_PYTHON
 
 Linux and macOs Specific 
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Have a look in `ci/ <../ci/>`__ for Docker build scripts and for Linux+macOS wheel scripts. These scripts should
 give you a good idea on how to compiler on an Ubuntu and macOS system.
 
 Windows Specific 
-----------------
+~~~~~~~~~~~~~~~~
 
 Work for a vcpkg-based build is in progress.
