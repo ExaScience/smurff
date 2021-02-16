@@ -1,23 +1,31 @@
-Installation
-============
+Compilation of SMURFF
+====================
 
-Installation using Conda
-------------------------
-
-The easiest way to install SMURFF is to use
+Note: the easiest way to install SMURFF is to use
 `Conda <https://conda.io>`__:
 
 .. code:: bash
 
     conda install -c vanderaa smurff
 
+Using `conda build`
+-------------------
+
+Conda build works on Linux, macOS and Windows. Execute
+
+.. code:: bash
+
+   conda build smurff
+   
+in the `conda-recipes` directory.
+
 C++ Requirements
 ----------------
 
-  - CMake 3.6 or later
-  - Eigen3 version 3.3.7 or later 
-  - HighFive 2.2. from https://github.com/BlueBrain/HighFive/ 
-  - Boost 1.5x or newer
+- CMake 3.6 or later
+- Eigen3 version 3.3.7 or later 
+- HighFive 2.2. from https://github.com/BlueBrain/HighFive/ 
+- Boost 1.5x or newer
 
 Python Requirements
 -------------------
@@ -52,9 +60,13 @@ CMake Options
 - Python:
    - ENABLE\_PYTHON
 
-Linux Specific 
---------------
+Linux and macOs Specific 
+------------------------
 
-Have a look in 
+Have a look in `ci/ <../ci/>`__ for Docker build scripts and for Linux+macOS wheel scripts. These scripts should
+give you a good idea on how to compiler on an Ubuntu and macOS system.
 
+Windows Specific 
+----------------
 
+Work for a vcpkg-based build is in progress.
