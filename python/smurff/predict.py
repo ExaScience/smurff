@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
+import scipy.sparse as sp
 import h5sparse
 
 from .result import Prediction
@@ -48,29 +49,55 @@ class Sample:
 
         return mu, Lambda
 
-    def predict(self, coords_or_sideinfo=None):
+    def predict(self, *params):
+        """
+        Generate predictions from this `Sample` based on `params`. Parameters
+        specify coordinates of sideinfo/features for each dimension.
+        See examples below for clarification.
+
+        Parameters
+        ----------
+        operands: tuple 
+            A combination of coordindates in the matrix/tensor and/or features you want to use
+            to make predictions. `len(coords)` should be equal to number of dimensions in the sample.
+
+            Each element `coords` can be a:
+              * :type:`int`: a single element in this dimension is selected. For example, a
+                single row or column in a matrix.
+              * :class:`slice`: a slice is selected in this dimension. For example, a number of
+                rows or columns in a matrix.
+              * :type:`Ellipsis`: all elements in this dimension are selected. For example, all
+                rows or columns in a matrix.
+              * :class:`numpy.ndarray`: 2D numpy array used as dense sideinfo. Each row
+                vector is used as side-info.
+              * :class:`scipy.sparse.spmatrix`: sparse matrix used as sideinfo. Each row
+                vector is used as side-info.
+
+        """
+        assert len(params) == self.nmodes, \
+            "You should provide as many parameters as dimensions of the train matrix/tensor"
+
+
         # for one prediction: einsum(U[:,coords[0]], [0], U[:,coords[1]], [0], ...)
         # for all predictions: einsum(U[0], [0, 0], U[1], [0, 1], U[2], [0, 2], ...)
 
-        cs = coords_or_sideinfo if coords_or_sideinfo is not None else [
-            None] * self.nmodes
-
         operands = []
-        for U, mu, c, m in zip(self.latents(), self.mus(), cs, range(self.nmodes)):
+        for U, mu, beta, c, m in zip(self.latents(), self.mus(), self.betas(), params, range(self.nmodes)):
             # predict all in this dimension
-            if c is None:
+            if c is Ellipsis:
                 operands += [U, [m+1, 0]]
+            elif isinstance(c, (np.ndarray, sp.spmatrix)):
+                # compute latent vector from side_info using dot
+                assert c.shape[1] == beta.shape[0], f"Incorrect side-info dims, should be N x {beta.shape[0]}"
+                uhat = c.dot(beta).transpose()
+                mu = np.squeeze(mu)
+                uhat = np.squeeze(uhat) 
+                operands += [uhat + mu, [0]]
+            elif isinstance(c, int):
+                # if a single coord was specified for this dimension, we predict for this coord
+                operands += [U[c, :], [0]]
             else:
-                # if side_info was specified for this dimension, we predict for this side_info
-                try:  # try to compute sideinfo * beta using dot
-                    # compute latent vector from side_info
-                    uhat = c.dot(self.betas()[m]).transpose()
-                    mu = np.squeeze(mu)
-                    uhat = np.squeeze(uhat) 
-                    operands += [uhat + mu, [0]]
-                except AttributeError:  # assume it is a coord
-                    # if coords was specified for this dimension, we predict for this coord
-                    operands += [U[c, :], [0]]
+                raise ValueError("Unknown parameter to predict: " + str(c))
 
         return np.einsum(*operands)
 
@@ -129,8 +156,8 @@ class PredictSession:
     def statsYTest(self):
         return self.lastSample().predStats()
 
-    def predict(self, coords_or_sideinfo=None):
-        return np.stack([sample.predict(coords_or_sideinfo) for sample in self.samples])
+    def predict(self, operands=None):
+        return np.stack([sample.predict(operands) for sample in self.samples])
 
     def predict_all(self):
         """Computes the full prediction matrix/tensor.
@@ -167,12 +194,12 @@ class PredictSession:
 
         return predictions
 
-    def predict_one(self, coords_or_sideinfo, value=float("nan")):
+    def predict_one(self, operands, value=float("nan")):
         """Computes prediction for one point in the matrix/tensor
 
         Parameters
         ----------
-        coords_or_sideinfo : tuple of coordinates and/or feature vectors
+        operands : tuple of coordinates and/or feature vectors
         value : float, optional
             The *true* value for this point
 
@@ -182,7 +209,7 @@ class PredictSession:
             The prediction
 
         """
-        p = Prediction(coords_or_sideinfo, value)
+        p = Prediction(operands, value)
         for s in self.samples:
             p.add_sample(s.predict(p.coords))
 
