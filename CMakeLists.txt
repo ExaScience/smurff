@@ -37,8 +37,6 @@ MESSAGE( STATUS "CMAKE_SYSTEM_VERSION: " ${CMAKE_SYSTEM_VERSION} )
 # the processor name (e.g. "Intel(R) Pentium(R) M processor 2.00GHz")
 MESSAGE( STATUS "CMAKE_SYSTEM_PROCESSOR: " ${CMAKE_SYSTEM_PROCESSOR} )
 
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g -fstrict-aliasing")
-set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -g -fstrict-aliasing")
 
 # Add new build types
 SET(CMAKE_CXX_FLAGS_RELNOOPENMP
