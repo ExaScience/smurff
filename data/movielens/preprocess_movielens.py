@@ -80,19 +80,37 @@ pickle.dump(ratings_matrix,      open("ratings_matrix.pickle", "wb"))
 smurff.matrix_io.write_matrix("ratings.sdm", ratings_matrix)
 smurff.matrix_io.write_matrix("features.sdm", features_matrix)
 
-#--- only save 1000 movies and 1000 users
+#--- only save 1000 most popular movies and 1000 users
+
 ratings_matrix = ratings_matrix.tocsr()
 features_matrix = features_matrix.tocsr()
 
 nnz_per_movie = [ ratings_matrix[r,:].nnz for r in range(ratings_matrix.shape[0]) ]
 popular_movies = np.argsort(nnz_per_movie)
+
 ratings_matrix_1k = ratings_matrix[popular_movies[-1000:], :]
 features_matrix_1k = features_matrix[popular_movies[-1000:], :]
 
 ratings_matrix_1k = ratings_matrix_1k.tocsc()
 nnz_per_user = [ ratings_matrix_1k[:,r].nnz for r in range(ratings_matrix_1k.shape[1]) ]
+
 popular_users = np.argsort(nnz_per_user)
 ratings_matrix_1k = ratings_matrix_1k[:, popular_users[-1000:]]
 
-smurff.matrix_io.write_matrix("ratings_1k.sdm", ratings_matrix_1k)
-smurff.matrix_io.write_matrix("features_1k.sdm", features_matrix_1k)
+smurff.matrix_io.write_matrix("ratings_1k_popular.sdm", ratings_matrix_1k)
+smurff.matrix_io.write_matrix("features_1k_popular.sdm", features_matrix_1k)
+
+#--- save 1000 random movies and 1000 random users
+
+random_movies = np.random.permutation(ratings_matrix.shape[0])
+
+ratings_matrix_1k = ratings_matrix[random_movies[-1000:], :]
+features_matrix_1k = features_matrix[random_movies[-1000:], :]
+
+ratings_matrix_1k = ratings_matrix_1k.tocsc()
+
+random_users = np.random.permutation(ratings_matrix.shape[1])
+ratings_matrix_1k = ratings_matrix_1k[:, random_users[-1000:]]
+
+smurff.matrix_io.write_matrix("ratings_1k_random.sdm", ratings_matrix_1k)
+smurff.matrix_io.write_matrix("features_1k_random.sdm", features_matrix_1k)
