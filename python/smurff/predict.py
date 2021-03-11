@@ -39,7 +39,7 @@ class Sample:
         return self.lookup_modes("link_matrices/mu_%d")
 
     def beta_shape(self):
-        return [b.shape[1] for b in self.betas()]
+        return [b.shape[0] for b in self.betas()]
 
     def postMuLambda(self, mode):
         mu = self.lookup_mode("latents/post_mu_%d", mode)
