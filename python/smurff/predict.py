@@ -49,32 +49,14 @@ class Sample:
 
         return mu, Lambda
 
-    def predict(self, *params):
+    def predict(self, operands):
         """
-        Generate predictions from this `Sample` based on `params`. Parameters
+        Generate predictions from this `Sample` based on `operands`. Parameters
         specify coordinates of sideinfo/features for each dimension.
-        See examples below for clarification.
-
-        Parameters
-        ----------
-        operands: tuple 
-            A combination of coordindates in the matrix/tensor and/or features you want to use
-            to make predictions. `len(coords)` should be equal to number of dimensions in the sample.
-
-            Each element `coords` can be a:
-              * :type:`int`: a single element in this dimension is selected. For example, a
-                single row or column in a matrix.
-              * :class:`slice`: a slice is selected in this dimension. For example, a number of
-                rows or columns in a matrix.
-              * :type:`Ellipsis`: all elements in this dimension are selected. For example, all
-                rows or columns in a matrix.
-              * :class:`numpy.ndarray`: 2D numpy array used as dense sideinfo. Each row
-                vector is used as side-info.
-              * :class:`scipy.sparse.spmatrix`: sparse matrix used as sideinfo. Each row
-                vector is used as side-info.
-
+        See :class:`PredictSession` for clarification.
         """
-        assert len(params) == self.nmodes, \
+
+        assert len(operands) == self.nmodes, \
             "You should provide as many parameters as dimensions of the train matrix/tensor"
 
 
@@ -82,7 +64,7 @@ class Sample:
         # for all predictions: einsum(U[0], [0, 0], U[1], [0, 1], U[2], [0, 2], ...)
 
         operands = []
-        for U, mu, beta, c, m in zip(self.latents(), self.mus(), self.betas(), params, range(self.nmodes)):
+        for U, mu, beta, c, m in zip(self.latents(), self.mus(), self.betas(), operands, range(self.nmodes)):
             # predict all in this dimension
             if c is Ellipsis:
                 operands += [U, [m+1, 0]]
@@ -156,11 +138,28 @@ class PredictSession:
     def statsYTest(self):
         return self.lastSample().predStats()
 
-    def predict(self, operands=None):
-        return np.stack([sample.predict(operands) for sample in self.samples])
+    def predict(self, operands):
+        """
+        Generate predictions on `operands`. Parameters
+        specify coordinates of sideinfo/features for each dimension.
 
-    def predict_all(self):
-        """Computes the full prediction matrix/tensor.
+        Parameters
+        ----------
+        operands: tuple 
+            A combination of coordindates in the matrix/tensor and/or features you want to use
+            to make predictions. `len(coords)` should be equal to number of dimensions in the sample.
+
+            Each element `coords` can be a:
+              * :type:`int`: a single element in this dimension is selected. For example, a
+                single row or column in a matrix.
+              * :class:`slice`: a slice is selected in this dimension. For example, a number of
+                rows or columns in a matrix.
+              * :type:`Ellipsis`: all elements in this dimension are selected. For example, all
+                rows or columns in a matrix.
+              * :class:`numpy.ndarray`: 2D numpy array used as dense sideinfo. Each row
+                vector is used as side-info.
+              * :class:`scipy.sparse.spmatrix`: sparse matrix used as sideinfo. Each row
+                vector is used as side-info.
 
         Returns
         -------
@@ -170,7 +169,20 @@ class PredictSession:
             is the shape of the train data.
 
         """        
-        return self.predict()
+
+        return np.stack([sample.predict(operands) for sample in self.samples])
+
+    def predict_all(self):
+        """Computes prediction matrix/tensor for full train data shape.
+        
+        Returns
+        -------
+        numpy.ndarray
+            A :class:`numpy.ndarray` of shape `[ N x T1 x T2 x ... ]` where
+            N is the number of samples in this `PredictSession` and `T1 x T2 x ...` 
+            is the shape of the train data 
+        """        
+        return self.predict(map(range, self.data_shape))
 
     def predict_some(self, test_matrix):
         """Computes prediction for all elements in a sparse test matrix
@@ -194,12 +206,12 @@ class PredictSession:
 
         return predictions
 
-    def predict_one(self, operands, value=float("nan")):
+    def predict_one(self, coords, value=float("nan")):
         """Computes prediction for one point in the matrix/tensor
 
         Parameters
         ----------
-        operands : tuple of coordinates and/or feature vectors
+        coords : tuple of coordinates and/or feature vectors
         value : float, optional
             The *true* value for this point
 
@@ -209,7 +221,7 @@ class PredictSession:
             The prediction
 
         """
-        p = Prediction(operands, value)
+        p = Prediction(coords, value)
         for s in self.samples:
             p.add_sample(s.predict(p.coords))
 
