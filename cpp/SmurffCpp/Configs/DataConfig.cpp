@@ -97,6 +97,9 @@ void DataConfig::setData(const Matrix &m)
    m_isDense = true;
    m_isScarce = false;
    m_isMatrix = true;
+
+   THROWERROR_ASSERT(m.array().isFinite().all());
+
    check();
 }
 
@@ -107,6 +110,10 @@ void DataConfig::setData(const SparseMatrix &m, bool isScarce)
    m_isDense = false;
    m_isScarce = isScarce;
    m_isMatrix = true;
+
+   const Eigen::Map<const Vector> values(m.valuePtr(), m.nonZeros());
+   THROWERROR_ASSERT(values.array().isFinite().all());
+
    check();
 }
 
@@ -116,6 +123,11 @@ void DataConfig::setData(const DenseTensor &m)
    m_hasData = true;
    m_isDense = true;
    m_isMatrix = false;
+
+   const Eigen::Map<const Vector> values(m.getValues().data(), m.getValues().size());
+   THROWERROR_ASSERT(values.array().isFinite().all());
+
+   check();
 }
 
 void DataConfig::setData(const SparseTensor &m, bool isScarce)
@@ -125,6 +137,10 @@ void DataConfig::setData(const SparseTensor &m, bool isScarce)
    m_isDense = false;
    m_isScarce = isScarce;
    m_isMatrix = false;
+
+   const Eigen::Map<const Vector> values(m.getValues().data(), m.getValues().size());
+   THROWERROR_ASSERT(values.array().isFinite().all());
+
    check();
 }
 
