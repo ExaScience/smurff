@@ -57,8 +57,8 @@ class CMakeBuild(build_ext):
 
         if not skip_cmake:
             subprocess.check_call(['cmake', cmake_srcdir] + cmake_args, cwd=self.build_temp)
-        if not skip_build_ext:
-            subprocess.check_call(['cmake', '--build', '.' ] + build_args, cwd=self.build_temp)
+
+        subprocess.check_call(['cmake', '--build', '.' ] + build_args, cwd=self.build_temp)
 
         if install_binaries:
             subprocess.check_call(['cmake', '--build', '.', '--target', 'install'] + build_args, cwd=self.build_temp)
@@ -66,19 +66,11 @@ class CMakeBuild(build_ext):
 extra_cmake_args = ''
 extra_build_args = ''
 install_binaries = False
-skip_build_ext = False
 skip_cmake = False
-
-if "--skip-build" in sys.argv:
-    skip_build_ext = True
-    skip_cmake = True
-
-if "--skip-build-ext" in sys.argv:
-    skip_build_ext = True
-    skip_cmake = True
 
 if "--skip-cmake" in sys.argv:
     skip_cmake = True
+    sys.argv.remove("--skip-cmake")
 
 if "--extra-cmake-args" in sys.argv:
     index = sys.argv.index('--extra-cmake-args')
