@@ -61,9 +61,7 @@ class TestPredictSession(unittest.TestCase):
             for p in zip(s.pred_all, p4[ecoords]):
                 self.assertAlmostEqual(*p, places=2)
 
-        print("p1 = ", p1)
         p1_rmse_avg = smurff.calc_rmse(p1)
-        print("p2 = ", p2)
         p2_rmse_avg = smurff.calc_rmse(p2)
 
         self.assertAlmostEqual(train_session.getRmseAvg(), p2_rmse_avg, places = 2)
