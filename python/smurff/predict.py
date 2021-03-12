@@ -165,8 +165,8 @@ class PredictSession:
               * :class:`scipy.sparse.spmatrix`: sparse matrix used as sideinfo. Each row
                 vector is used as side-info.
 
-        samples: range 
-            Range of samples to use for prediction
+        samples: range or None
+            Range of samples to use for prediction, or None for all samples
 
         Returns
         -------
