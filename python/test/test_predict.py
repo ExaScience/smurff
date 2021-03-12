@@ -1,6 +1,7 @@
 import unittest
 from parameterized import parameterized
 import numpy as np
+from numpy.testing import assert_almost_equal
 import pandas as pd
 import scipy.sparse
 import smurff
@@ -44,15 +45,15 @@ class TestPredictSession(unittest.TestCase):
 
         # check train_session vs predict_session for Ytest
         self.assertEqual(p1[0].coords, p2[0].coords)
-        self.assertAlmostEqual(p1[0].val, p2[0].val, places = 2)
-        self.assertAlmostEqual(p1[0].pred_1sample, p2[0].pred_1sample, places = 2)
-        self.assertAlmostEqual(p1[0].pred_avg, p2[0].pred_avg, places = 2)
+        assert_almost_equal(p1[0].val, p2[0].val, decimal = 2)
+        assert_almost_equal(p1[0].pred_1sample, p2[0].pred_1sample, decimal = 2)
+        assert_almost_equal(p1[0].pred_avg, p2[0].pred_avg, decimal = 2)
 
         # check predict_session.predict_some vs predict_session.predict_one
         self.assertEqual(p1[0].coords, p3.coords)
-        self.assertAlmostEqual(p1[0].val, p3.val, places = 2)
-        self.assertAlmostEqual(p1[0].pred_1sample, p3.pred_1sample, places = 2)
-        self.assertAlmostEqual(p1[0].pred_avg, p3.pred_avg, places = 2)
+        assert_almost_equal(p1[0].val, p3.val, decimal = 2)
+        assert_almost_equal(p1[0].pred_1sample, p3.pred_1sample, decimal = 2)
+        assert_almost_equal(p1[0].pred_avg, p3.pred_avg, decimal = 2)
 
         # check predict_session.predict_some vs predict_session.predict_all
         for s in p2:
@@ -60,7 +61,9 @@ class TestPredictSession(unittest.TestCase):
             for p in zip(s.pred_all, p4[ecoords]):
                 self.assertAlmostEqual(*p, places=2)
 
+        print("p1 = ", p1)
         p1_rmse_avg = smurff.calc_rmse(p1)
+        print("p2 = ", p2)
         p2_rmse_avg = smurff.calc_rmse(p2)
 
         self.assertAlmostEqual(train_session.getRmseAvg(), p2_rmse_avg, places = 2)
