@@ -91,13 +91,7 @@ class TestPredictSession(unittest.TestCase):
             for o in itertools.product(*operand_and_sizes):
                 operands, expected_sizes = zip(*o) # unzip
                 expected_shape = (expected_nsamples,) + expected_sizes
-
-                print("================")
-                print("samples = ", samples)
-                print("operands = ", operands)
-                print("expected_sizes = ", expected_shape)
                 shape = predict_session.predict(operands, samples).shape
-                print("got = ", shape)
                 self.assertEqual(shape, expected_shape)
 
         run_n_samples(None, len(predict_session.samples))
@@ -106,11 +100,11 @@ class TestPredictSession(unittest.TestCase):
         run_n_samples(slice(10, 20, 2), 5)
 
 
-    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,7))) # 2, 3, ..., 6
+    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,5))) # 2, 3, ..., 6
     def test_predict_dense(self, name, nmodes):
         self.run_predict_session(nmodes, 1.0)
 
-    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,7))) # 2, 3, ..., 6
+    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,5))) # 2, 3, ..., 6
     def test_predict_density(self, name, nmodes):
         self.run_predict_session(nmodes, 0.5)
 
