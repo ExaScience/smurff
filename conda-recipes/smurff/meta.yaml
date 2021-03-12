@@ -23,7 +23,7 @@ requirements:
     - eigen3
     - libboost
     - pybind11
-    - highfive >= 2.2
+    - highfive >=2.2
     - h5py
     - python {{ python }}
     - setuptools
