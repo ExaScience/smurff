@@ -124,14 +124,14 @@ jobs:
 - job: linux_wheel
   strategy:
     matrix:
-      Python35:
-        PYTHON_VERSION: '35'
       Python36:
         PYTHON_VERSION: '36'
       Python37:
         PYTHON_VERSION: '37'
       Python38:
         PYTHON_VERSION: '38'
+      Python39:
+        PYTHON_VERSION: '39'
   variables:
     CIBW_BUILD: cp$(PYTHON_VERSION)-manylinux_x86_64
     CIBW_MANYLINUX_X86_64_IMAGE: 'vanderaa/manylinux2014_x86_64_smurff'
