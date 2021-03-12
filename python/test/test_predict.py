@@ -21,7 +21,7 @@ class TestPredictSession(unittest.TestCase):
         priors = ['normal'] * nmodes
 
         trainSession = smurff.TrainSession(priors = priors, num_latent=4,
-                burnin=10, nsamples=15, verbose=verbose,
+                burnin=10, nsamples=25, verbose=verbose,
                 save_freq = 1, save_name = smurff.helper.temp_savename())
 
         trainSession.addTrainAndTest(self.Ytrain, self.Ytest)
@@ -93,6 +93,7 @@ class TestPredictSession(unittest.TestCase):
                 expected_shape = (expected_nsamples,) + expected_sizes
 
                 print("================")
+                print("samples = ", samples)
                 print("operands = ", operands)
                 print("expected_sizes = ", expected_shape)
                 shape = predict_session.predict(operands, samples).shape
