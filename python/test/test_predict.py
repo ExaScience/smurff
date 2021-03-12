@@ -105,7 +105,7 @@ class TestPredictSession(unittest.TestCase):
         self.run_predict_session(nmodes, 1.0)
 
     @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,5))) # 2, 3, ..., 6
-    def test_predict_density(self, name, nmodes):
+    def test_predict_sparse(self, name, nmodes):
         self.run_predict_session(nmodes, 0.5)
 
 if __name__ == '__main__':
