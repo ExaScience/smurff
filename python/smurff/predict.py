@@ -76,9 +76,15 @@ class Sample:
                 # we predict for this range/slice
                 operands += [U[c, :], [m+1,0]]
             elif isinstance(c, (np.ndarray, sp.spmatrix)):
+                if len(c.shape) == 1:
+                    assert c.shape[0] == beta.shape[0], \
+                        f"Incorrect side-info dims, should be {beta.shape[0]}, got {c.shape}"
+                    c = c[np.newaxis, :]
+                else:
+                    assert len(c.shape) == 2 and c.shape[1] == beta.shape[0], \
+                        f"Incorrect side-info dims, should be N x {beta.shape[0]}, got {c.shape}"
+
                 # compute latent vector from side_info using dot
-                assert len(c.shape) == 2 and c.shape[1] == beta.shape[0], \
-                    f"Incorrect side-info dims, should be N x {beta.shape[0]}"
                 uhat = c.dot(beta)
                 mu = np.squeeze(mu)
                 operands += [uhat + mu, [m+1, 0]]
