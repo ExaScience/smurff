@@ -213,7 +213,8 @@ class PredictSession:
 
         for s in self.samples:
             for p in predictions:
-                p.add_sample(s.predict(p.coords))
+                # returns an numpy array with one element -> convert to scalar
+                p.add_sample(s.predict(p.coords).item())
 
         return predictions
 
@@ -234,7 +235,8 @@ class PredictSession:
         """
         p = Prediction(coords, value)
         for s in self.samples:
-            p.add_sample(s.predict(p.coords))
+            # returns an numpy array with one element -> convert to scalar
+            p.add_sample(s.predict(p.coords).item())
 
         return p
 
