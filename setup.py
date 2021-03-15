@@ -109,7 +109,13 @@ setup(
     zip_safe = False,
     license = "MIT",
     description = 'Bayesian Factorization Methods',
-    long_description = 'Highly optimized and parallelized methods for Bayesian Factorization, including BPMF and smurff. The package uses optimized OpenMP/C++ code with a Cython wrapper to factorize large scale matrices. smurff method provides also the ability to incorporate high-dimensional side information to the factorization.',
+    long_description = """
+        Highly optimized and parallelized methods for
+        Bayesian Factorization, including BPMF and smurff. The package uses
+        optimized OpenMP/C++ code with a pybind11gq$ wrapper to factorize large
+        scale matrices. smurff method provides also the ability to incorporate
+        high-dimensional side information to the factorization.
+    """,
     author = "Tom Vander Aa",
     author_email = "Tom.VanderAa@imec.be",
     classifiers = CLASSIFIERS,

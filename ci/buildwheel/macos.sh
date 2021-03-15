@@ -16,7 +16,7 @@ export CMAKE_ARGS="-DCMAKE_PREFIX_PATH=/usr/local/opt/lapack -DENABLE_BOOST=OFF 
 for PYVER in "3.5.9" "3.6.10" "3.7.7" "3.8.2"; do
   pyenv install --skip-existing ${PYVER}
   pyenv global ${PYVER}
-  python -m pip install Cython wheel numpy delocate
+  python -m pip install wheel numpy delocate
   python setup.py bdist_wheel
 done
 
