@@ -15,7 +15,7 @@ class TestPredictSession(unittest.TestCase):
 
 
     def run_train_session(self, nmodes, density):
-        shape = range(11, nmodes+11) # 11, 12, 13, ... 
+        shape = range(5, nmodes+5) # 5, 6, 7, ... 
         Y, X = smurff.generate.gen_tensor(shape, 3, density)
         self.Ytrain, self.Ytest = smurff.make_train_test(Y, 0.1)
         priors = ['normal'] * nmodes
@@ -78,21 +78,25 @@ class TestPredictSession(unittest.TestCase):
         def run_n_samples(samples, expected_nsamples):
             operand_and_sizes = [ 
                 [
-                    ( slice(10)  , 10         ),
-                    ( range(10)  , 10         ),
-                    ( 10         , 1          ),
+                    ( Ellipsis   , x.shape[0] ),
+                    ( slice(3)   , 3          ),
+                    ( range(3)   , 3          ),
+                    ( 3          , 1          ),
                     ( x          , x.shape[0] ),
-                    ( x[10]      , 1          ),
-                    ( x[8:11]    , 3          ),
-                    ( x[2:11:2]  , 5          ),
+                    ( x[3]       , 1          ),
+                    ( x[1:4]     , 3          ),
+                    ( x[0:4:2]   , 2          ),
                 ]
             for x in X ]
 
-            for o in itertools.product(*operand_and_sizes):
+            MAX = 50
+            for c, o in enumerate(itertools.product(*operand_and_sizes)):
                 operands, expected_sizes = zip(*o) # unzip
                 expected_shape = (expected_nsamples,) + expected_sizes
                 shape = predict_session.predict(operands, samples).shape
                 self.assertEqual(shape, expected_shape)
+
+                if c > MAX: break
 
         run_n_samples(None, len(predict_session.samples))
         run_n_samples(slice(10), 10)
@@ -100,11 +104,11 @@ class TestPredictSession(unittest.TestCase):
         run_n_samples(slice(10, 20, 2), 5)
 
 
-    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,5))) # 2, 3, ..., 6
+    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,5))) # 2, 3, 4
     def test_predict_dense(self, name, nmodes):
         self.run_predict_session(nmodes, 1.0)
 
-    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,5))) # 2, 3, ..., 6
+    @parameterized.expand(map(lambda x: ("dims%d" % x, x), range(2,5))) # 2, 3, 4
     def test_predict_sparse(self, name, nmodes):
         self.run_predict_session(nmodes, 0.5)
 
