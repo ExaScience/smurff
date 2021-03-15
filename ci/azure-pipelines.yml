@@ -69,6 +69,8 @@ jobs:
         PYTHON_VERSION: '3.7'
       Python38:
         PYTHON_VERSION: '3.8'
+      Python39:
+        PYTHON_VERSION: '3.9'
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
@@ -83,6 +85,8 @@ jobs:
         PYTHON_VERSION: '3.7'
       Python38:
         PYTHON_VERSION: '3.8'
+      Python39:
+        PYTHON_VERSION: '3.9'
   pool:
     vmImage: 'macOS-10.15'
   variables:
@@ -105,6 +109,8 @@ jobs:
         PYTHON_VERSION: '3.7'
       Python38:
         PYTHON_VERSION: '3.8'
+      Python39:
+        PYTHON_VERSION: '3.9'
   pool:
     vmImage: 'vs2017-win2016'
   steps:
@@ -144,7 +150,7 @@ jobs:
     - task: UsePythonVersion@0
     - bash: |
         python3 -m pip install --upgrade pip
-        pip3 install cibuildwheel==1.4.2
+        pip3 install cibuildwheel==1.10.0
         cibuildwheel --output-dir wheelhouse .
       displayName: "Run cibuildwheel"
     - task: PublishBuildArtifacts@1
@@ -179,7 +185,7 @@ jobs:
     - task: UsePythonVersion@0
     - bash: |
         python3 -m pip install --upgrade pip
-        pip3 install cibuildwheel==1.4.2
+        pip3 install cibuildwheel==1.10.0
         cibuildwheel --output-dir wheelhouse .
       displayName: "Run cibuildwheel"
     - task: PublishBuildArtifacts@1
