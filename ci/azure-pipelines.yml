@@ -153,14 +153,14 @@ jobs:
 - job: macos_wheel
   strategy:
     matrix:
-      Python35:
-        PYTHON_VERSION: '35'
       Python36:
         PYTHON_VERSION: '36'
       Python37:
         PYTHON_VERSION: '37'
       Python38:
         PYTHON_VERSION: '38'
+      Python39:
+        PYTHON_VERSION: '39'
 
   variables:
     CIBW_BUILD: cp$(PYTHON_VERSION)-macosx_x86_64
