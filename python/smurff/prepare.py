@@ -15,13 +15,14 @@ def make_train_test(Y, ntest, shape = None, seed = None):
 
     Parameters
     ----------
-        Y : scipy sparse matrix (coo_matrix, csr_matrix or csc_matrix)
-             or
-            numpy dense ndarray 
-             or
-            pandas DataFrame or smurff.SparseTensor
+        Y : :class:`scipy.spmatrix`, (coo_matrix, csr_matrix or csc_matrix) or
+            :class:`numpy.ndarray` or
+            :class:`pandas.DataFrame` or
+            :class:`smurff.SparseTensor`
 
             Matrix/Array/Tensor to split
+
+
 
         ntest : float <1.0 or integer.
            - if float, then indicates the ratio of test cells

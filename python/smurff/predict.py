@@ -101,9 +101,9 @@ class PredictSession:
 
     >>> predict_session  = train_session.makePredictSession()
 
-    or from a root file
+    or from an HDF5 file
 
-    >>> predict_session = PredictSession("root.ini")
+    >>> predict_session = PredictSession("saved_output.hdf5")
 
     """
     def __init__(self, h5_fname):
@@ -155,23 +155,22 @@ class PredictSession:
 
         Parameters
         ----------
-        operands: tuple 
+        operands : tuple 
             A combination of coordindates in the matrix/tensor and/or features you want to use
             to make predictions. `len(coords)` should be equal to number of dimensions in the sample.
-
             Each element `coords` can be a:
-              * :type:`int`: a single element in this dimension is selected. For example, a
+              * int : a single element in this dimension is selected. For example, a
                 single row or column in a matrix.
-              * :class:`slice`: a slice is selected in this dimension. For example, a number of
+              * :class:`slice` : a slice is selected in this dimension. For example, a number of
                 rows or columns in a matrix.
-              * :type:`Ellipsis`: all elements in this dimension are selected. For example, all
+              * Ellipsis : all elements in this dimension are selected. For example, all
                 rows or columns in a matrix.
-              * :class:`numpy.ndarray`: 2D numpy array used as dense sideinfo. Each row
+              * :class:`numpy.ndarray` : 2D numpy array used as dense sideinfo. Each row
                 vector is used as side-info.
-              * :class:`scipy.sparse.spmatrix`: sparse matrix used as sideinfo. Each row
+              * :class:`scipy.sparse.spmatrix` : sparse matrix used as sideinfo. Each row
                 vector is used as side-info.
 
-        samples: range or None
+        samples : range or None
             Range of samples to use for prediction, or None for all samples
 
         Returns

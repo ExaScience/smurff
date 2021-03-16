@@ -36,7 +36,7 @@ class MacauSession(SmurffSession):
          univariate : bool
              Use univariate or multivariate sampling.
 
-         **args: 
+         \*\*args: 
              Extra arguments are passed to the :class:`TrainSession`
     """
 

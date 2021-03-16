@@ -8,6 +8,7 @@ from .predict import PredictSession
 from .datasets import load_chembl
 from .center import center_and_scale
 from .wrapper import version
+from .wrapper import StatusItem
 from .smurff import *
 from . import matrix_io
 from . import generate

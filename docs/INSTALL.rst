@@ -46,6 +46,7 @@ Running
 
 will run CMake to configure, compile and install SMURFF.
 Extra arguments to CMake can be passed with 
+
     setup.py --extra-cmake-args <...> install
     
 or by setting the `CMAKE_ARGS` environment variables.
