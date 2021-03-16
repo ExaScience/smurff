@@ -22,16 +22,17 @@ CLASSIFIERS = [
 
 # taken from github.com/pybind/cmake_example
 class CMakeExtension(Extension):
-    def __init__(self, name, sourcedir='', extra_cmake_args='', extra_build_args=''):
+    def __init__(self, name, sourcedir='', extra_cmake_args='', extra_build_args='', always_debug = False):
         Extension.__init__(self, name, sources=[])
         self.sourcedir = os.path.abspath(sourcedir)
         self.extra_cmake_args = extra_cmake_args.split()
         self.extra_build_args = extra_build_args.split()
+        self.always_debug = always_debug
 
 class CMakeBuild(build_ext):
     def build_extension(self, ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
-        cfg = 'Debug' if self.debug else 'Release'
+        cfg = 'Debug' if (self.debug or ext.always_debug) else 'Release'
 
         os.makedirs(self.build_temp, exist_ok = True)
         cmake_args = [
@@ -67,10 +68,16 @@ extra_cmake_args = ''
 extra_build_args = ''
 install_binaries = False
 skip_cmake = False
+always_debug = False
 
 if "--skip-cmake" in sys.argv:
     skip_cmake = True
     sys.argv.remove("--skip-cmake")
+
+if "--debug" in sys.argv:
+    always_debug = True
+    if not "build" in sys.argv:
+        sys.argv.remove("--debug")
 
 if "--extra-cmake-args" in sys.argv:
     index = sys.argv.index('--extra-cmake-args')
@@ -104,7 +111,7 @@ setup(
         'local_scheme': 'dirty-tag'
     },
     url = "http://github.com/ExaScience/smurff",
-    ext_modules=[CMakeExtension('smurff/wrapper', '.', extra_cmake_args, extra_build_args)],
+    ext_modules=[CMakeExtension('smurff/wrapper', '.', extra_cmake_args, extra_build_args, always_debug)],
     cmdclass=dict(build_ext=CMakeBuild), 
     zip_safe = False,
     license = "MIT",
