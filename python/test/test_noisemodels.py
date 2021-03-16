@@ -72,8 +72,8 @@ def test_noise_model(density, nmodes, side_info, noise_model):
     predictions = trainSession.getTestPredictions()
     assert Ytest.nnz == len(predictions)
     if isinstance(nm, smurff.ProbitNoise):
-        assert trainSession.getStatus().auc_avg < 1.1 
-        assert trainSession.getStatus().auc_avg > .0 
+        assert trainSession.getStatus().auc_avg <= 1. 
+        assert trainSession.getStatus().auc_avg >= 0. 
     else:
         assert trainSession.getRmseAvg() < 10.
     return predictions
