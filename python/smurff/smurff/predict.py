@@ -228,6 +228,33 @@ class PredictSession:
         return None
 
     def predict(self, coords_or_sideinfo=None):
+        """
+        Generate predictions on `coords_or_sideinfo`. Parameters
+        specify coordinates of sideinfo/features for each dimension.
+        Parameters
+        ----------
+        operands : tuple 
+            A combination of coordindates in the matrix/tensor and/or features you want to use
+            to make predictions. `len(coords)` should be equal to number of dimensions in the sample.
+            Each element `coords` can be a:
+              * int : a single element in this dimension is selected. For example, a
+                single row or column in a matrix.
+              * :class:`slice` : a slice is selected in this dimension. For example, a number of
+                rows or columns in a matrix.
+              * None : all elements in this dimension are selected. For example, all
+                rows or columns in a matrix.
+              * :class:`numpy.ndarray` : 2D numpy array used as dense sideinfo. Each row
+                vector is used as side-info.
+              * :class:`scipy.sparse.spmatrix` : sparse matrix used as sideinfo. Each row
+                vector is used as side-info.
+
+        Returns
+        -------
+        numpy.ndarray
+            A :class:`numpy.ndarray` of shape `[ N x T1 x T2 x ... ]` where
+            N is the number of samples in this `PredictSession` and `T1 x T2 x ...` 
+            has the same numer of dimensions as the train data.
+        """   
         return np.stack([sample.predict(coords_or_sideinfo) for sample in self.samples()])
 
     def predict_all(self):
