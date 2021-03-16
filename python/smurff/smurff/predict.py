@@ -133,8 +133,10 @@ class Sample:
                 try:  # try to compute sideinfo * beta using dot
                     # compute latent vector from side_info
                     uhat = c.dot(self.betas[m].transpose())
-                    uhat = np.squeeze(uhat) 
-                    operands += [uhat + mu, [0]]
+                    if len(uhat.shape) == 2:
+                        operands += [uhat + mu, [m+1, 0]]
+                    else:
+                        operands += [uhat + mu, [0]]
                 except AttributeError:  # assume it is a coord
                     # if coords was specified for this dimension, we predict for this coord
                     operands += [U[:, c], [0]]
@@ -285,6 +287,10 @@ class PredictSession:
         return p
 
     def __str__(self):
-        dat = (-1, self.data_shape(),
-               self.beta_shape(), self.num_latent())
+        dat = (
+                -1,
+                self.data_shape,
+                self.beta_shape,
+                self.num_latent
+              )
         return "PredictSession with %d samples\n  Data shape = %s\n  Beta shape = %s\n  Num latent = %d" % dat
