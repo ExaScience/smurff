@@ -59,7 +59,7 @@ def test_noise_model(density, nmodes, side_info, noise_model):
     if si is not None:
         priors[0] = 'macau'
 
-    trainSession = smurff.TrainSession(priors = priors, num_latent=8, burnin=50, nsamples=50, threshold=.0, seed=seed, verbose=verbose)
+    trainSession = smurff.TrainSession(priors = priors, num_latent=8, burnin=20, nsamples=20, threshold=.0, seed=seed, verbose=verbose)
 
     trainSession.addTrainAndTest(Ytrain, Ytest, nm)
     if not si is None:
@@ -72,8 +72,8 @@ def test_noise_model(density, nmodes, side_info, noise_model):
     predictions = trainSession.getTestPredictions()
     assert Ytest.nnz == len(predictions)
     if isinstance(nm, smurff.ProbitNoise):
-        if density >= .9999:
-            assert trainSession.getStatus().auc_avg > 0.6
+        assert trainSession.getStatus().auc_avg < 1. 
+        assert trainSession.getStatus().auc_avg > .1 
     else:
         assert trainSession.getRmseAvg() < 10.
     return predictions
