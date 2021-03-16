@@ -64,10 +64,10 @@ jobs:
     - script: |
         call activate buildEnv
         cd conda-recipes
-        conda build --no-test  -c vanderaa smurff-latest
+        conda build --no-test  -c vanderaa --output-folder ../conda_packages smurff-latest
       displayName: Build using "conda build"
-
-
+    - task: PublishBuildArtifacts@1
+      inputs: {pathtoPublish: 'conda_packages'}
 
 
 - job: linux_wheel

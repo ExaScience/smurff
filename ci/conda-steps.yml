@@ -8,5 +8,7 @@ steps:
     - script: |
         cd conda-recipes
         source activate buildEnv
-        conda build -c vanderaa smurff-latest
+        conda build -c vanderaa --output-folder ../conda_packages  smurff-latest
       displayName: Build using 'conda build'
+    - task: PublishBuildArtifacts@1
+      inputs: {pathtoPublish: 'conda_packages'}      
