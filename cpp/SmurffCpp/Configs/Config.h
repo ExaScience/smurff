@@ -132,7 +132,7 @@ public:
 
    bool isActionPredict()
    {
-       return !getTrain().hasData();
+       return getPredict().hasData() || getColFeatures().hasData() || getRowFeatures().hasData();
    }
 
    const DataConfig& getTrain() const
