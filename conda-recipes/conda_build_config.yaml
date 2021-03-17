@@ -5,6 +5,9 @@ python:
     - 3.6
     - 3.7
 
+boost:
+    - 1.73
+
 blas_impl:
     - openblas
     - mkl

@@ -19,7 +19,7 @@ requirements:
     - intel-openmp
     - mkl-devel
     - eigen3
-    - boost
+    - boost  {{ boost}}
     - cython >=0.25
     - python {{ python }}
     - setuptools
@@ -28,13 +28,13 @@ requirements:
     - llvm-openmp              # [osx]
     - intel-openmp
     - mkl
-    - libboost
-    - python
+    - libboost {{ boost }}
+    - python  {{ python }}
     - numpy
     - scipy
     - pandas
     - scikit-learn
-    - matrix_io
+    - matrix_io >=0.5
 
 about:
   home: https://github.com/ExaScience/smurff
