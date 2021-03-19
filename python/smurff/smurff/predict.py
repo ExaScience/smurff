@@ -5,10 +5,11 @@ from scipy import sparse
 import pandas as pd
 import os
 import os.path
-import smurff.matrix_io as mio
 from glob import glob
 import re
 import csv
+
+from . import matrix_io as mio
 
 try:
     from configparser import ConfigParser
