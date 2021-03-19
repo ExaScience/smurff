@@ -1,1 +1,0 @@
-../../python/smurff/smurff/result.py
