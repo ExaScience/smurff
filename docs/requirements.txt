@@ -1,8 +1,6 @@
 ipython
 sphinx>=1.4
+sphinx_rtd_theme
 ipykernel
 nbsphinx
-pandas
-numpy
-scipy
-scikit-learn
+smurff>=0.15.0,<0.16.0
