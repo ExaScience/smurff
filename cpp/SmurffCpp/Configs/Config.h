@@ -392,6 +392,17 @@ public:
       return m_nsamples;
    }
 
+   int getNSavedSamples() const
+   {
+      if (getSaveFreq() < 0)
+         return 1; // only last
+      
+      if (getSaveFreq() > 0)
+         return getNSamples() / getSaveFreq();
+
+      return 0;
+   }
+
    void setNSamples(int value)
    {
       m_nsamples = value;
