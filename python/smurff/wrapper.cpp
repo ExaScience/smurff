@@ -10,6 +10,7 @@
 #include <SmurffCpp/Configs/DataConfig.h>
 
 #include <SmurffCpp/Sessions/PythonSession.h>
+#include <SmurffCpp/Predict/PredictSession.h>
 
 // ----------------
 // Python interface
@@ -113,13 +114,15 @@ PYBIND11_MODULE(wrapper, m)
         .def("getSaveName", [](const smurff::PythonSession &s) { return s.getConfig().getSaveName(); })
         .def("getStatus", &smurff::TrainSession::getStatus)
         .def("getRmseAvg", &smurff::TrainSession::getRmseAvg)
-        .def("getTestPredictions", [](const smurff::PythonSession &s) { return s.getResult().m_predictions; })
+        .def("getTestPredictions", [](const smurff::PythonSession &s) { return s.getResult().asMatrixVector(); })
 
         // run functions
         .def("init", &smurff::TrainSession::init)
         .def("step", &smurff::PythonSession::step)
         .def("interrupted", &smurff::PythonSession::interrupted)
         ;
+
+    m.def("predict", &smurff::predict, "Predict helper function");
     
     py::register_exception_translator([](std::exception_ptr p) {
         try {

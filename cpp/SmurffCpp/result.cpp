@@ -38,7 +38,7 @@ Result::Result(const DataConfig &Y, int nsamples)
 
 //Y - test sparse matrix
 Result::Result(const SparseMatrix &Y, int nsamples)
-    : m_dims({Y.rows(), Y.cols()})
+    : m_dims({Y.rows(), Y.cols()}), m_nsamples(nsamples)
 {
     set(Y, nsamples);
 }
@@ -52,7 +52,7 @@ Result::Result(const SparseTensor &Y, int nsamples)
 }
 
 Result::Result(PVec<> lo, PVec<> hi, double value, int nsamples)
-    : m_dims(hi - lo)
+    : m_dims(hi - lo), m_nsamples(nsamples)
 {
 
    for(auto it = PVecIterator(lo, hi); !it.done(); ++it)
@@ -91,6 +91,20 @@ void Result::init()
          total_pos += is_positive;
       }
    }
+}
+
+
+std::vector<SparseMatrix> Result::asMatrixVector() const
+{
+   std::vector<SparseMatrix> ret;
+
+   for(int i=0; i<m_nsamples; ++i)
+   {
+      auto pred = toMatrix([i](const ResultItem &p) { return p.pred_all.at(i); });
+      ret.push_back(*pred);
+   }
+
+   return ret;
 }
 
 //--- output model to files

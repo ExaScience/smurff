@@ -70,8 +70,11 @@ public:
    //sparse representation of test matrix
    std::vector<ResultItem> m_predictions;
 
+   std::vector<SparseMatrix> asMatrixVector() const;
+
    //dimensions of Ytest
    PVec<> m_dims;
+   int m_nsamples;
 
    //-- prediction metrics
    void update(const Model &model, bool burnin);
