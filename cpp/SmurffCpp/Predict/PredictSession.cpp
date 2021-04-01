@@ -257,7 +257,7 @@ ResultItem PredictSession::predict(PVec<> pos)
 // predict all elements in Ytest
 std::shared_ptr<Result> PredictSession::predict(const DataConfig &Y)
 {
-    auto res = std::make_shared<Result>(Y);
+    auto res = std::make_shared<Result>(Y, getNumSteps());
 
     for (const auto &s : m_stepfiles)
     {
