@@ -51,12 +51,12 @@ class Result
 {
 public:
    //c'tor with sparse matrix or tensor
-   Result(const DataConfig   &Y, int nsamples = 0);
-   Result(const SparseMatrix &Y, int nsamples = 0);
-   Result(const SparseTensor &Y, int nsamples = 0);
+   Result(const DataConfig   &Y, int nsamples);
+   Result(const SparseMatrix &Y, int nsamples);
+   Result(const SparseTensor &Y, int nsamples);
 
    //fill with dense value
-   Result(PVec<> lo, PVec<> hi, double value, int nsamples = 0);
+   Result(PVec<> lo, PVec<> hi, double value, int nsamples);
 
    //empty c'tor
    Result();

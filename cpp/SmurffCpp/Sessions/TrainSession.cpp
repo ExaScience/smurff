@@ -42,7 +42,7 @@ void TrainSession::init()
     // initialize pred
     if (getConfig().getTest().hasData())
     {
-        m_pred = Result(getConfig().getTest());
+        m_pred = Result(getConfig().getTest(), getConfig().getNSamples());
         m_pred.setSavePred(getConfig().getSavePred());
         if (getConfig().getClassify())
             m_pred.setThreshold(getConfig().getThreshold());

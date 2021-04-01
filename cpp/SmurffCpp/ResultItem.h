@@ -38,8 +38,7 @@ struct ResultItem
    std::vector<double> pred_all;
 
    void update(double pred) {
-      if (nsamples < keep_samples)
-         pred_all[nsamples] = pred;
+      pred_all.at(nsamples) = pred;
 
       nsamples++;
       if (nsamples > 1)
