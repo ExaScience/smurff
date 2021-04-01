@@ -72,7 +72,7 @@ TEST_CASE( "utils/eval_rmse", "Test if prediction variance is correctly calculat
   
   SparseMatrix S = matrix_utils::sparse_to_eigen(SparseTensor( { 1, 1 }, { rows, cols }, vals));
   std::shared_ptr<Data> data(new ScarceMatrixData(S));
-  Result p(S);
+  Result p(S, 3);
 
   data->setNoiseModel(NoiseFactory::create_noise_model(fixed_ncfg));
 
