@@ -46,7 +46,7 @@ Result::Result(const SparseMatrix &Y, int nsamples)
 
 //Y - test sparse tensor
 Result::Result(const SparseTensor &Y, int nsamples)
-    : m_dims(Y.getDims())
+    : m_dims(Y.getDims()), m_nsamples(nsamples)
 {
     set(Y, nsamples);
 }
