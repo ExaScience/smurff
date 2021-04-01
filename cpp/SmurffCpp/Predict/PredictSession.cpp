@@ -269,4 +269,16 @@ std::shared_ptr<Result> PredictSession::predict(const DataConfig &Y)
     return res;
 }
 
+SparseMatrix predict(const SparseMatrix &coords, const Matrix &U, const Matrix &V)
+{
+    SparseMatrix result = coords;
+    for (int k = 0; k < result.outerSize(); ++k)
+        for (SparseMatrix::InnerIterator it(result, k); it; ++it)
+            it.valueRef() = U.row(it.row()).dot(V.row(it.col()));
+
+    return result;
+}
+
+
+
 } // end namespace smurff

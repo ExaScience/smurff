@@ -19,6 +19,8 @@ struct ResultItem;
 
 class PredictSession : public ISession
 {
+    friend SparseMatrix predict(const SparseMatrix &coords, const Matrix &U, const Matrix &V);
+
 private:
     StateFile m_model_file;
     std::unique_ptr<StateFile> m_pred_savefile;
@@ -36,7 +38,7 @@ private:
     int m_num_latent;
     PVec<> m_dims;
 
-private:
+public:
     void restoreModel(Model &, const SaveState &, int skip_mode = -1);
     void restoreModel(Model &, int i, int skip_mode = -1);
 
@@ -128,5 +130,8 @@ std::shared_ptr<Matrix> PredictSession::predict(int mode, const Feat &f, int sav
 
     return average;
 }
+
+SparseMatrix predict(const SparseMatrix &coords, const Matrix &U, const Matrix &V);
+    
 
 } // end namespace smurff
