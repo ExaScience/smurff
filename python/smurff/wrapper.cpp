@@ -114,7 +114,13 @@ PYBIND11_MODULE(wrapper, m)
         .def("getSaveName", [](const smurff::PythonSession &s) { return s.getConfig().getSaveName(); })
         .def("getStatus", &smurff::TrainSession::getStatus)
         .def("getRmseAvg", &smurff::TrainSession::getRmseAvg)
-        .def("getTestPredictions", [](const smurff::PythonSession &s) { return s.getResult().asMatrixVector(); })
+        .def("getTestPredictions", [](const smurff::PythonSession &s) { return s.getResult().m_predictions; })
+        .def("getTestSamples", [](const smurff::PythonSession &s) { 
+            return
+                s.getConfig().getNModes() > 2  ?
+                py::cast(s.getResult().asVectorOfTensor()) :
+                py::cast(s.getResult().asVectorOfMatrix());
+        })
 
         // run functions
         .def("init", &smurff::TrainSession::init)
