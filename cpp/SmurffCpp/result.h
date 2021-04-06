@@ -70,10 +70,11 @@ public:
    //sparse representation of test matrix
    std::vector<ResultItem> m_predictions;
 
-   std::vector<SparseMatrix> asMatrixVector() const;
+   std::vector<SparseMatrix> asVectorOfMatrix() const;
+   std::vector<SparseTensor> asVectorOfTensor() const;
 
    //dimensions of Ytest
-   PVec<> m_dims;
+   std::vector<std::uint64_t> m_dims;
    int m_nsamples;
 
    //-- prediction metrics
@@ -96,6 +97,9 @@ public:
 private:
    template<typename Accessor>
    std::shared_ptr<const SparseMatrix> toMatrix(const Accessor &acc) const;
+
+   template<typename Accessor>
+   std::shared_ptr<const SparseTensor> toTensor(const Accessor &acc) const;
 
 public:
    void init();

@@ -24,7 +24,7 @@ namespace smurff {
 Result::Result() {}
 
 Result::Result(const DataConfig &Y, int nsamples)
-    : m_dims(Y.getDims())
+    : m_dims(Y.getDims()), m_nsamples(nsamples)
 {
    if(Y.isDense())
    {
@@ -38,7 +38,7 @@ Result::Result(const DataConfig &Y, int nsamples)
 
 //Y - test sparse matrix
 Result::Result(const SparseMatrix &Y, int nsamples)
-    : m_dims({Y.rows(), Y.cols()}), m_nsamples(nsamples)
+    : m_dims({static_cast<std::uint64_t>(Y.rows()), static_cast<std::uint64_t>(Y.cols())}), m_nsamples(nsamples)
 {
     set(Y, nsamples);
 }
@@ -52,9 +52,8 @@ Result::Result(const SparseTensor &Y, int nsamples)
 }
 
 Result::Result(PVec<> lo, PVec<> hi, double value, int nsamples)
-    : m_dims(hi - lo), m_nsamples(nsamples)
+    : m_dims((hi - lo).as_uint64_vector()), m_nsamples(nsamples)
 {
-
    for(auto it = PVecIterator(lo, hi); !it.done(); ++it)
    {
       m_predictions.push_back(ResultItem(*it, value, nsamples));
@@ -94,7 +93,7 @@ void Result::init()
 }
 
 
-std::vector<SparseMatrix> Result::asMatrixVector() const
+std::vector<SparseMatrix> Result::asVectorOfMatrix() const
 {
    std::vector<SparseMatrix> ret;
 
@@ -107,11 +106,27 @@ std::vector<SparseMatrix> Result::asMatrixVector() const
    return ret;
 }
 
+std::vector<SparseTensor> Result::asVectorOfTensor() const
+{
+   std::vector<SparseTensor> ret;
+
+   for(int i=0; i<m_nsamples; ++i)
+   {
+      auto pred = toTensor([i](const ResultItem &p) { return p.pred_all.at(i); });
+      ret.push_back(*pred);
+   }
+
+   return ret;
+}
+
+
 //--- output model to files
 
 template<typename Accessor>
 std::shared_ptr<const SparseMatrix> Result::toMatrix(const Accessor &acc) const
 {
+   THROWERROR_ASSERT(m_dims.size() == 2);
+
    auto ret = std::make_shared<SparseMatrix>(m_dims.at(0), m_dims.at(1));
    
    std::vector<Eigen::Triplet<smurff::float_type>> triplets;
@@ -121,6 +136,25 @@ std::shared_ptr<const SparseMatrix> Result::toMatrix(const Accessor &acc) const
    
    ret->setFromTriplets(triplets.begin(), triplets.end());
    return ret;
+}
+
+template<typename Accessor>
+std::shared_ptr<const SparseTensor> Result::toTensor(const Accessor &acc) const
+{
+   THROWERROR_ASSERT(m_dims.size() > 2);
+
+   SparseTensor::columns_type columns(m_dims.size());
+   std::vector<SparseTensor::value_type> values;
+   const std::vector<SparseTensor::dims_type> dims = m_dims;
+
+   for (const auto &p : m_predictions)
+   {
+      for(int i=0; i<p.coords.size(); i++)
+         columns.at(i).push_back(p.coords.at(i));
+      values.push_back(acc(p));
+   }
+   
+   return std::make_shared<SparseTensor>(dims, columns, values);
 }
 
 void Result::save(SaveState &sf) const
