@@ -131,7 +131,8 @@ std::shared_ptr<Matrix> PredictSession::predict(int mode, const Feat &f, int sav
     return average;
 }
 
-SparseMatrix predict(const SparseMatrix &coords, const Matrix &U, const Matrix &V);
+SparseMatrix predict_matrix(const SparseMatrix &, std::vector<const Matrix>);
+SparseTensor predict_tensor(const SparseTensor &, std::vector<const Matrix>);
     
 
 } // end namespace smurff

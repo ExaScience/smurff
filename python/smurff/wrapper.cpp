@@ -128,7 +128,8 @@ PYBIND11_MODULE(wrapper, m)
         .def("interrupted", &smurff::PythonSession::interrupted)
         ;
 
-    m.def("predict", &smurff::predict, "Predict helper function");
+    m.def("predict", &smurff::predict_matrix, "Predict helper function");
+    m.def("predict", &smurff::predict_tensor, "Predict helper function");
     
     py::register_exception_translator([](std::exception_ptr p) {
         try {

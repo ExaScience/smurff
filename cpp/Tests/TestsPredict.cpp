@@ -83,7 +83,7 @@ TEST_CASE("PredictSession/BPMF")
     for (int step=0; step < s.getNumSteps(); step++)
     {
         s.restoreModel(m, step);
-        auto preds =  predict(const_config.getTest().getSparseMatrixData(), m.U(0), m.U(1));
+        auto preds =  predict_matrix(const_config.getTest().getSparseMatrixData(), { m.U(0), m.U(1)});
         for ( const auto &result_item : result->m_predictions)
         {
             double p1 = result_item.pred_all.at(step);

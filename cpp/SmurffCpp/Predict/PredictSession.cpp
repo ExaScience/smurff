@@ -269,8 +269,13 @@ std::shared_ptr<Result> PredictSession::predict(const DataConfig &Y)
     return res;
 }
 
-SparseMatrix predict(const SparseMatrix &coords, const Matrix &U, const Matrix &V)
+SparseMatrix predict_matrix(const SparseMatrix &coords, std::vector<const Matrix> latents)
 {
+    THROWERROR_ASSERT(latents.size() == 2);
+
+    const Matrix &U = latents.at(0);
+    const Matrix &V = latents.at(1);
+
     SparseMatrix result = coords;
     for (int k = 0; k < result.outerSize(); ++k)
         for (SparseMatrix::InnerIterator it(result, k); it; ++it)
@@ -279,6 +284,26 @@ SparseMatrix predict(const SparseMatrix &coords, const Matrix &U, const Matrix &
     return result;
 }
 
+SparseTensor predict_tensor(const SparseTensor &coords, std::vector<const Matrix> latents)
+{
+    THROWERROR_ASSERT(latents.size() == coords.getNModes());
+
+    unsigned num_latent = latents.at(0).cols();
+
+    SparseTensor result = coords;
+    for (std::size_t k = 0; k < result.getNNZ(); ++k)
+    {
+        Array1D P = Array1D::Ones(num_latent);
+        auto pos = result.get(k).first; // pos
+
+        for(uint32_t d = 0; d < coords.getNModes(); ++d)
+            P *= latents.at(d).row(pos.at(d)).array();
+
+        result.getValues().at(k) =  P.sum();
+    }
+
+    return result;
+}
 
 
 } // end namespace smurff
