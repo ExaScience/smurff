@@ -201,6 +201,11 @@ class PVec
       return std::vector<std::int64_t>(m_v.begin(), m_v.begin() + m_size);
    }
 
+   std::vector<std::uint64_t> as_uint64_vector() const
+   {
+      return std::vector<std::uint64_t>(m_v.begin(), m_v.begin() + m_size);
+   }
+
 private:
    void assert_same_size(const PVec &other) const
    {
