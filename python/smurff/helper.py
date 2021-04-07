@@ -85,7 +85,7 @@ def find(Y):
         I, J, V = sp.find(Y)
         return (I, J), V
     
-    if isinstance(Y, SparseTensor):
+    if isinstance(Y, wrapper.SparseTensor):
         return Y.columns, Y.values
 
     raise NotImplemented

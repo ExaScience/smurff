@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include <SmurffCpp/Utils/PVec.hpp>
+#include <SmurffCpp/Types.h>
 
 namespace smurff
 {
@@ -33,6 +34,14 @@ namespace smurff
       const std::vector<value_type>& getValues() const { return m_values; }
       std::vector<value_type>& getValues() { return m_values; }
 
+      const Eigen::Map<const Vector> getValuesAsMap() const { 
+         return Eigen::Map<const Vector>(m_values.data(), m_values.size());
+      }
+
+      Eigen::Map<Vector> getValuesAsMap() { 
+         return Eigen::Map<Vector>(m_values.data(), m_values.size());
+      }
+
    private:
       std::vector<dims_type> m_dims;
       std::vector<value_type>        m_values;
@@ -51,6 +60,7 @@ namespace smurff
    struct SparseTensor : public Tensor
    {
       typedef std::vector<std::vector<index_type>> columns_type;
+      typedef Eigen::Matrix<index_type, 1, Eigen::Dynamic, Eigen::RowMajor> eigen_column_type;
 
       SparseTensor() : Tensor({}, {}) {}
 
@@ -76,6 +86,22 @@ namespace smurff
       std::pair<PVec<>, value_type> get(dims_type) const;
       void set(dims_type, PVec<>, value_type);
 
+      const std::vector<const Eigen::Map<const eigen_column_type>> getColumnsAsMap() const { 
+         std::vector<const Eigen::Map<const eigen_column_type>> ret; 
+         for( const auto &c : getColumns() ) 
+            ret.push_back(Eigen::Map<const eigen_column_type>(c.data(), c.size()));
+
+         return ret;
+      }
+
+      std::vector<Eigen::Map<eigen_column_type>> getColumnsAsMap() { 
+         std::vector<Eigen::Map<eigen_column_type>> ret; 
+         for( auto &c : getColumns() ) 
+            ret.push_back(Eigen::Map<eigen_column_type>(c.data(), c.size()));
+
+         return ret;
+      }
+      
    private:
       columns_type m_columns;
    };

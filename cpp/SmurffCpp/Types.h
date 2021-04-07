@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SmurffCpp/Utils/Tensor.h>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 
@@ -17,3 +16,5 @@ namespace smurff {
    typedef Eigen::Array<float_type, 1, Eigen::Dynamic, Eigen::RowMajor> Array1D;
    typedef Eigen::SparseMatrix<float_type, Eigen::RowMajor> SparseMatrix;
 };
+
+#include <SmurffCpp/Utils/Tensor.h>

@@ -83,9 +83,8 @@ PYBIND11_MODULE(wrapper, m)
         .def_property_readonly("shape", [](const smurff::SparseTensor &t) { return vector_to_tuple(t.getDims()); })
         .def_property_readonly("ndim", &smurff::SparseTensor::getNModes)
         .def_property_readonly("nnz", &smurff::SparseTensor::getNNZ)
-        .def("column", py::overload_cast<int>(&smurff::SparseTensor::getColumn)) // non-const
-        .def_property_readonly("columns", py::overload_cast<>(&smurff::SparseTensor::getColumns)) // non-const
-        .def_property_readonly("values", py::overload_cast<>(&smurff::SparseTensor::getValues)) // non-const
+        .def_property_readonly("columns", py::overload_cast<>(&smurff::SparseTensor::getColumnsAsMap)) // non-const
+        .def_property_readonly("values", py::overload_cast<>(&smurff::SparseTensor::getValuesAsMap)) // non-const
         ;
 
     py::class_<smurff::PythonSession>(m, "PythonSession")
