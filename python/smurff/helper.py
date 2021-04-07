@@ -27,7 +27,7 @@ class SparseTensor(wrapper.SparseTensor):
             values, columns = data
 
             if shape is None:
-               shape = self.determineShape()
+               shape = [ c.max() + 1 for c in columns ]
         elif isinstance(data, SparseTensor):
             columns = data.columns
             values = data.values
@@ -46,7 +46,7 @@ class SparseTensor(wrapper.SparseTensor):
             values = data[val_column_names[0]].values
 
             if shape is None:
-                shape = self.determineShape(columns)
+                shape = [ c.max() + 1 for c in columns ]
 
         elif isinstance(data, np.ndarray):
             if shape is None:
@@ -61,9 +61,6 @@ class SparseTensor(wrapper.SparseTensor):
             assert len(col) == len(values), "Unequal column lenghts:\n%s\n%s" % (col, values)
 
         super().__init__(shape,columns,values)
-
-    def determineShape(columns):
-        return [ c.max() + 1 for c in columns ]
 
     def __str__(self):
         return "SparseTensor(shape = " + str(self.shape) + ", nnz: " + str(len(self.values)) + "): \n" + \
