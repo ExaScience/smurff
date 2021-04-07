@@ -75,7 +75,7 @@ def make_train_test(Y, ntest, shape = None, seed = None):
         Ytrain = sp.sparse.coo_matrix( (Y.data[train], (Y.row[train], Y.col[train])), shape=shape )
         Ytest  = sp.sparse.coo_matrix( (Y.data[test],  (Y.row[test],  Y.col[test])),  shape=shape )
     else:
-        assert isinstance(Y, SparseTensor)
+        assert isinstance(Y, wrapper.SparseTensor)
 
         Ytrain = SparseTensor(
             ( Y.values[train], [ np.array(idx)[train] for idx in Y.columns ] ),
