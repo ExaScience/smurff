@@ -37,7 +37,7 @@ def train_session(root, train, test, sideinfo = None):
     return rmse
 
 def im_prediction(predict_session, test):
-    im_predictions = predict_session.predict_some(test)
+    im_predictions = predict_session.predict_sparse(test)
     rmse = smurff.calc_rmse(im_predictions)
     # print("Macau in-matrix prediction RMSE = %.2f" % rmse )
     # print("Predictions:")

@@ -201,7 +201,7 @@ class PredictSession:
         """        
         return self.predict([ Ellipsis ] * self.nmodes)
 
-    def predict_some(self, test_matrix):
+    def predict_sparse(self, test_matrix):
         """Computes prediction for all elements in a sparse test matrix
 
         Parameters

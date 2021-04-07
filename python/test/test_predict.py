@@ -53,7 +53,7 @@ class TestPredictSession(unittest.TestCase):
         coords, _ = smurff.find(self.Ytest)
         c0 = [ c[0] for c in coords ]
         p1 = train_session.getTestSamples()
-        p2 = predict_session.predict_some(self.Ytest)
+        p2 = predict_session.predict_sparse(self.Ytest)
         p3 = predict_session.predict(c0)
         p4 = predict_session.predict_all()
 
@@ -70,12 +70,12 @@ class TestPredictSession(unittest.TestCase):
             # check train_session vs predict_session for all samples
             self.assert_almost_equal_sparse(s1, s2)
 
-            # check predict_session.predict_some vs predict_session.predict_one
+            # check predict_session.predict_sparse vs predict_session.predict_one
             coords_s2, values_s2 = smurff.find(s2)
             self.assertEqual([ c[0] for c in coords_s2 ], c0)
             self.assertAlmostEqual(values_s2[0], s3.item(), places=2)
 
-            # check predict_session.predict_some vs predict_session.predict_all
+            # check predict_session.predict_sparse vs predict_session.predict_all
             for v, *c in zip(values_s2, *coords_s2):
                 self.assertAlmostEqual(v, s4.item(*c), places=2)
 
