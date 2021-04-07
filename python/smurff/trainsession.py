@@ -80,10 +80,18 @@ class TrainSession(PythonSession):
         if seed is not None:            self.setRandomSeed(seed)
         if threshold is not None:       self.setThreshold(threshold)
         if verbose is not None:         self.setVerbose(verbose)
-        if save_name is not None:       self.setSaveName(save_name)
-        if save_freq is not None:       self.setSaveFreq(save_freq)
-        if checkpoint_freq is not None: self.setCheckpointFreq(checkpoint_freq)
 
+        if save_freq is not None:
+            self.setSaveFreq(save_freq)
+            if save_name is None:
+               save_name = os.path.join(tempfile.mkdtemp(), "output.hdf5")
+            self.setSaveName(save_name)
+
+        if checkpoint_freq is not None:
+            self.setCheckpointFreq(checkpoint_freq)
+            if save_name is None:
+               save_name = os.path.join(tempfile.mkdtemp(), "output.hdf5")
+            self.setSaveName(save_name)
 
     def addTrainAndTest(self, Y, Ytest = None, noise = FixedNoise(), is_scarce = True):
         self.setTrain(Y, noise, is_scarce)
