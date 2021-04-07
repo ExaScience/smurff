@@ -149,7 +149,7 @@ std::shared_ptr<const SparseTensor> Result::toTensor(const Accessor &acc) const
 
    for (const auto &p : m_predictions)
    {
-      for(int i=0; i<p.coords.size(); i++)
+      for(unsigned i=0; i<p.coords.size(); i++)
          columns.at(i).push_back(p.coords.at(i));
       values.push_back(acc(p));
    }
