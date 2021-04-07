@@ -5,6 +5,7 @@ import scipy.sparse
 import numbers
 
 from .helper import SparseTensor
+from . import wrapper
 
 def make_sparse(Y, nnz, shape = None, seed = None):
     Ytr, Yte = make_train_test(Y, nnz, shape, seed)
@@ -75,12 +76,6 @@ def make_train_test(Y, ntest, shape = None, seed = None):
         Ytest  = sp.sparse.coo_matrix( (Y.data[test],  (Y.row[test],  Y.col[test])),  shape=shape )
     else:
         assert isinstance(Y, SparseTensor)
-
-        print("train = ", train)
-        print("test = ", test)
-        print("Y.columns = ", Y.columns)
-        print("Y.columns[0] = ", Y.columns[0])
-        print("np.array(Y.columns[0])[train] = ", np.array(Y.columns[0])[train])
 
         Ytrain = SparseTensor(
             ( Y.values[train], [ np.array(idx)[train] for idx in Y.columns ] ),
