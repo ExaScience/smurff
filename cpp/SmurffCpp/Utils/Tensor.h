@@ -34,10 +34,6 @@ namespace smurff
       const std::vector<value_type>& getValues() const { return m_values; }
       std::vector<value_type>& getValues() { return m_values; }
 
-      const Eigen::Map<const Vector> getValuesAsMap() const { 
-         return Eigen::Map<const Vector>(m_values.data(), m_values.size());
-      }
-
       Eigen::Map<Vector> getValuesAsMap() { 
          return Eigen::Map<Vector>(m_values.data(), m_values.size());
       }
@@ -85,14 +81,6 @@ namespace smurff
 
       std::pair<PVec<>, value_type> get(dims_type) const;
       void set(dims_type, PVec<>, value_type);
-
-      const std::vector<const Eigen::Map<const eigen_column_type>> getColumnsAsMap() const { 
-         std::vector<const Eigen::Map<const eigen_column_type>> ret; 
-         for( const auto &c : getColumns() ) 
-            ret.push_back(Eigen::Map<const eigen_column_type>(c.data(), c.size()));
-
-         return ret;
-      }
 
       std::vector<Eigen::Map<eigen_column_type>> getColumnsAsMap() { 
          std::vector<Eigen::Map<eigen_column_type>> ret; 

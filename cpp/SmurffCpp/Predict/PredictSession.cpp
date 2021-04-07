@@ -269,7 +269,7 @@ std::shared_ptr<Result> PredictSession::predict(const DataConfig &Y)
     return res;
 }
 
-SparseMatrix predict_matrix(const SparseMatrix &coords, std::vector<const Matrix> latents)
+SparseMatrix predict_matrix(const SparseMatrix &coords, const std::vector<Matrix> &latents)
 {
     THROWERROR_ASSERT(latents.size() == 2);
 
@@ -284,7 +284,7 @@ SparseMatrix predict_matrix(const SparseMatrix &coords, std::vector<const Matrix
     return result;
 }
 
-SparseTensor predict_tensor(const SparseTensor &coords, std::vector<const Matrix> latents)
+SparseTensor predict_tensor(const SparseTensor &coords, const std::vector<Matrix> &latents)
 {
     THROWERROR_ASSERT(latents.size() == coords.getNModes());
 
