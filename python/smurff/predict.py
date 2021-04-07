@@ -5,6 +5,7 @@ import scipy.sparse as sp
 import h5sparse
 
 from .result import Prediction
+from . import wrapper
 
 class Sample:
     def __init__(self, h5_file, name, num_latent):
@@ -155,10 +156,11 @@ class PredictSession:
 
         Parameters
         ----------
-        operands : tuple 
-            A combination of coordindates in the matrix/tensor and/or features you want to use
-            to make predictions. `len(coords)` should be equal to number of dimensions in the sample.
-            Each element `coords` can be a:
+        operands : tuple
+            A combination of coordindates in the matrix/tensor and/or
+            features you want to use to make predictions. `len(operands)`
+            should be equal to number of dimensions in the sample. Each
+            element `operands` can be a:
               * int : a single element in this dimension is selected. For example, a
                 single row or column in a matrix.
               * :class:`slice` : a slice is selected in this dimension. For example, a number of
@@ -175,10 +177,9 @@ class PredictSession:
 
         Returns
         -------
-        numpy.ndarray
-            A :class:`numpy.ndarray` of shape `[ N x T1 x T2 x ... ]` where
+        lis of numpy.ndarray
+            list of N :class:`numpy.ndarray`s of shape `[ T1 x T2 x ... ]` where
             N is the number of samples in this `PredictSession` and `T1 x T2 x ...` 
-            has the same numer of dimensions as the train data.
         """        
 
         if samples is None:
@@ -186,15 +187,15 @@ class PredictSession:
         else:
             samples = self.samples[samples]
 
-        return np.stack([sample.predict(operands) for sample in samples])
+        return [s.predict(operands) for s in samples]
 
     def predict_all(self):
         """Computes prediction matrix/tensor for full train data shape.
         
         Returns
         -------
-        numpy.ndarray
-            A :class:`numpy.ndarray` of shape `[ N x T1 x T2 x ... ]` where
+        list of numpy.ndarray
+            N :class:`numpy.ndarray`s of shape `[ T1 x T2 x ... ]` where
             N is the number of samples in this `PredictSession` and `T1 x T2 x ...` 
             is the shape of the train data 
         """        
@@ -206,44 +207,18 @@ class PredictSession:
         Parameters
         ----------
         test_matrix : scipy sparse matrix
-            Coordinates and true values to make predictions for
 
         Returns
         -------
         list 
-            list of :class:`Prediction` objects.
+            list of N :class:`scipy.sparse.sp_matrix` objects, where
+            N is the number of samples 
 
         """        
-        predictions = Prediction.fromTestMatrix(test_matrix)
-
-        for s in self.samples:
-            for p in predictions:
-                # returns an numpy array with one element -> convert to scalar
-                p.add_sample(s.predict(p.coords).item())
-
-        return predictions
-
-    def predict_one(self, coords, value=float("nan")):
-        """Computes prediction for one point in the matrix/tensor
-
-        Parameters
-        ----------
-        coords : tuple of coordinates and/or feature vectors
-        value : float, optional
-            The *true* value for this point
-
-        Returns
-        -------
-        :class:`Prediction`
-            The prediction
-
-        """
-        p = Prediction(coords, value)
-        for s in self.samples:
-            # returns an numpy array with one element -> convert to scalar
-            p.add_sample(s.predict(p.coords).item())
-
-        return p
+        return [
+            wrapper.predict(test_matrix, s.latents())
+            for s in self.samples
+        ]
 
     def __str__(self):
         dat = (len(self.samples), self.data_shape, self.beta_shape, self.num_latent)

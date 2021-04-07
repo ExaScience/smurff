@@ -70,6 +70,9 @@ namespace smurff
       const std::vector<index_type> &getColumn(int i) const { return m_columns.at(i); }
       std::vector<index_type> &getColumn(int i) { return m_columns.at(i); }
 
+      const columns_type &getColumns() const { return m_columns; }
+      columns_type &getColumns() { return m_columns; }
+
       std::pair<PVec<>, value_type> get(dims_type) const;
       void set(dims_type, PVec<>, value_type);
 

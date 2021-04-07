@@ -18,6 +18,15 @@
 
 namespace py = pybind11;
 
+
+template <typename VectorType>
+py::tuple vector_to_tuple(const VectorType &vec)
+{
+    py::tuple c(vec.size());
+    for (unsigned i = 0; i < vec.size(); ++i) c[i] = vec[i];
+    return c;
+}
+
 // wrap as Python module
 PYBIND11_MODULE(wrapper, m)
 {
@@ -56,11 +65,7 @@ PYBIND11_MODULE(wrapper, m)
         .def("__str__", &smurff::ResultItem::to_string)
         .def(py::self < py::self)
         // we want a tuple, not a list
-        .def_property_readonly("coords",  [](const smurff::ResultItem &r) { 
-            py::tuple c(r.coords.size());
-            for (unsigned i=0; i<r.coords.size(); ++i) c[i] = r.coords[i];
-            return c;
-        })
+        .def_property_readonly("coords",  [](const smurff::ResultItem &r) { return vector_to_tuple(r.coords); })
         .def_readonly("val", &smurff::ResultItem::val)
         .def_readonly("pred_1sample", &smurff::ResultItem::pred_1sample)
         .def_readonly("pred_avg", &smurff::ResultItem::pred_avg)
@@ -75,6 +80,12 @@ PYBIND11_MODULE(wrapper, m)
           const std::vector<std::vector<std::uint32_t>> &,
           const std::vector<double> &
         >())
+        .def_property_readonly("shape", [](const smurff::SparseTensor &t) { return vector_to_tuple(t.getDims()); })
+        .def_property_readonly("ndim", &smurff::SparseTensor::getNModes)
+        .def_property_readonly("nnz", &smurff::SparseTensor::getNNZ)
+        .def("column", py::overload_cast<int>(&smurff::SparseTensor::getColumn)) // non-const
+        .def_property_readonly("columns", py::overload_cast<>(&smurff::SparseTensor::getColumns)) // non-const
+        .def_property_readonly("values", py::overload_cast<>(&smurff::SparseTensor::getValues)) // non-const
         ;
 
     py::class_<smurff::PythonSession>(m, "PythonSession")

@@ -1,18 +1,19 @@
 import itertools
 import unittest
+from numpy.testing._private.utils import assert_equal
 from parameterized import parameterized
 import numpy as np
 from numpy.testing import assert_almost_equal
 import pandas as pd
 import smurff
-from pprint import pprint
+import scipy.sparse as sp
 
 verbose = 0
+nsamples = 25
 
 class TestPredictSession(unittest.TestCase):
     # Python 2.7 @unittest.skip fix
     __name__ = "TestPredictSession"
-
 
     def run_train_session(self, nmodes, density):
         shape = range(5, nmodes+5) # 5, 6, 7, ... 
@@ -21,7 +22,7 @@ class TestPredictSession(unittest.TestCase):
         priors = ['normal'] * nmodes
 
         trainSession = smurff.TrainSession(priors = priors, num_latent=4,
-                burnin=10, nsamples=25, verbose=verbose,
+                burnin=10, nsamples=nsamples, verbose=verbose,
                 save_freq = 1, save_name = smurff.helper.temp_savename())
 
         trainSession.addTrainAndTest(self.Ytrain, self.Ytest)
@@ -40,37 +41,43 @@ class TestPredictSession(unittest.TestCase):
         self.run_predict_some_all_one(train_session, predict_session)
         self.run_predict_predict(predict_session, X)
 
+    def assert_almost_equal_sparse(self, A, B):
+        assert_equal(A.shape, B.shape)
+
+        c1,v1 = smurff.find(A)
+        c2,v2 = smurff.find(B)
+        assert np.array_equal(c1,c2)
+        assert np.allclose(v1,v2, atol=0.01) 
+
     def run_predict_some_all_one(self, train_session, predict_session):
-        p1 = sorted(train_session.getTestPredictions())
-        p2 = sorted(predict_session.predict_some(self.Ytest))
-        p3 = predict_session.predict_one(p1[0].coords, p1[0].val)
+        coords, _ = smurff.find(self.Ytest)
+        c0 = [ c[0] for c in coords ]
+        p1 = train_session.getTestSamples()
+        p2 = predict_session.predict_some(self.Ytest)
+        p3 = predict_session.predict(c0)
         p4 = predict_session.predict_all()
 
-        self.assertEqual(len(p1), len(p2))
+        # list of scipy.sparse.sp_matrix
+        # assert same number of samples
+        self.assertEqual(len(p1), nsamples)
+        self.assertEqual(len(p2), nsamples)
+        self.assertEqual(len(p3), nsamples)
+        self.assertEqual(len(p4), nsamples)
 
-        # check train_session vs predict_session for Ytest
-        self.assertEqual(p1[0].coords, p2[0].coords)
-        assert_almost_equal(p1[0].val, p2[0].val, decimal = 2)
-        assert_almost_equal(p1[0].pred_1sample, p2[0].pred_1sample, decimal = 2)
-        assert_almost_equal(p1[0].pred_avg, p2[0].pred_avg, decimal = 2)
+        # for all samples
+        for s1, s2, s3, s4 in zip(p1, p2, p3, p4):
 
-        # check predict_session.predict_some vs predict_session.predict_one
-        self.assertEqual(p1[0].coords, p3.coords)
-        assert_almost_equal(p1[0].val, p3.val, decimal = 2)
-        assert_almost_equal(p1[0].pred_1sample, p3.pred_1sample, decimal = 2)
-        assert_almost_equal(p1[0].pred_avg, p3.pred_avg, decimal = 2)
+            # check train_session vs predict_session for all samples
+            self.assert_almost_equal_sparse(s1, s2)
 
-        # check predict_session.predict_some vs predict_session.predict_all
-        for s in p2:
-            ecoords = (Ellipsis,) + s.coords
-            for p in zip(s.pred_all, p4[ecoords]):
-                self.assertAlmostEqual(*p, places=2)
+            # check predict_session.predict_some vs predict_session.predict_one
+            coords_s2, values_s2 = smurff.find(s2)
+            self.assertEqual([ c[0] for c in coords_s2 ], c0)
+            self.assertAlmostEqual(values_s2[0], s3.item(), places=2)
 
-        p1_rmse_avg = smurff.calc_rmse(p1)
-        p2_rmse_avg = smurff.calc_rmse(p2)
-
-        self.assertAlmostEqual(train_session.getRmseAvg(), p2_rmse_avg, places = 2)
-        self.assertAlmostEqual(train_session.getRmseAvg(), p1_rmse_avg, places = 2)
+            # check predict_session.predict_some vs predict_session.predict_all
+            for v, *c in zip(values_s2, *coords_s2):
+                self.assertAlmostEqual(v, s4.item(*c), places=2)
 
     def run_predict_predict(self, predict_session, X):
         """ Test the PredictSession.predict function """
@@ -91,10 +98,10 @@ class TestPredictSession(unittest.TestCase):
 
             MAX = 50
             for c, o in enumerate(itertools.product(*operand_and_sizes)):
-                operands, expected_sizes = zip(*o) # unzip
-                expected_shape = (expected_nsamples,) + expected_sizes
-                shape = predict_session.predict(operands, samples).shape
-                self.assertEqual(shape, expected_shape)
+                operands, expected_shape = zip(*o) # unzip
+                predicted_samples = predict_session.predict(operands, samples)
+                self.assertEqual(len(predicted_samples), expected_nsamples, nsamples)
+                self.assertEqual(predicted_samples[0].shape, expected_shape)
 
                 if c > MAX: break
 

@@ -76,12 +76,18 @@ def make_train_test(Y, ntest, shape = None, seed = None):
     else:
         assert isinstance(Y, SparseTensor)
 
+        print("train = ", train)
+        print("test = ", test)
+        print("Y.columns = ", Y.columns)
+        print("Y.columns[0] = ", Y.columns[0])
+        print("np.array(Y.columns[0])[train] = ", np.array(Y.columns[0])[train])
+
         Ytrain = SparseTensor(
-            ( Y.values[train], [ idx[train] for idx in Y.columns ] ),
+            ( Y.values[train], [ np.array(idx)[train] for idx in Y.columns ] ),
             Y.shape)
 
         Ytest  = SparseTensor(
-            ( Y.values[test], [ idx[test] for idx in Y.columns ] ),
+            ( Y.values[test], [ np.array(idx)[test] for idx in Y.columns ] ),
             Y.shape)
 
     return Ytrain, Ytest

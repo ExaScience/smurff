@@ -1,5 +1,6 @@
 from .trainsession import TrainSession
 from .helper import SparseTensor
+from .helper import find
 from .helper import FixedNoise, SampledNoise, AdaptiveNoise, ProbitNoise
 from .helper import temp_savename
 from .prepare import make_train_test, make_sparse
