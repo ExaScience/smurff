@@ -1,4 +1,6 @@
 import logging
+import tempfile
+import os
 
 import numpy as np
 import scipy.sparse as sp
@@ -233,7 +235,9 @@ class TrainSession(PythonSession):
             raise KeyboardInterrupt
 
         if not_done:
-            return self.getStatus()
+            status = self.getStatus()
+            logging.info(status)
+            return status
         else:
             return None
 
