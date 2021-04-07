@@ -19,3 +19,4 @@ tests_output.eggs
 tests_output
 wheelhouse
 *.generated
+cpp_generated*
