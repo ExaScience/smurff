@@ -282,6 +282,12 @@ bool Config::validate() const
             }
          }
       }
+
+      if ((getSaveFreq() != 0 || getCheckpointFreq() != 0) && getSaveName().empty())
+      {
+         THROWERROR("Empty savename")
+      }
+
    }
 
    for(std::size_t i = 0; i < m_prior_types.size(); i++)
