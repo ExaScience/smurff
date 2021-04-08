@@ -2,4 +2,6 @@ chembl-IC50-346targets.mm
 chembl-IC50-compound-feat.mm
 .ipynb_checkpoints
 *.hdf5
+*.py
+*.ok
 
