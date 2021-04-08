@@ -65,7 +65,7 @@ class Sample:
 
         operands = []
         for U, mu, beta, c, m in zip(self.latents(), self.mus(), self.betas(), params, range(self.nmodes)):
-            if c is Ellipsis:
+            if c is Ellipsis or c is None:
                 # predict all in this dimension
                 operands += [U, [m+1, 0]]
             elif isinstance(c, (int, np.integer)):
@@ -165,7 +165,7 @@ class PredictSession:
                 single row or column in a matrix.
               * :class:`slice` : a slice is selected in this dimension. For example, a number of
                 rows or columns in a matrix.
-              * Ellipsis : all elements in this dimension are selected. For example, all
+              * Ellipsis or None: all elements in this dimension are selected. For example, all
                 rows or columns in a matrix.
               * :class:`numpy.ndarray` : 2D numpy array used as dense sideinfo. Each row
                 vector is used as side-info.
