@@ -7,7 +7,7 @@ source:
   git_tag: v2.2
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
@@ -16,8 +16,6 @@ requirements:
 
   host:
     - hdf5 {{ hdf5 }}
-    - h5py
-    - python {{ python }}
     
   run:
     - hdf5 {{ hdf5 }}
