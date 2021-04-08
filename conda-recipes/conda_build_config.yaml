@@ -10,6 +10,9 @@ blas_impl:
     - openblas
     - mkl
 
+numpy:
+    - 1.16      
+
 pin_run_as_build:
   libboost: x.x
   numpy: x.x
