@@ -14,13 +14,16 @@ class Sample:
         self.nmodes = h5_file["config/options"].attrs['num_priors']
         self.num_latent = num_latent
 
+    @property
     def predStats(self):
         # rmse , auc
         return self.h5_group["predictions"].attrs
 
+    @property
     def predAvg(self):
         return self.h5_group["predictions/pred_avg"][()]
 
+    @property
     def predVar(self):
         return self.h5_group["predictions/pred_var"][()]
 
@@ -30,18 +33,23 @@ class Sample:
     def lookup_modes(self, templ):
         return [ self.lookup_mode(templ, i) for i in range(self.nmodes) ]
 
+    @property
     def latents(self):
         return self.lookup_modes("latents/latents_%d")
 
+    @property
     def betas(self):
         return self.lookup_modes("link_matrices/link_matrix_%d")
         
+    @property
     def mus(self):
         return self.lookup_modes("link_matrices/mu_%d")
 
+    @property
     def beta_shape(self):
-        return [b.shape[0] for b in self.betas()]
+        return [b.shape[0] for b in self.betas]
 
+    @property
     def postMuLambda(self, mode):
         mu = self.lookup_mode("latents/post_mu_%d", mode)
         Lambda = self.lookup_mode("latents/post_lambda_%d", mode)
@@ -64,7 +72,7 @@ class Sample:
         # for all predictions: einsum(U[0], [0, 0], U[1], [0, 1], U[2], [0, 2], ...)
 
         operands = []
-        for U, mu, beta, c, m in zip(self.latents(), self.mus(), self.betas(), params, range(self.nmodes)):
+        for U, mu, beta, c, m in zip(self.latents, self.mus, self.betas, params, range(self.nmodes)):
             if c is Ellipsis or c is None:
                 # predict all in this dimension
                 operands += [U, [m+1, 0]]
@@ -137,17 +145,20 @@ class PredictSession:
         self.samples.sort(key=lambda x: x.no)
         self.num_samples = len(self.samples)
 
+    @property
     def lastSample(self):
         return self.samples[-1]
 
     def postMuLambda(self, mode):
-        return self.lastSample().postMuLambda(mode)
+        return self.lastSample.postMuLambda(mode)
 
+    @property
     def predictionsYTest(self):
-        return self.lastSample().predAvg(), self.lastSample().predVar()
+        return self.lastSample.predAvg, self.lastSample.predVar
 
+    @property
     def statsYTest(self):
-        return self.lastSample().predStats()
+        return self.lastSample.predStats
 
     def predict(self, operands, samples = None):
         """
@@ -216,7 +227,7 @@ class PredictSession:
 
         """        
         return [
-            wrapper.predict(test_matrix, s.latents())
+            wrapper.predict(test_matrix, s.latents)
             for s in self.samples
         ]
 
