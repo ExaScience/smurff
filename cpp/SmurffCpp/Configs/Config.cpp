@@ -319,24 +319,24 @@ bool Config::validate() const
        if (hasPropagatedPosterior(i))
        {
            THROWERROR_ASSERT_MSG(
-               getMuPropagatedPosterior(i).getNCol() == getTrain().getDims().at(i),
+               getMuPropagatedPosterior(i).getNRow() == getTrain().getDims().at(i),
                "mu of propagated posterior in mode " + std::to_string(i) + 
-               " should have same number of columns as train in mode"
+               " should have same number of rows as train in mode"
            );
            THROWERROR_ASSERT_MSG(
-               getLambdaPropagatedPosterior(i).getNCol() == getTrain().getDims().at(i),
+               getLambdaPropagatedPosterior(i).getNRow() == getTrain().getDims().at(i),
                "Lambda of propagated posterior in mode " + std::to_string(i) + 
-               " should have same number of columns as train in mode"
+               " should have same number of rows as train in mode"
            );
            THROWERROR_ASSERT_MSG(
-               (int)getMuPropagatedPosterior(i).getNRow() == getNumLatent(),
+               (int)getMuPropagatedPosterior(i).getNCol() == getNumLatent(),
                "mu of propagated posterior in mode " + std::to_string(i) + 
-               " should have num-latent rows"
+               " should have num-latent cols"
            );
            THROWERROR_ASSERT_MSG(
-               (int)getLambdaPropagatedPosterior(i).getNRow() == getNumLatent() * getNumLatent(),
+               (int)getLambdaPropagatedPosterior(i).getNCol() == getNumLatent() * getNumLatent(),
                "mu of propagated posterior in mode " + std::to_string(i) +
-                   " should have num-latent^2 rows"
+                   " should have num-latent^2 cols"
            );
        }
    }
