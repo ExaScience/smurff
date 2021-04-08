@@ -137,7 +137,7 @@ class PredictSession:
 
             sample = Sample(self.h5_file, name, self.num_latent)
             self.samples.append(sample)
-            self.beta_shape = sample.beta_shape()
+            self.beta_shape = sample.beta_shape
 
         if len(self.samples) == 0:
             raise ValueError("No samples found in " + h5_fname)
