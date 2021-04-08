@@ -5,6 +5,7 @@ python:
     - 3.6
     - 3.7
     - 3.8
+    - 3.9
 
 blas_impl:
     - openblas
@@ -12,6 +13,10 @@ blas_impl:
 
 numpy:
     - 1.16      
+
+hdf5:
+    - 1.10.4
+    - 1.10.6
 
 pin_run_as_build:
   libboost: x.x

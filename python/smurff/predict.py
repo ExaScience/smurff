@@ -49,7 +49,6 @@ class Sample:
     def beta_shape(self):
         return [b.shape[0] for b in self.betas]
 
-    @property
     def postMuLambda(self, mode):
         mu = self.lookup_mode("latents/post_mu_%d", mode)
         Lambda = self.lookup_mode("latents/post_lambda_%d", mode)
