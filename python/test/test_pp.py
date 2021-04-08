@@ -14,7 +14,7 @@ seed = 1234
 # Taken from BMF_PP/postprocess_posterior_samples
 def calc_posteriorMeanPrec(predict_session, axis):
     # collect U/V for all samples
-    Us = [ s.latents()[axis] for s in predict_session.samples ]
+    Us = [ s.latents[axis] for s in predict_session.samples ]
 
     # stack them and compute mean
     Ustacked = np.stack(Us)
@@ -40,8 +40,8 @@ class TestPP(unittest.TestCase):
         trainSession.run()
         predict_session = trainSession.makePredictSession()
 
-        sess_rmse = float(predict_session.statsYTest()["rmse_avg"])
-        Ypred, Yvar = predict_session.predictionsYTest()
+        sess_rmse = float(predict_session.statsYTest["rmse_avg"])
+        Ypred, Yvar = predict_session.predictionsYTest
 
         Yt_i, Yt_j, Yt_v = scipy.sparse.find(Ytest)
         Yp_i, Yp_j, Yp_v = scipy.sparse.find(Ypred)
