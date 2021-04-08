@@ -10,8 +10,12 @@ TESTS_OK = $(patsubst %.ipynb,%.ok,$(NOTEBOOKS))
 %.ok: %.py
 	ipython $? && touch $@	
 
+.PHONY: test clean clearoutput
+
 test:  $(TESTS_OK)
 
+clearoutput:
+	jupyter nbconvert --clear-output $(NOTEBOOKS)
 
 clean:
 	rm -f $(TESTS_PY)
