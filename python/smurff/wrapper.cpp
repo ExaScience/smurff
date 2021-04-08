@@ -64,7 +64,6 @@ PYBIND11_MODULE(wrapper, m)
     py::class_<smurff::ResultItem>(m, "ResultItem", "Predictions for a single point in the matrix/tensor")
         .def("__str__", &smurff::ResultItem::to_string)
         .def(py::self < py::self)
-        // we want a tuple, not a list
         .def_property_readonly("coords",  [](const smurff::ResultItem &r) { return vector_to_tuple(r.coords); })
         .def_readonly("val", &smurff::ResultItem::val)
         .def_readonly("pred_1sample", &smurff::ResultItem::pred_1sample)
