@@ -166,7 +166,7 @@ class TrainSession(PythonSession):
             assert Lambda.shape[1] == self.num_latent
             Lambda = Lambda.reshape(self.num_latent * self.num_latent, Lambda.shape[2], order='F')
 
-        self.addPropagatedPosterior(mode, mu, Lambda)
+        super().addPropagatedPosterior(mode, mu, Lambda)
 
 
     def addData(self, pos, Y, noise = FixedNoise(), is_scarce = False):
