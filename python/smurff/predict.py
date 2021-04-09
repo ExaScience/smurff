@@ -13,6 +13,10 @@ class Sample:
         self.no = int(self.h5_group.attrs["number"])
         self.nmodes = h5_file["config/options"].attrs['num_priors']
         self.num_latent = num_latent
+        self.latents = self.lookup_modes("latents/latents_%d")
+        self.betas = self.lookup_modes("link_matrices/link_matrix_%d")
+        self.mus = self.lookup_modes("link_matrices/mu_%d")
+
 
     @property
     def predStats(self):
@@ -33,17 +37,6 @@ class Sample:
     def lookup_modes(self, templ):
         return [ self.lookup_mode(templ, i) for i in range(self.nmodes) ]
 
-    @property
-    def latents(self):
-        return self.lookup_modes("latents/latents_%d")
-
-    @property
-    def betas(self):
-        return self.lookup_modes("link_matrices/link_matrix_%d")
-        
-    @property
-    def mus(self):
-        return self.lookup_modes("link_matrices/mu_%d")
 
     @property
     def beta_shape(self):
