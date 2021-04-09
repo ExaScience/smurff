@@ -108,7 +108,7 @@ setup(
     packages = [ 'smurff' ],
     entry_points={
         'console_scripts': [
-            'py_smurff=smurff:cmddline:main',
+            'py_smurff=smurff.cmdline:main',
             ],
     },
     use_scm_version={
