@@ -82,6 +82,6 @@ void SparseSideInfo::At_mul_Bt(Vector& Y, const int row, Matrix& B)
 void SparseSideInfo::add_Acol_mul_bt(Matrix& Z, const int col, Vector& b)
 {
     COUNTER("add_Acol_mul_bt");
-    Z += F.col(col) * b;
+    Z += Ft.row(col).transpose() * b;
 }
 } // end namespace smurff
