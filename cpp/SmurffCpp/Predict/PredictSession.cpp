@@ -277,6 +277,7 @@ SparseMatrix predict_matrix(const SparseMatrix &coords, const std::vector<Matrix
     const Matrix &V = latents.at(1);
 
     SparseMatrix result = coords;
+    #pragma omp parallel for collapse(2)
     for (int k = 0; k < result.outerSize(); ++k)
         for (SparseMatrix::InnerIterator it(result, k); it; ++it)
             it.valueRef() = U.row(it.row()).dot(V.row(it.col()));
@@ -291,6 +292,7 @@ SparseTensor predict_tensor(const SparseTensor &coords, const std::vector<Matrix
     unsigned num_latent = latents.at(0).cols();
 
     SparseTensor result = coords;
+    #pragma omp parallel for 
     for (std::size_t k = 0; k < result.getNNZ(); ++k)
     {
         Array1D P = Array1D::Ones(num_latent);
