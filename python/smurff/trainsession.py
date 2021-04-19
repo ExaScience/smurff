@@ -225,7 +225,9 @@ class TrainSession(PythonSession):
             raise KeyboardInterrupt
 
         if not_done:
-            return self.getStatus()
+            status = self.getStatus()
+            logging.info(status)
+            return status
         else:
             return None
 
