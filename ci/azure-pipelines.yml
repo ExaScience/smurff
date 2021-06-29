@@ -63,8 +63,6 @@ jobs:
 - job: 'Conda_Linux'
   strategy:
     matrix:
-      Python36:
-        PYTHON_VERSION: '3.6'
       Python37:
         PYTHON_VERSION: '3.7'
       Python38:
@@ -79,8 +77,6 @@ jobs:
 - job: 'Conda_macOS'
   strategy:
     matrix:
-      Python36:
-        PYTHON_VERSION: '3.6'
       Python37:
         PYTHON_VERSION: '3.7'
       Python38:
@@ -103,8 +99,6 @@ jobs:
 - job: 'Conda_Windows'
   strategy:
     matrix:
-      Python36:
-        PYTHON_VERSION: '3.6'
       Python37:
         PYTHON_VERSION: '3.7'
       Python38:
