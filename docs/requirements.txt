@@ -3,4 +3,4 @@ sphinx>=1.4
 ipykernel
 nbsphinx
 pygments>=2.6.1
-smurff
+smurff>=0.17.0<0.18.0
