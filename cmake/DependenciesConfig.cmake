@@ -45,6 +45,8 @@ macro(configure_lapack)
   find_package(LAPACK REQUIRED)
   find_package(LAPACKE REQUIRED)
   add_definitions(-DEIGEN_USE_BLAS -DEIGEN_USE_LAPACKE)
+  # needed because MSVC does not have support for c-type _Complex
+  add_definitions(-DLAPACK_COMPLEX_STRUCTURE=1)
   message(STATUS LAPACK: ${LAPACK_LIBRARIES})
 endmacro(configure_lapack)
 
