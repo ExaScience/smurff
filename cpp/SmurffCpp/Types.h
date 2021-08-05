@@ -1,5 +1,6 @@
 #pragma once
 
+#include <complex.h>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 
