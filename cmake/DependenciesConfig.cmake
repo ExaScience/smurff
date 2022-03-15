@@ -45,6 +45,8 @@ macro(configure_lapack)
   find_package(LAPACK REQUIRED)
   find_package(LAPACKE REQUIRED)
   add_definitions(-DEIGEN_USE_BLAS -DEIGEN_USE_LAPACKE)
+  # needed because MSVC does not have support for c-type _Complex
+  add_definitions(-Dlapack_complex_float=std::complex<float> -Dlapack_complex_double=std::complex<double>)
   message(STATUS LAPACK: ${LAPACK_LIBRARIES})
 endmacro(configure_lapack)
 
@@ -101,9 +103,6 @@ endmacro(configure_highfive)
 macro(configure_boost)
   message ("Dependency check for boost...")
   if(${ENABLE_BOOST})
-      if(MSVC)
-        set(Boost_USE_STATIC_LIBS ON)
-      endif(MSVC)
       FIND_PACKAGE(Boost COMPONENTS system program_options filesystem REQUIRED)
 
       message("-- Found Boost_VERSION: ${Boost_VERSION}")

@@ -1,7 +1,6 @@
 trigger:
   - master
   - release-*
-  - tensorpredict
   - v*
 
 variables:
@@ -10,7 +9,7 @@ variables:
 jobs:
 - job: 'Ubuntu_1604_Apt'
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: 'ubuntu-latest'
 
   strategy:
     maxParallel: 2
@@ -70,7 +69,7 @@ jobs:
       Python39:
         PYTHON_VERSION: '3.9'
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: 'ubuntu-latest'
   steps:
     - template: conda-steps.yml
 
@@ -84,7 +83,7 @@ jobs:
       Python39:
         PYTHON_VERSION: '3.9'
   pool:
-    vmImage: 'macOS-10.15'
+    vmImage: 'macOS-latest'
   variables:
     macOS_sdk_url: 'https://github.com/tvandera/MacOSX_SDKs/releases/download/v10.11.0.1/MacOSX10.9.sdk.tar.gz'
     macOS_sdk_filename: '$(Agent.TempDirectory)/MacOSX10.9.sdk.tar.gz'
@@ -139,7 +138,7 @@ jobs:
     CIBW_TEST_REQUIRES: 'pytest parameterized'
     CIBW_TEST_COMMAND: 'pytest {project}/python/test'
     CIBW_BUILD_VERBOSITY: 1
-  pool: {vmImage: 'Ubuntu-16.04'}
+  pool: {vmImage: 'ubuntu-latest'}
   steps:
     - task: UsePythonVersion@0
     - bash: |
@@ -168,7 +167,7 @@ jobs:
     CIBW_TEST_REQUIRES: 'pytest parameterized'
     CIBW_TEST_COMMAND: 'pytest {project}/python/test'
     CIBW_BUILD_VERBOSITY: 1
-  pool: {vmImage: 'macOS-10.15'}
+  pool: {vmImage: 'macOS-latest'}
   steps:
     - bash: |
         brew install eigen
