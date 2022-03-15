@@ -1,7 +1,7 @@
 SMURFF - Scalable Matrix Factorization Framework
 ================================================
 
-|Azure Build Status| |Travis Build Status| |Anaconda-Server Badge|
+|Azure Build Status| |Anaconda-Server Badge|
 
 What is Bayesian Matrix Factorization
 -------------------------------------
@@ -98,9 +98,6 @@ Acknowledgements
 Over the course of the last 5 years, this work has been supported by the EU H2020 FET-HPC projects
 EPEEC (contract #801051), ExCAPE (contract #671555) and EXA2CT (contract #610741), and the Flemish Exaptation project.
 
-.. |Travis Build Status| image:: https://travis-ci.org/ExaScience/smurff.svg?branch=master
-   :target: https://travis-ci.org/ExaScience/smurff
-   
 .. |Azure Build Status| image:: https://dev.azure.com/ExaScience/smurff/_apis/build/status/ExaScience.smurff?branchName=master
    :target: https://dev.azure.com/ExaScience/smurff/_build
 
