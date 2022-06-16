@@ -275,10 +275,5 @@ class TestSmurff(unittest.TestCase):
 
         self.assertFalse(predictions)
 
-    def test_threads(self):
-        Y = scipy.sparse.rand(10, 20, 0.2)
-        for t in range(7): # 1, 2, 4, 8, 16, 32, 64
-            smurff.smurff(Y, priors=['normal', 'normal'], num_latent=4, num_threads=2**t, verbose=verbose, burnin=5, nsamples=5)
-
 if __name__ == '__main__':
     unittest.main()
