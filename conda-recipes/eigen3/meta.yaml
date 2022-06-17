@@ -1,11 +1,11 @@
 package:
   name: eigen3
-  version: "3.3.7"
+  version: "3.3.9"
 
 source:
-  fn: eigen3-3.3.7.tar.gz
-  url: https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.tar.gz
-  sha1: 3e8ab94ff389ae4b3103f5dda77c826d85b9c1d5
+  fn: eigen3-3.3.9.tar.gz
+  url: https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz
+  sha256: 7985975b787340124786f092b3a07d594b2e9cd53bbfe5f3d9b1daee7d55f56f
 
 requirements:
   build:
