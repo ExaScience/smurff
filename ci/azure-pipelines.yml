@@ -105,7 +105,7 @@ jobs:
       Python39:
         PYTHON_VERSION: '3.9'
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'windows-2019'
   steps:
     - powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
       displayName: Add conda to PATH
