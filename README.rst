@@ -101,5 +101,5 @@ EPEEC (contract #801051), ExCAPE (contract #671555) and EXA2CT (contract #610741
 .. |Azure Build Status| image:: https://dev.azure.com/ExaScience/smurff/_apis/build/status/ExaScience.smurff?branchName=master
    :target: https://dev.azure.com/ExaScience/smurff/_build
 
-.. |Anaconda-Server Badge| image:: https://anaconda.org/vanderaa/smurff/badges/installer/conda.svg
+.. |Anaconda-Server Badge| image:: https://anaconda.org/vanderaa/smurff/badges/version.svg
    :target: https://conda.anaconda.org/vanderaa
