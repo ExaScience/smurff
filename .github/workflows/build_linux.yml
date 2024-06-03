@@ -37,7 +37,7 @@ jobs:
         cd HighFive*
         cmake -S . -B build
         cmake --build build
-        cmake --install build
+        sudo cmake --install build
 
     - name: Run CMake
       run: |-
