@@ -4,8 +4,8 @@
 class Highfive < Formula
   desc "HighFive - Header-only C++ HDF5 interface"
   homepage "https://bluebrain.github.io/HighFive/"
-  url "https://github.com/BlueBrain/HighFive/archive/v2.2.1.tar.gz"
-  sha256 "964c722ba916259209083564405ef9ce073b15e9412955fef9281576ea9c5b85"
+  url "https://github.com/BlueBrain/HighFive/archive/v2.9.0.tar.gz"
+  sha256 "6301def8ceb9f4d7a595988612db288b448a3c0546f6c83417dab38c64994d7e"
 
   depends_on "cmake" => :build
   depends_on "boost" => [ :build, :test ]
