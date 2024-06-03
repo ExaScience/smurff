@@ -21,9 +21,13 @@ jobs:
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
-        # to supply options, put them in 'env', like:
-        # env:
-        #   CIBW_SOME_OPTION: value
+        env:
+          CIBW_BUILD: 'cp36-manylinux_x86_64 cp37-manylinux_x86_64 cp38-manylinux_x86_64 cp39-manylinux_x86_64'
+          CIBW_ENVIRONMENT: 'CMAKE_ARGS="-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DENABLE_TESTS=OFF" BUILD_ARGS=-j6'
+          CIBW_MANYLINUX_X86_64_IMAGE: vanderaa/manylinux2014_x86_64_smurff
+          CIBW_TEST_COMMAND: 'pytest {project}/python/test'
+          CIBW_TEST_REQUIRES: 'parameterized pytest'
+          CIBW_BUILD_VERBOSITY: 1
 
       - uses: actions/upload-artifact@v4
         with:
