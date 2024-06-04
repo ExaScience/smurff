@@ -15,6 +15,11 @@ sdist.include = ["python/smurff/_version.py"]
 cmake.verbose = true
 logging.level = "INFO"
 
+[tool.scikit-build.cmake.define]
+ENABLE_BOOST = "OFF"
+ENABLE_CMDLINE = "OFF"
+ENABLE_TESTS = "OFF"
+
 [tool.setuptools_scm]  # Section required
 write_to = "python/smurff/_version.py"
 
