@@ -10,7 +10,7 @@ macro(configure_mpi)
   else()
     message(STATUS "MPI not found")
   endif()
-   
+
 endmacro(configure_mpi)
 
 macro(configure_openmp)
@@ -37,7 +37,7 @@ macro(configure_openmp)
   else()
     message ("Skipped check for OpenMP (Debug/NoOpenMP build)")
     set(OPENMP_FOUND FALSE)
-  endif()   
+  endif()
 endmacro(configure_openmp)
 
 macro(configure_lapack)
@@ -52,7 +52,7 @@ endmacro(configure_lapack)
 
 macro(configure_openblas)
   message ("Dependency check for openblas...")
-  
+
   if(MSVC)
   set(BLAS_LIBRARIES  $ENV{BLAS_LIBRARIES})
   set(BLAS_INCLUDES $ENV{BLAS_INCLUDES})
@@ -65,7 +65,7 @@ macro(configure_openblas)
   add_definitions(-DEIGEN_USE_BLAS -DEIGEN_USE_LAPACKE)
 
   message(STATUS BLAS: ${BLAS_LIBRARIES} )
- 
+
 endmacro(configure_openblas)
 
 macro(configure_mkl)
@@ -76,14 +76,14 @@ macro(configure_mkl)
   include_directories(${MKL_INCLUDE_DIR})
 
   add_definitions(-DEIGEN_USE_MKL_ALL)
-  
+
   message(STATUS "MKL libraries: ${MKL_LIBRARIES}" )
   message(STATUS "MKL include: ${MKL_INCLUDE_DIR}" )
 endmacro(configure_mkl)
 
 macro(configure_eigen)
   message ("Dependency check for eigen...")
-  
+
   if(DEFINED ENV{EIGEN3_INCLUDE_DIR})
     SET(EIGEN3_INCLUDE_DIR $ENV{EIGEN3_INCLUDE_DIR})
   else()
@@ -119,6 +119,7 @@ endmacro(configure_boost)
 
 macro(configure_python)
     if(ENABLE_PYTHON)
+      set(PYBIND11_NEWPYTHON ON)
         find_package(pybind11 CONFIG REQUIRED)
     endif()
 endmacro(configure_python)
