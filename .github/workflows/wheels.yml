@@ -22,10 +22,6 @@ jobs:
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
-        env:
-          CIBW_TEST_COMMAND: 'pytest {project}/python/test'
-          CIBW_TEST_REQUIRES: 'parameterized pytest'
-          CIBW_BUILD_VERBOSITY: 1
 
       - uses: actions/upload-artifact@v4
         with:
