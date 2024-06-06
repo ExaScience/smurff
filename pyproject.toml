@@ -60,7 +60,7 @@ py_smurff = "smurff.cmdline:main"
 
 [tool.cibuildwheel]
 manylinux-x86_64-image = "vanderaa/manylinux2014_x86_64_smurff"
-skip = "cp36-* cp312-* *-win32 *-manylinux_i686"
+skip = "pp* cp36-* cp312-* *-win32 *-manylinux_i686"
 test-command = 'pytest {project}/python/test'
 test-requires = 'parameterized pytest'
 build-verbosity = 1
