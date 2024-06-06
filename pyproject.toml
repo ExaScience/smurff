@@ -66,3 +66,5 @@ test-command = 'pytest {project}/python/test'
 test-requires = 'parameterized pytest'
 build-verbosity = 1
 
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "14.0"
