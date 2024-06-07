@@ -78,9 +78,11 @@ test-command = 'pytest {project}/python/test'
 test-requires = 'parameterized pytest'
 build-verbosity = 1
 
-[tool.cibuildwheel.macos]
-environment = { CMAKE_PREFIX_PATH = "/opt/homebrew/opt/openblas", MACOSX_DEPLOYMENT_TARGET = "14.0" }
+[tool.cibuildwheel.macos.environment]
+CMAKE_PREFIX_PATH = "/opt/homebrew/opt/openblas"
+MACOSX_DEPLOYMENT_TARGET = "14.0"
 
+[tool.cibuildwheel.macos]
 before-all = [
-        "brew install eigen openblas ci/highfive.rb"
+        "brew install --formulae eigen openblas ci/highfive.rb"
     ]
