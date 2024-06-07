@@ -15,6 +15,12 @@ sdist.include = ["python/smurff/_version.py"]
 cmake.verbose = true
 logging.level = "INFO"
 
+[tool.scikit-build.cmake.define]
+ENABLE_BOOST = "OFF"
+ENABLE_CMDLINE = "OFF"
+ENABLE_TESTS = "OFF"
+ENABLE_OPENBLAS = "ON"
+
 [tool.setuptools_scm]  # Section required
 write_to = "python/smurff/_version.py"
 
@@ -73,7 +79,8 @@ test-requires = 'parameterized pytest'
 build-verbosity = 1
 
 [tool.cibuildwheel.macos]
-environment = { MACOSX_DEPLOYMENT_TARGET = "14.0" }
+environment = { CMAKE_PREFIX_PATH = "/opt/homebrew/opt/openblas", MACOSX_DEPLOYMENT_TARGET = "14.0" }
+
 before-all = [
-        "brew install eigen lapack ci/highfive.rb"
+        "brew install eigen openblas ci/highfive.rb"
     ]
