@@ -1,0 +1,77 @@
+# Logfile created on 2024-06-03 12:31:32 +0000 by logger.rb/v1.6.0
+I, [2024-06-03T12:31:32.902351 #1]  INFO -- : Using GitHub Features: Defaults
+I, [2024-06-03T12:31:32.902472 #1]  INFO -- : Auditing 'REDACTEDsmurff/_build'
+I, [2024-06-03T12:31:32.905619 #1]  INFO -- request: GET REDACTED_apis/distributedtask/tasks?api-version=5.0-preview
+I, [2024-06-03T12:31:33.593570 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:33.608549 #1]  INFO -- request: GET REDACTEDsmurff/_apis/build/definitions?api-version=5.0&includeAllProperties=true&queryOrder=lastModifiedDescending
+I, [2024-06-03T12:31:33.930808 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:33.934034 #1]  INFO -- : Thread collection size: 10
+I, [2024-06-03T12:31:33.964503 #1]  INFO -- request: GET REDACTED-pipelines.yml?ref=master
+I, [2024-06-03T12:31:34.253944 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:34.261199 #1]  INFO -- request: GET REDACTEDsmurff/_apis/serviceendpoint/endpoints?api-version=5.0-preview
+I, [2024-06-03T12:31:34.594033 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:34.598199 #1]  INFO -- request: GET REDACTEDsmurff/_apis/distributedtask/variablegroups?api-version=5.0-preview&queryOrder=idDescending
+I, [2024-06-03T12:31:34.915088 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:34.918525 #1]  INFO -- request: GET REDACTEDsmurff/_apis/distributedtask/taskgroups?api-version=5.0-preview
+I, [2024-06-03T12:31:34.982720 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:34.987524 #1]  INFO -- request: GET REDACTED-steps.yml?ref=master
+I, [2024-06-03T12:31:35.268511 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:35.276565 #1]  INFO -- request: GET REDACTED_apis/release/definitions?api-version=5.0&queryOrder=idDescending
+I, [2024-06-03T12:31:36.156937 #1]  INFO -- response: Status 200
+D, [2024-06-03T12:31:36.185399 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.189066 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.191976 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.192411 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Failed to locate transformer for 'CMake@1'
+D, [2024-06-03T12:31:36.192664 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.192953 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.193778 #1] DEBUG -- : [Transformers::AzureDevops::Strategy]: Located transformer for 'maxParallel'
+D, [2024-06-03T12:31:36.193917 #1] DEBUG -- : [Transformers::AzureDevops::Strategy]: Located transformer for 'matrix'
+D, [2024-06-03T12:31:36.194302 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'composite_action'
+D, [2024-06-03T12:31:36.194766 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.195012 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.195396 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.195621 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.195821 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'PublishBuildArtifacts@1'
+D, [2024-06-03T12:31:36.196632 #1] DEBUG -- : [Transformers::AzureDevops::Strategy]: Located transformer for 'matrix'
+D, [2024-06-03T12:31:36.197470 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.197805 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'composite_action'
+D, [2024-06-03T12:31:36.198048 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.198256 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.198460 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.198684 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.198869 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'PublishBuildArtifacts@1'
+D, [2024-06-03T12:31:36.199246 #1] DEBUG -- : [Transformers::AzureDevops::Strategy]: Located transformer for 'matrix'
+D, [2024-06-03T12:31:36.199675 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'powershell'
+D, [2024-06-03T12:31:36.199968 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.200220 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'script'
+D, [2024-06-03T12:31:36.200457 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'PublishBuildArtifacts@1'
+D, [2024-06-03T12:31:36.200768 #1] DEBUG -- : [Transformers::AzureDevops::Strategy]: Located transformer for 'matrix'
+D, [2024-06-03T12:31:36.201164 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'UsePythonVersion@0'
+D, [2024-06-03T12:31:36.201653 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.201936 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'PublishBuildArtifacts@1'
+D, [2024-06-03T12:31:36.202244 #1] DEBUG -- : [Transformers::AzureDevops::Strategy]: Located transformer for 'matrix'
+D, [2024-06-03T12:31:36.202733 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.202994 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'UsePythonVersion@0'
+D, [2024-06-03T12:31:36.203224 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'bash'
+D, [2024-06-03T12:31:36.203497 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::Steps]: Located transformer for 'PublishBuildArtifacts@1'
+D, [2024-06-03T12:31:36.203804 #1] DEBUG -- : [Transformers::AzureDevops::Strategy]: Located transformer for 'matrix'
+D, [2024-06-03T12:31:36.204062 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::On]: Located transformer for 'continuousIntegration'
+D, [2024-06-03T12:31:36.204194 #1] DEBUG -- : [Transformers::AzureDevops::Pipeline::On]: Located transformer for 'pullRequest'
+I, [2024-06-03T12:31:36.337350 #1]  INFO -- : Output file(s):
+I, [2024-06-03T12:31:36.345179 #1]  INFO -- :   tmp/audit/pipelines/smurff/ExaScience.smurff/.github/workflows/exascience.smurff.yml
+I, [2024-06-03T12:31:36.346320 #1]  INFO -- :   tmp/audit/pipelines/smurff/ExaScience.smurff/.github/actions/ci_conda_steps/action.yml
+I, [2024-06-03T12:31:36.346977 #1]  INFO -- :   tmp/audit/pipelines/smurff/ExaScience.smurff/config.json
+I, [2024-06-03T12:31:36.347586 #1]  INFO -- :   tmp/audit/pipelines/smurff/ExaScience.smurff/source.yml
+I, [2024-06-03T12:31:36.348640 #1]  INFO -- :   tmp/audit/config.yml
+I, [2024-06-03T12:31:36.380060 #1]  INFO -- :   tmp/audit/workflow_usage.csv
+I, [2024-06-03T12:31:36.387054 #1]  INFO -- :   tmp/audit/audit_summary.md
+W, [2024-06-03T12:31:40.447131 #1]  WARN -- : Secrets redacted in file(s):
+W, [2024-06-03T12:31:40.447441 #1]  WARN -- :   tmp/audit/config.yml
+W, [2024-06-03T12:31:40.447657 #1]  WARN -- :   tmp/audit/pipelines/smurff/ExaScience.smurff/source.yml
+W, [2024-06-03T12:31:40.447912 #1]  WARN -- :   tmp/audit/pipelines/smurff/ExaScience.smurff/.github/workflows/exascience.smurff.yml
+W, [2024-06-03T12:31:40.448421 #1]  WARN -- :   tmp/audit/log/valet-20240603-122921.log
+W, [2024-06-03T12:31:40.448608 #1]  WARN -- :   tmp/audit/pipelines/smurff/ExaScience.smurff/config.json
+W, [2024-06-03T12:31:40.448922 #1]  WARN -- :   tmp/audit/log/valet-20240603-123132.log
+I, [2024-06-03T12:31:40.450847 #1]  INFO -- request: GET https://api.github.com/user
+I, [2024-06-03T12:31:40.672901 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:31:40.676522 #1]  INFO -- : Sending telemetry with transaction id '63383a46-77ec-4e6d-9d99-8743b4237853'

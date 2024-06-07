@@ -1,0 +1,46 @@
+# Logfile created on 2024-06-03 12:29:21 +0000 by logger.rb/v1.6.0
+I, [2024-06-03T12:29:21.403827 #1]  INFO -- : Using GitHub Features: Defaults
+I, [2024-06-03T12:29:21.403934 #1]  INFO -- : Auditing 'REDACTED_build'
+I, [2024-06-03T12:29:21.407066 #1]  INFO -- request: GET REDACTED_apis/distributedtask/tasks?api-version=5.0-preview
+I, [2024-06-03T12:29:21.752834 #1]  INFO -- response: Status 401
+I, [2024-06-03T12:29:21.786549 #1]  INFO -- request: GET REDACTED
+I, [2024-06-03T12:29:22.048730 #1]  INFO -- response: Status 200
+I, [2024-06-03T12:29:22.066317 #1]  INFO -- : Sending telemetry with transaction id '835c0ed2-d9c2-4c6b-ac88-8f93020fd4bb'
+E, [2024-06-03T12:29:22.388744 #1] ERROR -- : There was an error extracting pipelines from Azure DevOps
+Message: Unable to authenticate
+Please verify your access token is valid and contains the following scopes:
+Build (Read), Agent Pools (Read), Code (Read), Release (Read), Service Connections (Read), Task Groups (Read), Variable Groups (Read)
+(GET 401) Unauthorized: REDACTED_apis/distributedtask/tasks?api-version=5.0-preview
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/services/azure_devops/parse_response.rb:14:in `parse!'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/adapters/azure_devops/client.rb:139:in `block in fetch_all'
+<internal:kernel>:187:in `loop'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/adapters/azure_devops/client.rb:132:in `fetch_all'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/adapters/azure_devops/client.rb:80:in `fetch_known_tasks'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/transformers/azure_devops/utilities/task.rb:18:in `known_tasks'
+/usr/local/bundle/gems/sorbet-runtime-0.5.11108/lib/types/private/methods/call_validation.rb:256:in `bind_call'
+/usr/local/bundle/gems/sorbet-runtime-0.5.11108/lib/types/private/methods/call_validation.rb:256:in `validate_call'
+/usr/local/bundle/gems/sorbet-runtime-0.5.11108/lib/types/private/methods/_methods.rb:275:in `block in _on_method_added'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/services/azure_devops/extract_all_pipelines.rb:28:in `block in call'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/services/azure_devops/extract_all_pipelines.rb:25:in `each'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/services/azure_devops/extract_all_pipelines.rb:25:in `flat_map'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/services/azure_devops/extract_all_pipelines.rb:25:in `call'
+/usr/local/bundle/gems/sorbet-runtime-0.5.11108/lib/types/private/methods/call_validation.rb:256:in `bind_call'
+/usr/local/bundle/gems/sorbet-runtime-0.5.11108/lib/types/private/methods/call_validation.rb:256:in `validate_call'
+/usr/local/bundle/gems/sorbet-runtime-0.5.11108/lib/types/private/methods/_methods.rb:275:in `block in _on_method_added'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/adapters/provider_resolver.rb:66:in `call'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/commands/audit.rb:16:in `block in call'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/logger.rb:96:in `with_progress_bar'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/commands/audit.rb:15:in `call'
+/usr/local/bundle/gems/actions_importer-1.3.22039/lib/valet/subcommands/audit.rb:50:in `azure_devops'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor/command.rb:27:in `run'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor/invocation.rb:127:in `invoke_command'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor.rb:392:in `dispatch'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor/invocation.rb:116:in `invoke'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor.rb:243:in `block in subcommand'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor/command.rb:27:in `run'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor/invocation.rb:127:in `invoke_command'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor.rb:392:in `dispatch'
+/usr/local/bundle/gems/thor-1.2.2/lib/thor/base.rb:485:in `start'
+/usr/local/bundle/gems/actions_importer-1.3.22039/exe/actions-importer:19:in `<top (required)>'
+/usr/local/bundle/bin/actions-importer:25:in `load'
+/usr/local/bundle/bin/actions-importer:25:in `<main>'

@@ -1,0 +1,11 @@
+Pipeline,Action,File path
+smurff/ExaScience.smurff,actions/checkout@v4.1.0,tmp/audit/pipelines/smurff/ExaScience.smurff/.github/workflows/exascience.smurff.yml
+smurff/ExaScience.smurff,./.github/actions/ci_conda_steps,tmp/audit/pipelines/smurff/ExaScience.smurff/.github/workflows/exascience.smurff.yml
+smurff/ExaScience.smurff,actions/upload-artifact@v4.1.0,tmp/audit/pipelines/smurff/ExaScience.smurff/.github/workflows/exascience.smurff.yml
+smurff/ExaScience.smurff,actions/setup-python@v5.0.0,tmp/audit/pipelines/smurff/ExaScience.smurff/.github/workflows/exascience.smurff.yml
+
+Pipeline,Secret,File path
+
+
+Pipeline,Runner,File path
+smurff/ExaScience.smurff,macOS-latest,tmp/audit/pipelines/smurff/ExaScience.smurff/.github/workflows/exascience.smurff.yml

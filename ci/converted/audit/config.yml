@@ -1,0 +1,27 @@
+---
+composite_actions:
+# Usage examples
+# 1. Local composite action in actions folder (Default)
+# Results in `uses: ./.github/actions/my_template`
+# - name: my_template
+#   ref: main
+# 2. Local composite action in another directory
+# Results in `uses: ./path/to/action`
+# - name: my_template
+#   ref: main
+#   path: path/to/action
+# 3. Remote repository with composite action at the root of the repository
+# Results in `uses: org/repo@ref`
+# - name: my_template
+#   target_url: REDACTED
+#   ref: main
+# 4. Remote repository with composite action in another directory
+# Results in `uses: org/repo/path/to/action@ref`
+# - name: my_template
+#   target_url: REDACTED
+#   ref: main
+#   path: path/to/action
+- name: ci_conda_steps
+  ref: main
+- name: ci_conda_steps
+  ref: main

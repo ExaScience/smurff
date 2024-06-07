@@ -1,0 +1,20 @@
+name: ci_conda_steps
+runs:
+  using: composite
+  steps:
+  - name: Add conda to PATH
+    run: echo "##vso[task.prependpath]$CONDA/bin"
+    shell: bash
+  - name: Take ownership of conda installation
+    run: sudo chown -R $USER $CONDA
+    shell: bash
+  - name: Create Build environment
+    run: conda create --yes --quiet --name buildEnv conda-build
+    shell: bash
+  - name: Build using 'conda build'
+    run: |-
+      cd conda-recipes
+      source activate buildEnv
+      conda build --python ${{ matrix.PYTHON_VERSION }} -c vanderaa --output-folder ../conda_packages smurff
+    shell: bash
+  - uses: actions/upload-artifact@v4.1.0

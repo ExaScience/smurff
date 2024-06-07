@@ -1,0 +1,174 @@
+name: smurff/ExaScience.smurff
+on:
+  push:
+    branches:
+    - master
+    - release-*
+    - v*
+  pull_request:
+    branches:
+    - master
+env:
+  CPU_COUNT: 2
+  system_debug: 'false'
+jobs:
+  Ubuntu_1604_Apt:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 2
+      matrix:
+        build.type:
+        - Debug
+        - Release
+        - RelNoOpenMP
+        - RelWithDebInfo
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Apt install dependencies
+      run: |-
+        sudo add-apt-repository ppa:lkoppel/robotics
+        sudo apt-get update
+        sudo apt-get install -y wget ninja-build libblas-dev liblapack-dev liblapacke-dev libboost-all-dev libopenmpi-dev libeigen3-dev libhdf5-dev
+        sudo apt-get clean all
+    - name: Install HighFive
+      run: "wget -O HighFive.tar.gz REDACTED2.2.tar.gz \ntar xzf HighFive.tar.gz \nrm HighFive.tar.gz\ncd HighFive*\nmkdir build\ncd build \ncmake ..\nmake -j2\nsudo make install \ncd ../..\nrm -r HighFive*"
+    - name: Make Build Directory
+      run: mkdir build.${{ matrix.build.type }}
+#     # This item has no matching transformer
+#     - task: CMake@1
+#       inputs:
+#         workingDirectory: build.${{ matrix.build.type }}
+#         cmakeArgs: "-G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build.type }} .. -DENABLE_PYTHON=OFF -DBOOST_ROOT=/usr"
+    - name: Run ninja
+      run: |-
+        cd build.${{ matrix.build.type }}
+        ninja
+    - name: Run tests
+      run: |-
+        cd build.${{ matrix.build.type }}/bin
+        ./tests
+  Conda_Linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        PYTHON_VERSION:
+        - '3.7'
+        - '3.8'
+        - '3.9'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: "./.github/actions/ci_conda_steps"
+  Conda_macOS:
+    runs-on:
+      - self-hosted
+      - macOS-latest
+    env:
+      macOS_sdk_filename: "${{ runner.temp }}/MacOSX10.9.sdk.tar.gz"
+      macOS_sdk_url: REDACTED_SDKs/releases/download/v10.11.0.1/MacOSX10.9.sdk.tar.gz
+    strategy:
+      matrix:
+        PYTHON_VERSION:
+        - '3.7'
+        - '3.8'
+        - '3.9'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Install MacOSX10.9.sdk
+      run: |-
+        curl -L -o ${{ env.macOS_sdk_filename }} ${{ env.macOS_sdk_url }}
+        sudo mkdir -p /opt
+        sudo tar -xzvf ${{ env.macOS_sdk_filename }} -C /opt
+    - uses: "./.github/actions/ci_conda_steps"
+  Conda_Windows:
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        PYTHON_VERSION:
+        - '3.7'
+        - '3.8'
+        - '3.9'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Add conda to PATH
+      run: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+      shell: powershell
+    - name: Create Anaconda environment and install conda-build
+      run: conda create --yes --quiet --name buildEnv conda-build
+    - name: Build using "conda build"
+      run: |-
+        call activate buildEnv
+        cd conda-recipes
+        conda build --python ${{ matrix.PYTHON_VERSION }} -c vanderaa --output-folder ../conda_packages smurff
+    - uses: actions/upload-artifact@v4.1.0
+      with:
+        path: conda_packages
+  linux_wheel:
+    runs-on: ubuntu-latest
+    env:
+      CIBW_BUILD: cp${{ matrix.PYTHON_VERSION }}-manylinux_x86_64
+      CIBW_BUILD_VERBOSITY: 1
+      CIBW_ENVIRONMENT: CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DENABLE_TESTS=OFF' CPU_COUNT=${{ env.CPU_COUNT }}
+      CIBW_MANYLINUX_X86_64_IMAGE: vanderaa/manylinux2014_x86_64_smurff
+      CIBW_TEST_COMMAND: pytest {project}/python/test
+      CIBW_TEST_REQUIRES: pytest parameterized
+    strategy:
+      matrix:
+        PYTHON_VERSION:
+        - '36'
+        - '37'
+        - '38'
+        - '39'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - uses: actions/setup-python@v5.0.0
+    - name: Run cibuildwheel
+      run: |-
+        python3 -m pip install --upgrade pip
+        pip3 install cibuildwheel==1.10.0
+        cibuildwheel --output-dir wheelhouse .
+      shell: bash
+    - uses: actions/upload-artifact@v4.1.0
+      with:
+        path: wheelhouse
+  macos_wheel:
+    runs-on:
+      - self-hosted
+      - macOS-latest
+    env:
+      CIBW_BUILD: cp${{ matrix.PYTHON_VERSION }}-macosx_x86_64
+      CIBW_BUILD_VERBOSITY: 1
+      CIBW_ENVIRONMENT: CMAKE_ARGS='-DENABLE_BOOST=OFF -DENABLE_CMDLINE=OFF -DENABLE_TESTS=OFF -DCMAKE_PREFIX_PATH=/usr/local/opt/lapack' CPU_COUNT=${{ env.CPU_COUNT }}
+      CIBW_TEST_COMMAND: pytest {project}/python/test
+      CIBW_TEST_REQUIRES: pytest parameterized
+    strategy:
+      matrix:
+        PYTHON_VERSION:
+        - '36'
+        - '37'
+        - '38'
+        - '39'
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4.1.0
+    - name: Install dependencies using HomeBrew
+      run: |-
+        brew install eigen
+        brew install lapack
+        brew install pybind11
+        brew install ci/highfive.rb
+      shell: bash
+    - uses: actions/setup-python@v5.0.0
+    - name: Run cibuildwheel
+      run: |-
+        python3 -m pip install --upgrade pip
+        pip3 install cibuildwheel==1.10.0
+        cibuildwheel --output-dir wheelhouse .
+      shell: bash
+    - uses: actions/upload-artifact@v4.1.0
+      with:
+        path: wheelhouse

@@ -1,0 +1,159 @@
+{
+  "triggers": [
+    {
+      "branchFilters": [
+        "+master",
+        "+release-*",
+        "+v*"
+      ],
+      "pathFilters": [
+
+      ],
+      "settingsSourceType": 2,
+      "batchChanges": false,
+      "maxConcurrentBuildsPerBranch": 1,
+      "triggerType": "continuousIntegration"
+    },
+    {
+      "branchFilters": [
+        "+master"
+      ],
+      "forks": {
+        "enabled": true,
+        "allowSecrets": false,
+        "allowFullAccessToken": false
+      },
+      "pathFilters": [
+
+      ],
+      "requireCommentsForNonTeamMembersOnly": false,
+      "requireCommentsForNonTeamMemberAndNonContributors": false,
+      "isCommentRequiredForPullRequest": false,
+      "pipelineTriggerSettings": {
+        "forkProtectionEnabled": false,
+        "buildsEnabledForForks": false,
+        "enforceJobAuthScopeForForks": false,
+        "enforceNoAccessToSecretsFromForks": false,
+        "isCommentRequiredForPullRequest": false,
+        "requireCommentsForNonTeamMembersOnly": false,
+        "requireCommentsForNonTeamMemberAndNonContributors": false
+      },
+      "triggerType": "pullRequest"
+    }
+  ],
+  "variables": {
+    "system.debug": {
+      "value": "false",
+      "allowOverride": true
+    }
+  },
+  "properties": {
+  },
+  "tags": [
+
+  ],
+  "_links": {
+    "self": {
+      "href": "REDACTED67baa741-8ede-429d-a31b-08e8fea0c141/_apis/build/Definitions/1?revision=3"
+    },
+    "web": {
+      "href": "REDACTED67baa741-8ede-429d-a31b-08e8fea0c141/_build/definition?definitionId=1"
+    },
+    "editor": {
+      "href": "REDACTED67baa741-8ede-429d-a31b-08e8fea0c141/_build/designer?id=1&_a=edit-build-definition"
+    },
+    "badge": {
+      "href": "REDACTED67baa741-8ede-429d-a31b-08e8fea0c141/_apis/build/status/1"
+    }
+  },
+  "comment": "Change YAML file to ./ci/azure-pipelines.yml",
+  "jobAuthorizationScope": "projectCollection",
+  "jobTimeoutInMinutes": 60,
+  "jobCancelTimeoutInMinutes": 5,
+  "badgeEnabled": true,
+  "process": {
+    "yamlFilename": "./ci/azure-pipelines.yml",
+    "type": 2
+  },
+  "repository": {
+    "properties": {
+      "apiUrl": "REDACTED",
+      "branchesUrl": "REDACTED",
+      "cloneUrl": "REDACTED",
+      "fullName": "ExaScience/smurff",
+      "manageUrl": "REDACTED",
+      "refsUrl": "REDACTED",
+      "defaultBranch": "master",
+      "connectedServiceId": "0ebc2ba1-f090-4633-a54c-06f6baa0a152",
+      "isPrivate": "False",
+      "isFork": "True",
+      "ownerAvatarUrl": "REDACTED2.githubusercontent.com/u/5629178?v=4",
+      "lastUpdated": "12/03/2018 14:23:13",
+      "nodeId": "MDEwOlJlcG9zaXRvcnk3MDkwNjM0MA==",
+      "hasAdminPermissions": "True",
+      "safeOwnerId": "5629178",
+      "safeOwnerName": "ExaScience",
+      "safeRepository": "ExaScience/smurff",
+      "ownerIsAUser": "False",
+      "reportBuildStatus": "true"
+    },
+    "id": "ExaScience/smurff",
+    "type": "GitHub",
+    "name": "ExaScience/smurff",
+    "url": "REDACTED",
+    "defaultBranch": "master",
+    "clean": null,
+    "checkoutSubmodules": false
+  },
+  "quality": "definition",
+  "authoredBy": {
+    "displayName": "Tom Vander Aa (imec)",
+    "url": "REDACTED4.vssps.visualstudio.com/Ade9a5bea-f45a-4318-bf18-f4fb48cd0dc6/_apis/Identities/2e41751e-6ea3-635b-b614-7e79eba505d0",
+    "_links": {
+      "avatar": {
+        "href": "REDACTED_apis/GraphProfile/MemberAvatars/aad.MmU0MTc1MWUtNmVhMy03MzViLWI2MTQtN2U3OWViYTUwNWQw"
+      }
+    },
+    "id": "2e41751e-6ea3-635b-b614-7e79eba505d0",
+    "uniqueName": "vanderaa@imec.be",
+    "imageUrl": "REDACTED_apis/GraphProfile/MemberAvatars/aad.MmU0MTc1MWUtNmVhMy03MzViLWI2MTQtN2U3OWViYTUwNWQw",
+    "descriptor": "aad.MmU0MTc1MWUtNmVhMy03MzViLWI2MTQtN2U3OWViYTUwNWQw"
+  },
+  "drafts": [
+
+  ],
+  "queue": {
+    "_links": {
+      "self": {
+        "href": "REDACTED_apis/build/Queues/6"
+      }
+    },
+    "id": 6,
+    "name": "Hosted Ubuntu 1604",
+    "url": "REDACTED_apis/build/Queues/6",
+    "pool": {
+      "id": 6,
+      "name": "Hosted Ubuntu 1604",
+      "isHosted": true
+    }
+  },
+  "id": 1,
+  "name": "ExaScience.smurff",
+  "url": "REDACTED67baa741-8ede-429d-a31b-08e8fea0c141/_apis/build/Definitions/1?revision=3",
+  "uri": "vstfsREDACTED1",
+  "path": "\\",
+  "type": "build",
+  "queueStatus": "enabled",
+  "revision": 3,
+  "createdDate": "2020-01-25T08:40:07.98Z",
+  "project": {
+    "id": "67baa741-8ede-429d-a31b-08e8fea0c141",
+    "name": "smurff",
+    "description": "Automatic testing and packaging of REDACTED",
+    "url": "REDACTED_apis/projects/67baa741-8ede-429d-a31b-08e8fea0c141",
+    "state": "wellFormed",
+    "revision": 12,
+    "visibility": "public",
+    "lastUpdateTime": "2021-01-05T08:33:31.35Z"
+  }
+}
