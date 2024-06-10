@@ -76,12 +76,10 @@ musllinux-x86_64-image = "vanderaa/musllinux_1_2_x86_64_smurff"
 skip = "pp* cp36-* cp312-* *-win32 *i686"
 test-command = 'pytest {project}/python/test'
 test-requires = 'parameterized pytest'
-build-verbosity = 1
-
-[tool.cibuildwheel.macos.environment]
-CMAKE_PREFIX_PATH = "$(brew --prefix)/opt/openblas"
+build-verbosity = 3
 
 [tool.cibuildwheel.macos]
 before-all = [
-        "brew install --formulae eigen openblas ci/highfive.rb"
-    ]
+    "brew install --formulae eigen openblas ci/highfive.rb",
+    "brew link --force openblas"
+]
