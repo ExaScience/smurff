@@ -17,11 +17,11 @@ jobs:
             macos-target: unused
             openblas-path: unused
           - os: macos-13
-            macos-target: 13.0
-            openblas-path: /usr/local/opt/openblas
+            macos-target: "13.0"
+            openblas-path: "/usr/local/opt/openblas"
           - os: macos-14
-            macos-target: 14.0
-            openblas-path: /opt/homebrew/opt/openblas
+            macos-target: "14.0"
+            openblas-path: "/opt/homebrew/opt/openblas"
 
     steps:
       - uses: actions/checkout@v4
