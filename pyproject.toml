@@ -18,7 +18,7 @@ logging.level = "INFO"
 [tool.scikit-build.cmake.define]
 ENABLE_BOOST = "OFF"
 ENABLE_CMDLINE = "OFF"
-ENABLE_TESTS = "OFF"
+ENABLE_TESTS = "ON"
 ENABLE_OPENBLAS = "ON"
 
 [tool.setuptools_scm]  # Section required
