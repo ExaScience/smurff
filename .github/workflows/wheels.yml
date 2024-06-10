@@ -12,8 +12,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13, macos-14]
-        # os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        include:
+          - os: ubuntu-latest
+            macos-target: unused
+          - os: macos-13
+            macos-target: 13.0
+          - os: macos-14
+            macos-target: 14.0
 
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +32,7 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=${{ (matrix.os == 'macos-14') && '14.0' || '13.0' }}
+          CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=${{ matrix.macos-target }}
 
       - uses: actions/upload-artifact@v4
         with:
