@@ -80,7 +80,6 @@ build-verbosity = 1
 
 [tool.cibuildwheel.macos.environment]
 CMAKE_PREFIX_PATH = "$(brew --prefix)/opt/openblas"
-MACOSX_DEPLOYMENT_TARGET = "14.0"
 
 [tool.cibuildwheel.macos]
 before-all = [

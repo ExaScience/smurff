@@ -26,6 +26,8 @@ jobs:
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_ENVIRONMENT: MACOSX_DEPLOYMENT_TARGET=${{ (matrix.os == 'macos-14') && '14.0' || '13.0' }}
 
       - uses: actions/upload-artifact@v4
         with:
