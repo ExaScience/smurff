@@ -4,9 +4,9 @@ python:
     - 3.10
     - 3.11
 
-blas_impl:      # [linux64 or win64]
-    - openblas  # [linux64 or win64]
-    - mkl       # [linux64 or win64]
+blas_impl:
+    - openblas
+    - mkl
 
 hdf5:
     - 1.10.4
