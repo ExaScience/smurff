@@ -19,7 +19,6 @@ logging.level = "INFO"
 ENABLE_BOOST = "OFF"
 ENABLE_CMDLINE = "OFF"
 ENABLE_TESTS = "OFF"
-ENABLE_OPENBLAS = "ON"
 
 [tool.setuptools_scm]  # Section required
 write_to = "python/smurff/_version.py"
