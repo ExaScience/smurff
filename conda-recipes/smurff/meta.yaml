@@ -18,7 +18,8 @@ requirements:
     - llvm-openmp             # [osx]
   host:
     - llvm-openmp             # [osx]
-    - mkl-devel               # [(linux64 or win64) and blas_impl == 'mkl']
+    - mkl-devel               # [blas_impl == 'mkl']
+    - openblas                # [blas_impl != 'mkl']
     - eigen
     - libboost
     - pybind11
@@ -29,7 +30,8 @@ requirements:
     - setuptools_scm
   run:
     - python {{ python }}
-    - mkl                   # [(linux64 or win64) and blas_impl == 'mkl']
+    - mkl                   # [blas_impl == 'mkl']
+    - openblas              # [blas_impl != 'mkl']
     - libboost              # [not win]
     - numpy
     - scipy
