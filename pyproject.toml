@@ -79,6 +79,6 @@ build-verbosity = 3
 
 [tool.cibuildwheel.macos]
 before-all = [
-    "brew install --formulae eigen openblas ci/highfive.rb",
-    "brew link --force openblas"
+    "brew install --formulae eigen ci/highfive.rb",
+    "pip install
 ]
