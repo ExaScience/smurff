@@ -10,6 +10,9 @@ jobs:
   conda-build:
     name: Build Conda Package
     runs-on: "ubuntu-latest"
+    defaults:
+      run:
+        shell: bash -el {0}
     steps:
       - uses: actions/checkout@v4
       - uses: conda-incubator/setup-miniconda@v3
