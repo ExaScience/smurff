@@ -18,6 +18,9 @@ jobs:
           channels: conda-forge,spyder-ide
           activate-environment: devtools
           environment-file: conda-recipes/devtools.yml
+      - run: conda info
+      - run: conda list
+      - run: conda config --show
       - name: Conda Info
         run: |
           conda info
