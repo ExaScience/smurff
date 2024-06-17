@@ -21,7 +21,7 @@ requirements:
     - mkl-devel               # [blas_impl == 'mkl']
     - openblas                # [blas_impl != 'mkl']
     - eigen
-    - libboost
+    - libboost-devel
     - pybind11
     - highfive >=2.2
     - h5py
