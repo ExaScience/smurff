@@ -15,12 +15,6 @@ sdist.include = ["python/smurff/_version.py"]
 cmake.verbose = true
 logging.level = "INFO"
 
-[tool.scikit-build.cmake.define]
-ENABLE_BOOST = "OFF"
-ENABLE_CMDLINE = "OFF"
-ENABLE_TESTS = "OFF"
-ENABLE_OPENBLAS = "ON"
-
 [tool.setuptools_scm]  # Section required
 write_to = "python/smurff/_version.py"
 
@@ -78,6 +72,12 @@ skip = "pp* cp36-* cp37-* cp312-* *-win32 *i686"
 test-command = 'pytest {project}/python/test'
 test-requires = 'parameterized pytest'
 build-verbosity = 3
+
+[tool.cibuildwheel.config-settings]
+"cmake.define.ENABLE_OPENBLAS" = "ON"
+"cmake.define.ENABLE_BOOST" = "OFF"
+"cmake.define.ENABLE_CMDLINE" = "OFF"
+"cmake.define.ENABLE_TEST" = "OFF"
 
 [tool.cibuildwheel.macos]
 before-all = [
