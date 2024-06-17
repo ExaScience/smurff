@@ -14,8 +14,13 @@ if [ $HDF5_VERSION == "detect" ]; then
     echo "Detected version: $HDF5_VERSION"
 fi
 
+HDF5_VERSION_ARRAY=( ${HDF5_VERSION//./ } )                   # replace points, split into array
+HDF5_MAJOR=( ${HDF5_VERSION_ARRAY[0]} )
+HDF5_MINOR=( ${HDF5_VERSION_ARRAY[1]} )
+HDF5_RELEASE=( ${HDF5_VERSION_ARRAY[2]} )
+
 # Download URL
-HDF5_URL="https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5_VERSION:0:1}/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz"
+HDF5_URL="https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-${HDF5_MAJOR}.${HDF5_MINOR}/hdf5-$HDF5_VERSION/src/hdf5-$HDF5_VERSION.tar.gz"
 
 # Create a directory for the download
 mkdir -p hdf5_build
@@ -41,7 +46,7 @@ echo "Configuring HDF5 version $HDF5_VERSION..."
 ./configure --prefix=/usr/local/hdf5-$HDF5_VERSION
 
 echo "Building HDF5 version $HDF5_VERSION..."
-make
+make -j
 
 echo "Installing HDF5 version $HDF5_VERSION..."
 sudo make install
