@@ -70,9 +70,10 @@ musllinux-x86_64-image = "vanderaa/musllinux_1_2_x86_64_smurff"
 # We skip these:
 # - PyPy: never tested, pandas does not seem to work
 # - CPython 3.6: unsupported by scikit_build_core
+# - CPython 3.7: unsupported by h5sparse
 # - CPython 3.12: removed pkg_resources in h5sparse
 # - i686 and win32: we do not care about 32bit
-skip = "pp* cp36-* cp312-* *-win32 *i686"
+skip = "pp* cp36-* cp37-* cp312-* *-win32 *i686"
 test-command = 'pytest {project}/python/test'
 test-requires = 'parameterized pytest'
 build-verbosity = 3
