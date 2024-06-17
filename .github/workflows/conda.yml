@@ -18,6 +18,9 @@ jobs:
           channels: conda-forge,spyder-ide
           activate-environment: devtools
           environment-file: conda-recipes/devtools.yml
+      - name: Conda Info
+        run: |
+          conda info
       - name: Run 'conda build'
         run: |
           conda build -c vanderaa smurff
