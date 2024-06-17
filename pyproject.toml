@@ -77,7 +77,7 @@ build-verbosity = 3
 "cmake.define.ENABLE_OPENBLAS" = "ON"
 "cmake.define.ENABLE_BOOST" = "OFF"
 "cmake.define.ENABLE_CMDLINE" = "OFF"
-"cmake.define.ENABLE_TEST" = "OFF"
+"cmake.define.ENABLE_TESTS" = "OFF"
 
 [tool.cibuildwheel.macos]
 before-all = [
