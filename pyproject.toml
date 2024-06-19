@@ -44,6 +44,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 dependencies = [
+    "h5py",
     "h5sparse-tensor",
     "numpy",
     "pandas",
@@ -73,11 +74,21 @@ test-command = 'pytest {project}/python/test'
 test-requires = 'parameterized pytest'
 build-verbosity = 3
 
-[tool.cibuildwheel.config-settings]
-"cmake.define.ENABLE_OPENBLAS" = "ON"
+[tool.cibuildwheel.macos.config-settings]
+"cmake.define.HDF5_ROOT" = "/usr/local/hdf5"
+"cmake.define.ENABLE_BLAS" = "ON"
 "cmake.define.ENABLE_BOOST" = "OFF"
 "cmake.define.ENABLE_CMDLINE" = "OFF"
 "cmake.define.ENABLE_TESTS" = "OFF"
+"cmake.define.BLA_VENDOR" = "Apple"
+
+[tool.cibuildwheel.linux.config-settings]
+"cmake.define.HDF5_ROOT" = "/usr/local/hdf5"
+"cmake.define.ENABLE_BLAS" = "ON"
+"cmake.define.ENABLE_BOOST" = "OFF"
+"cmake.define.ENABLE_CMDLINE" = "OFF"
+"cmake.define.ENABLE_TESTS" = "OFF"
+"cmake.define.BLA_VENDOR" = "OpenBLAS"
 
 [tool.cibuildwheel.macos]
-before-all = "ci/buildwheel/install_deps.sh"
+before-all = "python ci/buildwheel/install_hdf5.py"
