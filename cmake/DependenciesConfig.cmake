@@ -56,13 +56,6 @@ macro(configure_blas)
 
     list(APPEND ALGEBRA_LIBS ${BLAS_LIBRARIES})
 
-macro(configure_openblas)
-  message ("Dependency check for openblas...")
-
-  if(MSVC)
-  set(BLAS_LIBRARIES  $ENV{BLAS_LIBRARIES})
-  set(BLAS_INCLUDES $ENV{BLAS_INCLUDES})
-  set(BLAS_FOUND ON)
   else()
     message(STATUS "BLAS NOT found" )
   endif (BLAS_FOUND)
@@ -73,9 +66,12 @@ macro(configure_openblas)
     message(STATUS "LAPACK include: ${LAPACK_INCLUDE_DIR}" )
     add_definitions(-DEIGEN_USE_LAPACK)
 
-  message(STATUS BLAS: ${BLAS_LIBRARIES} )
-
-endmacro(configure_openblas)
+    # needed because MSVC does not have support for c-type _Complex
+    add_definitions(-Dlapack_complex_float=std::complex<float> -Dlapack_complex_double=std::complex<double>)
+    list(APPEND ALGEBRA_LIBS ${LAPACK_LIBRARIES})
+  else()
+    message(STATUS "LAPACK NOT found" )
+  endif (LAPACK_FOUND)
 
   find_package(LAPACKE)
   if (LAPACKE_FOUND)
@@ -89,11 +85,8 @@ endmacro(configure_openblas)
 
   message(STATUS "all algebra libraries: ${ALGEBRA_LIBS}" )
 
-  add_definitions(-DEIGEN_USE_MKL_ALL)
 
-  message(STATUS "MKL libraries: ${MKL_LIBRARIES}" )
-  message(STATUS "MKL include: ${MKL_INCLUDE_DIR}" )
-endmacro(configure_mkl)
+endmacro(configure_blas)
 
 macro(configure_eigen)
   message ("Dependency check for eigen...")
@@ -134,6 +127,6 @@ endmacro(configure_boost)
 macro(configure_python)
     if(ENABLE_PYTHON)
       set(PYBIND11_NEWPYTHON ON)
-        find_package(pybind11 CONFIG REQUIRED)
+      find_package(pybind11 CONFIG REQUIRED)
     endif()
 endmacro(configure_python)
