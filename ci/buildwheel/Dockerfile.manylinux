@@ -1,0 +1,17 @@
+FROM quay.io/pypa/manylinux2014_x86_64
+
+RUN yum -y install wget eigen3-devel openblas-devel hdf5-devel && \
+   yum clean all
+
+#install HighFive
+RUN wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.2.tar.gz && \
+    tar xzf HighFive.tar.gz && \
+    rm HighFive.tar.gz && \
+    cd HighFive* && \
+    mkdir build && \
+    cd build && \
+    cmake .. -DHIGHFIVE_USE_BOOST=OFF && \
+    make -j2 && \
+    make install && \
+    cd ../.. && \
+    rm -r HighFive*
