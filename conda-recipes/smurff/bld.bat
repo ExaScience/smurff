@@ -1,3 +1,5 @@
+setlocal
+
 if "%blas_impl%"=="mkl" (
     set "SKBUILD_CMAKE_ARGS=-DENABLE_MKL=ON -DENABLE_OPENBLAS=OFF"
 ) else (
@@ -7,4 +9,5 @@ if "%blas_impl%"=="mkl" (
 echo extra CMAKE_ARGS: %SKBUILD_CMAKE_ARGS%
 
 %PYTHON% -m pip install . --no-deps -vv
-if errorlevel 1 exit 1
+
+endlocal
