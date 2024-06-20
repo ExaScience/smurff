@@ -15,6 +15,13 @@ sdist.include = ["python/smurff/_version.py"]
 cmake.verbose = true
 logging.level = "INFO"
 
+[tool.scikit-build.cmake.define]
+HDF5_ROOT = "/usr/local/hdf5"
+ENABLE_BOOST = "ON"
+ENABLE_CMDLINE = "ON"
+ENABLE_TESTS = "ON"
+ENABLE_BLAS = "ON"
+
 [tool.setuptools_scm]  # Section required
 write_to = "python/smurff/_version.py"
 
@@ -83,7 +90,6 @@ build-verbosity = 3
 "cmake.define.BLA_VENDOR" = "Apple"
 
 [tool.cibuildwheel.linux.config-settings]
-"cmake.define.HDF5_ROOT" = "/usr/local/hdf5"
 "cmake.define.ENABLE_BLAS" = "ON"
 "cmake.define.ENABLE_BOOST" = "OFF"
 "cmake.define.ENABLE_CMDLINE" = "OFF"
@@ -91,4 +97,4 @@ build-verbosity = 3
 "cmake.define.BLA_VENDOR" = "OpenBLAS"
 
 [tool.cibuildwheel.macos]
-before-all = "ci/buildwheel/install_hdf5.sh"
+before-all = "ci/buildwheel/install_deps.sh"
