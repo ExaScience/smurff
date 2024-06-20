@@ -6,3 +6,5 @@ target_link_libraries (wrapper PRIVATE smurff-cpp pybind11::module
                             HighFive
                             ${OpenMP_CXX_LIBRARIES}
                      )
+
+install(TARGETS wrapper LIBRARY DESTINATION smurff)

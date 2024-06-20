@@ -1,3 +1,5 @@
+#ifdef HAVE_BOOST
+
 #include <cstdio>
 #include <fstream>
 
@@ -35,10 +37,10 @@ static Config& prepareResultDir(Config &config, const std::string &dir)
                               return special_chars.find(c) != std::string::npos;
                            }
             ), save_dir.end());
-  
+
   output_dir /= fs::path(save_dir);
   fs::path output_filename = output_dir / "output.h5";
- 
+
   config.setSaveFreq(1);
   config.setSaveName(output_filename.string());
   fs::remove_all(output_dir);
@@ -239,3 +241,5 @@ TEST_CASE("PredictSession/Features/2", TAG_MATRIX_TESTS) {
 
 } // namespace test
 } // namespace smurff
+
+#endif // HAVE_BOOST

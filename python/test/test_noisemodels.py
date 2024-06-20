@@ -41,7 +41,7 @@ def train_test(density, nmodes, side_info):
     np.random.seed(seed)
     Us = [ np.random.randn(i*4, 1) for i in range(1,nmodes+1) ]
     subscripts = [ [i+1, 0] for i in range(nmodes) ]
-    Y = np.einsum(*[j for i in zip(Us,subscripts) for j in i]) 
+    Y = np.einsum(*[j for i in zip(Us,subscripts) for j in i])
     if density < 1.:
         _, Y = smurff.make_train_test(Y, density, seed=seed)
     Ytrain, Ytest = smurff.make_train_test(Y, 0.5, seed=seed)
@@ -72,8 +72,7 @@ def test_noise_model(density, nmodes, side_info, noise_model):
     predictions = trainSession.getTestPredictions()
     assert Ytest.nnz == len(predictions)
     if isinstance(nm, smurff.ProbitNoise):
-        assert trainSession.getStatus().auc_avg <= 1. 
-        assert trainSession.getStatus().auc_avg >= 0. 
+        assert trainSession.getStatus().auc_avg <= 1.
+        assert trainSession.getStatus().auc_avg >= 0.
     else:
         assert trainSession.getRmseAvg() < 10.
-    return predictions

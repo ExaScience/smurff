@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.5.0)
+cmake_minimum_required (VERSION 3.15)
 
 project (Smurff)
 
@@ -7,8 +7,6 @@ MESSAGE("smurff")
 # OPTIONS
 
 OPTION(ENABLE_BLAS "Look for any BLAS" ON)
-OPTION(ENABLE_OPENBLAS "Look only for OPENBLAS library" OFF)
-OPTION(ENABLE_MKL "Look only for MKL library" OFF)
 
 OPTION(ENABLE_PROFILING "Enable performance counters" OFF)
 OPTION(ENABLE_ASAN "Enable address sanitizer" OFF)
@@ -117,7 +115,7 @@ if (MSVC OR MSVC_IDE OR MSVC_VERSION OR MSVC60 OR MSVC70 OR MSVC71 OR MSVC80 OR 
    #hide some irritating c++ unsafe function warnings
    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-   
+
    add_definitions(-D_WINDOWS)
 
    set (CMAKE_EXE_LINKER_FLAGS "/SAFESEH:NO")
@@ -143,7 +141,7 @@ elseif (CMAKE_COMPILER_IS_GNUCXX OR APPLE)
       add_compile_options(-fno-omit-frame-pointer -fsanitize=address)
       add_link_options(-fno-omit-frame-pointer -fsanitize=address)
    endif()
-   
+
    if (ENABLE_TSAN)
       add_compile_options(-fno-omit-frame-pointer -fsanitize=thread)
       add_link_options(-fno-omit-frame-pointer -fsanitize=thread)
@@ -285,27 +283,11 @@ if(ENABLE_MPI)
   configure_mpi()
 endif()
 
-set(ALGEBRA_LIB_FOUND OFF)
-
-if(${ENABLE_OPENBLAS})
-  if(${ENABLE_MKL})
-    message(FATAL_ERROR "You cannot both enable OpenBLAS and MKL")
-  endif()
-  configure_openblas()
-  set(ALGEBRA_LIBS ${BLAS_LIBRARIES})
-  set(ALGEBRA_LIB_NAME OPENBLAS)
-elseif(ENABLE_MKL)
-  configure_mkl()
-  set(ALGEBRA_LIBS ${MKL_LIBRARIES})
-  set(ALGEBRA_LIB_NAME MKL)
-elseif(ENABLE_BLAS)
-  configure_lapack()
-  set(ALGEBRA_LIBS ${LAPACKE_LIBRARIES} ${LAPACK_LIBRARIES})
-  set(ALGEBRA_LIB_NAME LAPACK)
+if(${ENABLE_BLAS})
+  configure_blas()
 endif()
 
-message(STATUS "Algebra lib name:  ${ALGEBRA_LIB_NAME}")
-message(STATUS "Algebra libs: ${ALGEBRA_LIBS}")
+
 
 if(${ENABLE_PROFILING})
     add_definitions(-DPROFILING)
@@ -320,7 +302,7 @@ enable_testing()
 add_test( unittests tests )
 
 if(${EXTERNAL_DATA})
-    file(DOWNLOAD  http://homes.esat.kuleuven.be/~jsimm/chembl-IC50-346targets.mm 
+    file(DOWNLOAD  http://homes.esat.kuleuven.be/~jsimm/chembl-IC50-346targets.mm
             ${CMAKE_CURRENT_BINARY_DIR}/jsimm-data/chembl-IC50-346targets.mm
             EXPECTED_HASH SHA256=10c3e1f989a7a415a585a175ed59eeaa33eff66272d47580374f26342cddaa88
         )

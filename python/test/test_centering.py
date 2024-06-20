@@ -67,7 +67,7 @@ class TestCentering(unittest.TestCase):
     def test_sparse_matrix_rows_scaling(self):
         origin_matrix_rows = np.array([0, 0, 1, 1, 2,  2])
         origin_matrix_cols = np.array([0, 1, 0, 1, 0,  1])
-        origin_matrix_vals = np.array([1, 2, 5, 6, 9, 10], dtype=sp.float64)
+        origin_matrix_vals = np.array([1, 2, 5, 6, 9, 10], dtype=np.float64)
         origin_matrix = sp.sparse.coo_matrix((origin_matrix_vals, (origin_matrix_rows, origin_matrix_cols)), shape=(3, 4))
 
         origin_matrix_std = std(origin_matrix, 'rows')
@@ -104,7 +104,7 @@ class TestCentering(unittest.TestCase):
     def test_sparse_matrix_cols_scaling(self):
         origin_matrix_rows = np.array([0, 0, 1, 1, 2,  2])
         origin_matrix_cols = np.array([0, 1, 2, 3, 0,  1])
-        origin_matrix_vals = np.array([1, 2, 7, 8, 9, 10], dtype=sp.float64)
+        origin_matrix_vals = np.array([1, 2, 7, 8, 9, 10], dtype=np.float64)
         origin_matrix = sp.sparse.coo_matrix((origin_matrix_vals, (origin_matrix_rows, origin_matrix_cols)), shape=(3, 4))
 
         origin_matrix_std = std(origin_matrix, 'cols')
@@ -141,7 +141,7 @@ class TestCentering(unittest.TestCase):
     def test_sparse_matrix_global_scaling(self):
         origin_matrix_rows = np.array([0, 0, 1, 1, 2,  2])
         origin_matrix_cols = np.array([0, 1, 2, 3, 0,  1])
-        origin_matrix_vals = np.array([1, 2, 7, 8, 9, 10], dtype=sp.float64)
+        origin_matrix_vals = np.array([1, 2, 7, 8, 9, 10], dtype=np.float64)
         origin_matrix = sp.sparse.coo_matrix((origin_matrix_vals, (origin_matrix_rows, origin_matrix_cols)), shape=(3, 4))
 
         origin_matrix_std = std(origin_matrix, 'global')
@@ -172,7 +172,7 @@ class TestCentering(unittest.TestCase):
     def test_sparse_matrix_none_scaling(self):
         origin_matrix_rows = np.array([0, 0, 1, 1, 2,  2])
         origin_matrix_cols = np.array([0, 1, 2, 3, 0,  1])
-        origin_matrix_vals = np.array([1, 2, 7, 8, 9, 10], dtype=sp.float64)
+        origin_matrix_vals = np.array([1, 2, 7, 8, 9, 10], dtype=np.float64)
         origin_matrix = sp.sparse.coo_matrix((origin_matrix_vals, (origin_matrix_rows, origin_matrix_cols)), shape=(3, 4))
         origin_matrix_std = std(origin_matrix, 'none')
         scaled_matrix = scale(origin_matrix, 'none', origin_matrix_std)

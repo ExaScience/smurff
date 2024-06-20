@@ -10,7 +10,7 @@ macro(configure_mpi)
   else()
     message(STATUS "MPI not found")
   endif()
-   
+
 endmacro(configure_mpi)
 
 macro(configure_openmp)
@@ -37,53 +37,60 @@ macro(configure_openmp)
   else()
     message ("Skipped check for OpenMP (Debug/NoOpenMP build)")
     set(OPENMP_FOUND FALSE)
-  endif()   
+  endif()
 endmacro(configure_openmp)
 
-macro(configure_lapack)
-  message ("Dependency check for lapack...")
-  find_package(LAPACK REQUIRED)
-  find_package(LAPACKE REQUIRED)
-  add_definitions(-DEIGEN_USE_BLAS -DEIGEN_USE_LAPACKE)
-  # needed because MSVC does not have support for c-type _Complex
-  add_definitions(-Dlapack_complex_float=std::complex<float> -Dlapack_complex_double=std::complex<double>)
-  message(STATUS LAPACK: ${LAPACK_LIBRARIES})
-endmacro(configure_lapack)
+macro(configure_blas)
+  message ("Dependency check for BLAS/LAPACK/LAPACKE...")
 
-macro(configure_openblas)
-  message ("Dependency check for openblas...")
-  
-  if(MSVC)
-  set(BLAS_LIBRARIES  $ENV{BLAS_LIBRARIES})
-  set(BLAS_INCLUDES $ENV{BLAS_INCLUDES})
-  set(BLAS_FOUND ON)
+  find_package(BLAS)
+  if (BLAS_FOUND)
+    message(STATUS "BLAS libraries: ${BLAS_LIBRARIES}" )
+    message(STATUS "BLAS include: ${BLAS_INCLUDE_DIR}" )
+    add_definitions(-DEIGEN_USE_BLAS)
+
+    if (BLA_VENDOR MATCHES "Intel10")
+      add_definitions(-DEIGEN_USE_MKL_ALL)
+      message(STATUS "MKL Found" )
+    endif()
+
+    list(APPEND ALGEBRA_LIBS ${BLAS_LIBRARIES})
+
   else()
-  set(BLA_VENDOR "OpenBLAS")
-  find_package( BLAS REQUIRED )
-  endif()
+    message(STATUS "BLAS NOT found" )
+  endif (BLAS_FOUND)
 
-  add_definitions(-DEIGEN_USE_BLAS -DEIGEN_USE_LAPACKE)
+  find_package(LAPACK)
+  if (LAPACK_FOUND)
+    message(STATUS "LAPACK libraries: ${LAPACK_LIBRARIES}" )
+    message(STATUS "LAPACK include: ${LAPACK_INCLUDE_DIR}" )
+    add_definitions(-DEIGEN_USE_LAPACK)
 
-  message(STATUS BLAS: ${BLAS_LIBRARIES} )
- 
-endmacro(configure_openblas)
+    # needed because MSVC does not have support for c-type _Complex
+    add_definitions(-Dlapack_complex_float=std::complex<float> -Dlapack_complex_double=std::complex<double>)
+    list(APPEND ALGEBRA_LIBS ${LAPACK_LIBRARIES})
+  else()
+    message(STATUS "LAPACK NOT found" )
+  endif (LAPACK_FOUND)
 
-macro(configure_mkl)
-  message ("Dependency check for MKL (using MKL SDL)...")
-  find_library (MKL_LIBRARIES "mkl_rt" HINTS ENV LD_LIBRARY_PATH REQUIRED)
-  find_PATH (MKL_INCLUDE_DIR "mkl.h" HINTS ENV CPATH REQUIRED)
+  find_package(LAPACKE)
+  if (LAPACKE_FOUND)
+    message(STATUS "LAPACKE libraries: ${LAPACKE_LIBRARIES}" )
+    message(STATUS "LAPACKE include: ${LAPACKE_INCLUDE_DIR}" )
+    add_definitions(-DEIGEN_USE_LAPACKE)
+    list(APPEND ALGEBRA_LIBS ${LAPACKE_LIBRARIES})
+  else()
+    message(STATUS "LAPACKE NOT found" )
+  endif(LAPACKE_FOUND)
 
-  include_directories(${MKL_INCLUDE_DIR})
+  message(STATUS "all algebra libraries: ${ALGEBRA_LIBS}" )
 
-  add_definitions(-DEIGEN_USE_MKL_ALL)
-  
-  message(STATUS "MKL libraries: ${MKL_LIBRARIES}" )
-  message(STATUS "MKL include: ${MKL_INCLUDE_DIR}" )
-endmacro(configure_mkl)
+
+endmacro(configure_blas)
 
 macro(configure_eigen)
   message ("Dependency check for eigen...")
-  
+
   if(DEFINED ENV{EIGEN3_INCLUDE_DIR})
     SET(EIGEN3_INCLUDE_DIR $ENV{EIGEN3_INCLUDE_DIR})
   else()
@@ -119,6 +126,7 @@ endmacro(configure_boost)
 
 macro(configure_python)
     if(ENABLE_PYTHON)
-        find_package(pybind11 CONFIG REQUIRED)
+      set(PYBIND11_NEWPYTHON ON)
+      find_package(pybind11 CONFIG REQUIRED)
     endif()
 endmacro(configure_python)
