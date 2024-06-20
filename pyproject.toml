@@ -91,4 +91,4 @@ build-verbosity = 3
 "cmake.define.BLA_VENDOR" = "OpenBLAS"
 
 [tool.cibuildwheel.macos]
-before-all = "python ci/buildwheel/install_hdf5.py"
+before-all = "ci/buildwheel/install_hdf5.sh"
