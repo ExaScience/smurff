@@ -26,9 +26,6 @@ jobs:
 
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
-        env:
-          CIBW_ENVIRONMENT: >-
-            CMAKE_PREFIX_PATH="/usr/local/opt/openblas:/opt/homebrew/opt/openblas"
 
       - uses: actions/upload-artifact@v4
         with:
