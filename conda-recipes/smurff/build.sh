@@ -1,12 +1,14 @@
 #!/bin/bash
 
-export CMAKE_ARGS="-DENABLE_MKL=ON -DCMAKE_INSTALL_PREFIX=$PREFIX -DENABLE_MPI=OFF"
+if [ "$blas_impl" == "mkl" ]
+then
+    SKBUILD_CMAKE_ARGS="-DENABLE_MKL=ON -DENABLE_OPENBLAS=OFF"
+else
+    SKBUILD_CMAKE_ARGS="-DENABLE_OPENBLAS=ON -DENABLE_MKL=OFF"
+fi
 
-# make sure we use CONDA_BUILD_SYSROOT
-# https://github.com/conda/conda-build/issues/3452#issuecomment-47539707
-[[ ${target_platform} == "osx-64" ]] && \
-    CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_OSX_SYSROOT=${CONDA_BUILD_SYSROOT}"
+echo "extra CMAKE_ARGS: $SKBUILD_CMAKE_ARGS"
 
-$PYTHON setup.py install \
-    --install-binaries \
-    --single-version-externally-managed --record=record.txt
+export SKBUILD_CMAKE_ARGS
+
+$PYTHON -m pip install . --no-deps -vv

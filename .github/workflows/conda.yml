@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  conda-build:
+    name: Build Conda Package on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+          os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          python-version: 3.8
+          channels: conda-forge
+          activate-environment: devtools
+          environment-file: conda-recipes/devtools.yml
+      - run: conda info
+      - run: conda list
+      - run: conda config --show
+      - name: Conda Info
+        run: |
+          conda info
+      - run: git describe --tags
+      - name: Run 'conda build'
+        run: |
+          conda build -c vanderaa smurff
+        working-directory: conda-recipes
