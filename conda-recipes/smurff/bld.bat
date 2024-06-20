@@ -1,11 +1,10 @@
-REM SET "CMAKE_ARGS=-DENABLE_MKL=ON -DBoost_COMPILER=-vc140 -DCMAKE_INSTALL_PREFIX=%PREFIX%"
-SET "CMAKE_ARGS=-DENABLE_MKL=ON -DCMAKE_INSTALL_PREFIX=%PREFIX%"
+if "%blas_impl%"=="mkl" (
+    set "SKBUILD_CMAKE_ARGS=-DENABLE_MKL=ON -DENABLE_OPENBLAS=OFF"
+) else (
+    set "SKBUILD_CMAKE_ARGS=-DENABLE_OPENBLAS=ON -DENABLE_MKL=OFF"
+)
 
-REM conda build sets "Visual Studio 15 2017 Win64" generator
-REM which is incompatible with "-A x64" that we add ourselves in setup.py,
-REM hence we remove " Win64"
-SET "CMAKE_GENERATOR=%CMAKE_GENERATOR: Win64=%"
+echo extra CMAKE_ARGS: %SKBUILD_CMAKE_ARGS%
 
-%PYTHON% setup.py install ^
-    --install-binaries ^
-    --single-version-externally-managed --record=record.txt
+%PYTHON% -m pip install . --no-deps -vv
+if errorlevel 1 exit 1

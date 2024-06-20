@@ -1,23 +1,20 @@
-CONDA_BUILD_SYSROOT:
-  - /opt/MacOSX10.9.sdk        # [osx]
-
 python:
-    - 3.7
     - 3.8
     - 3.9
+    - 3.10
+    - 3.11
 
-blas_impl:
-    - openblas
-    - mkl
-
-numpy:
-    - 1.16      
+blas_impl:      # [linux64 or win64]
+    - openblas  # [linux64 or win64]
+    - mkl       # [linux64 or win64]
 
 hdf5:
     - 1.10.4
     - 1.10.6
 
+c_compiler: vs2022    # [win]
+cxx_compiler: vs2022  # [win]
+
 pin_run_as_build:
   libboost: x.x
-  numpy: x.x
   hdf5: x.x.x
