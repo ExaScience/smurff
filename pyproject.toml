@@ -16,7 +16,6 @@ cmake.verbose = true
 logging.level = "INFO"
 
 [tool.scikit-build.cmake.define]
-HDF5_ROOT = "/usr/local/hdf5"
 ENABLE_BOOST = "ON"
 ENABLE_CMDLINE = "ON"
 ENABLE_TESTS = "ON"
