@@ -17,5 +17,5 @@ cd hdf5_build
 wget -q $HDF5_URL -O - | tar -xvzf - --strip-components 2
 
 ./configure --prefix=/usr/local/hdf5
-make -j
+make -j4
 sudo make install
