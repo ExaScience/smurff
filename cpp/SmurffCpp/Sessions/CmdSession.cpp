@@ -89,9 +89,9 @@ po::options_description get_desc()
 
 
 #ifdef ENABLE_TESTS
-    po::options_description bist_desc("Running the built-in self test (BIST)");
+    po::options_description bist_desc("Running the built-in self tests (BIST)");
     bist_desc.add_options()
-	(BIST_NAME.c_str(), "run built-in self test");
+	(BIST_NAME.c_str(), "run built-in self test using Catch2. Extra arguments are passed to Catch2. Use '--bist --help' for more info");
     desc.add(bist_desc);
 #endif // ENABLE_TESTS
 
@@ -295,8 +295,9 @@ std::shared_ptr<ISession> create_cmd_session(int argc, char **argv)
 
 #ifdef ENABLE_TESTS
    if (argc >= 2 && std::string(argv[1]) == "--" + std::string(BIST_NAME)) {
+        argv[1][0] = '\0'; // remove '--bist' from arg list
         // run built-in self test
-        exit(Catch::Session().run( argc - 1, argv + 1 ));
+        exit(Catch::Session().run( argc, argv ));
     }
 #endif // ENABLE_TESTS
 
