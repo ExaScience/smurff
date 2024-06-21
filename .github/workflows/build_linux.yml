@@ -26,7 +26,7 @@ jobs:
     - name: install dependencies
       run: |-
         sudo apt-get update
-        sudo apt-get install -y cmake wget ninja-build libblas-dev liblapack-dev liblapacke-dev libboost-all-dev libopenmpi-dev libeigen3-dev libhdf5-dev
+        sudo apt-get install -y cmake wget ninja-build libblas-dev liblapack-dev liblapacke-dev libboost-all-dev libopenmpi-dev libeigen3-dev libhdf5-dev catch2
         sudo apt-get clean all
 
     - name: Install HighFive
@@ -49,4 +49,4 @@ jobs:
 
     - name: Run tests
       run: |-
-        ./build.${{ matrix.build.type }}/bin/tests
+        ./build.${{ matrix.build.type }}/bin/smurff --bist
