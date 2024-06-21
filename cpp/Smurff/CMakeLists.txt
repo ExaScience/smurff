@@ -8,5 +8,5 @@ install(TARGETS smurff RUNTIME DESTINATION bin)
 target_link_libraries (smurff smurff-cpp ${Boost_LIBRARIES} ${ALGEBRA_LIBS} HighFive ${OpenMP_CXX_LIBRARIES})
 
 if (ENABLE_TESTS)
-    target_link_libraries(smurff Catch2::Catch2)
+    target_link_libraries(smurff tests Catch2::Catch2)
 endif (ENABLE_TESTS)

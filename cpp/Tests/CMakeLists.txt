@@ -20,6 +20,4 @@ include_directories("expected_${SMURFF_FLOAT_TYPE}")
 
 source_group ("Source Files" FILES ${SOURCE_FILES} )
 
-add_library (tests ${HEADER_FILES} ${SOURCE_FILES})
-
-target_link_libraries(tests PRIVATE Catch2::Catch2)
+add_library (tests OBJECT ${HEADER_FILES} ${SOURCE_FILES})
