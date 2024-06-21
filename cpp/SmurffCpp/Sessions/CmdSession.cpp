@@ -2,6 +2,10 @@
 #include <iostream>
 #include <sstream>
 
+#ifdef ENABLE_TESTS
+#include <catch2/catch_session.hpp>
+#endif
+
 #ifdef HAVE_BOOST
 #include <boost/program_options.hpp>
 #endif
@@ -18,6 +22,7 @@
 namespace smurff {
 
 static const std::string RESTORE_NAME = "restore-from";
+static const std::string BIST_NAME = "bist";
 
 #ifdef HAVE_BOOST
 
@@ -82,6 +87,14 @@ po::options_description get_desc()
     desc.add(predict_desc);
     desc.add(save_desc);
 
+
+#ifdef ENABLE_TESTS
+    po::options_description bist_desc("Running the built-in self test (BIST)");
+    bist_desc.add_options()
+	(BIST_NAME.c_str(), "run built-in self test");
+    desc.add(bist_desc);
+#endif // ENABLE_TESTS
+
     return desc;
 }
 
@@ -105,9 +118,9 @@ struct ConfigFiller
         {
             //auto tensor_config = generic_io::read_data_config(vm[name].as<std::string>(), true);
             auto tensor_config = std::make_shared<DataConfig>();
-            (this->config.*Func)(tensor_config); 
+            (this->config.*Func)(tensor_config);
         }
-    }       
+    }
     template <DataConfig& (Config::*Func)(void)>
     void fill_data(std::string name)
     {
@@ -115,9 +128,9 @@ struct ConfigFiller
         {
             //auto tensor_config = generic_io::read_data_config(vm[name].as<std::string>(), true);
             auto tensor_config = DataConfig();
-            (this->config.*Func)() = tensor_config; 
+            (this->config.*Func)() = tensor_config;
         }
-    }  
+    }
 
     void set_priors(std::string name)
     {
@@ -243,7 +256,11 @@ Config parse_options(int argc, char *argv[])
 Config parse_options(int argc, char *argv[])
 {
     auto usage = []() {
-        std::cerr << "Usage:\n\tsmurff --" << RESTORE_NAME << " <saved_smurff.h5>\n\n"
+        std::cerr << "Usage:\n"
+                  << "smurff --" << RESTORE_NAME << " <saved_smurff.h5>\n"
+#ifdef ENABLE_TESTS
+                  << "smurff --" << BIST_NAME << " <extra Catch2 arguments>\n"
+#endif // ENABLE_TESTS
                   << "(Limited smurff compiled w/o boost program options)" << std::endl;
         exit(0);
     };
@@ -267,7 +284,7 @@ Config parse_options(int argc, char *argv[])
 
     return config;
 }
-#endif
+#endif // NO HAVE_BOOST
 
 // create cmd TrainSession or PredictSession
 // parses args with setFromArgs, then internally creates a TrainSession or
@@ -275,6 +292,13 @@ Config parse_options(int argc, char *argv[])
 std::shared_ptr<ISession> create_cmd_session(int argc, char **argv)
 {
     std::shared_ptr<ISession> session;
+
+#ifdef ENABLE_TESTS
+   if (argc >= 2 && std::string(argv[1]) == "--" + std::string(BIST_NAME)) {
+        // run built-in self test
+        exit(Catch::Session().run( argc - 1, argv + 1 ));
+    }
+#endif // ENABLE_TESTS
 
     Config config = parse_options(argc, argv);
     if (config.isActionTrain())
