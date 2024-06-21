@@ -26,8 +26,18 @@ jobs:
     - name: install dependencies
       run: |-
         sudo apt-get update
-        sudo apt-get install -y cmake wget ninja-build libblas-dev liblapack-dev liblapacke-dev libboost-all-dev libopenmpi-dev libeigen3-dev libhdf5-dev catch2
+        sudo apt-get install -y cmake wget ninja-build libblas-dev liblapack-dev liblapacke-dev libboost-all-dev libopenmpi-dev libeigen3-dev libhdf5-dev
         sudo apt-get clean all
+
+    - name: Install Catch v3
+      run: |
+        wget -O Catch2.tar.gz https://github.com/catchorg/Catch2/archive/refs/tags/v3.6.0.tar.gz
+        tar xzf Catch2.tar.gz
+        rm Catch2.tar.gz
+        cd Catch2*
+        cmake -S . -B build
+        cmake --build build
+        sudo cmake --install build
 
     - name: Install HighFive
       run: |
@@ -35,7 +45,7 @@ jobs:
         tar xzf HighFive.tar.gz
         rm HighFive.tar.gz
         cd HighFive*
-        cmake -S . -B build
+        cmake -DHIGHFIVE_EXAMPLES=OFF -DHIGHFIVE_USE_BOOST=OFF -DHIGHFIVE_UNIT_TESTS=OFF -S . -B build
         cmake --build build
         sudo cmake --install build
 
