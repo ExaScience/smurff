@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
 
 #include <SmurffCpp/Configs/Config.h>
 #include <SmurffCpp/Configs/NoiseConfig.h>

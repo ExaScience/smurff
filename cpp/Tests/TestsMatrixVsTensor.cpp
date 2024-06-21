@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <fstream>
 
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
 
 #include <SmurffCpp/Types.h>
 
@@ -30,7 +30,7 @@ struct CompareTest {
               std::vector<PriorTypes> priors)
       : matrixConfig(genConfig(matrix_train, matrix_test, priors)),
         tensorConfig(genConfig(tensor_train, tensor_test, priors)) {}
- 
+
   template<class M>
   CompareTest &addSideInfo(int m, const M &c) {
     matrixConfig.addSideInfo(m) = makeSideInfoConfig(c);

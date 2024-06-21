@@ -2,7 +2,8 @@
 #include <fstream>
 #include <iomanip>
 
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.hpp>
 
 #include <SmurffCpp/Types.h>
 
@@ -73,7 +74,7 @@ void checkValue(double actualValue, double expectedValue, double epsilon)
    else
         CHECK(std::abs(actualValue - expectedValue) < 10.);
 #else
-  CHECK(actualValue == Approx(expectedValue).epsilon(epsilon));
+  CHECK(actualValue == Catch::Approx(expectedValue).epsilon(epsilon));
 #endif
 }
 
@@ -137,7 +138,7 @@ struct SmurffTest {
     printActualResults(nr, actualRmseAvg, actualResults);
     if(expectedResults.find(nr) == expectedResults.end())
         FAIL("Expected results for nr " << nr << " not found\n");
-  
+
     double &expectedRmseAvg = expectedResults[nr].rmseAvg;
     auto &expectedResultItems = expectedResults[nr].resultItems;
 

@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
 
 #include <cmath>
 #include <cstdio>
@@ -9,6 +9,8 @@
 #include <limits>
 
 #include <boost/version.hpp>
+
+#include <catch2/catch_approx.hpp>
 
 #include <SmurffCpp/result.h>
 
@@ -52,11 +54,11 @@ TEST_CASE( "latentprior/sample_beta_precision", "sampling beta precision from ga
           1.0,  0.91, -0.2;
   Lambda_u << 0.5, 0.1,
               0.1, 0.3;
-  
-  Matrix BBt = beta * beta.transpose();                  
+
+  Matrix BBt = beta * beta.transpose();
   auto post = MacauPrior::posterior_beta_precision(BBt, Lambda_u, 0.01, 0.05, beta.cols());
-  REQUIRE( post.first  == Approx(3.005) );
-  REQUIRE( post.second == Approx(0.2631083888) );
+  REQUIRE( post.first  == Catch::Approx(3.005) );
+  REQUIRE( post.second == Catch::Approx(0.2631083888) );
 
   double beta_precision = MacauPrior::sample_beta_precision(BBt, Lambda_u, 0.01, 0.05, beta.cols());
   REQUIRE( beta_precision > 0 );
@@ -69,7 +71,7 @@ TEST_CASE( "utils/eval_rmse", "Test if prediction variance is correctly calculat
   std::vector<double>        vals = {4.5};
 
   Model model;
-  
+
   SparseMatrix S = matrix_utils::sparse_to_eigen(SparseTensor( { 1, 1 }, { rows, cols }, vals));
   std::shared_ptr<Data> data(new ScarceMatrixData(S));
   Result p(S, 3);
@@ -87,10 +89,10 @@ TEST_CASE( "utils/eval_rmse", "Test if prediction variance is correctly calculat
 
   p.update(model, false);
 
-  REQUIRE(t.pred_avg == Approx(1.0 * 1.0 + 0.0 * 0.0));
-  REQUIRE(t.var == Approx(0.0));
-  REQUIRE(p.rmse_1sample == Approx(std::sqrt(std::pow(4.5 - (1.0 * 1.0 + 0.0 * 0.0), 2) / 1 )));
-  REQUIRE(p.rmse_avg ==     Approx(std::sqrt(std::pow(4.5 - (1.0 * 1.0 + 0.0 * 0.0) / 1, 2) / 1 )));
+  REQUIRE(t.pred_avg == Catch::Approx(1.0 * 1.0 + 0.0 * 0.0));
+  REQUIRE(t.var == Catch::Approx(0.0));
+  REQUIRE(p.rmse_1sample == Catch::Approx(std::sqrt(std::pow(4.5 - (1.0 * 1.0 + 0.0 * 0.0), 2) / 1 )));
+  REQUIRE(p.rmse_avg ==     Catch::Approx(std::sqrt(std::pow(4.5 - (1.0 * 1.0 + 0.0 * 0.0) / 1, 2) / 1 )));
 
   //// second iteration
   model.U(0) << 2.0, 0.0;
@@ -98,10 +100,10 @@ TEST_CASE( "utils/eval_rmse", "Test if prediction variance is correctly calculat
 
   p.update(model, false);
 
-  REQUIRE(t.pred_avg == Approx(((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0)) / 2));
-  REQUIRE(t.var == Approx(0.5));
-  REQUIRE(p.rmse_1sample == Approx(std::sqrt(std::pow(4.5 - (2.0 * 1.0 + 0.0 * 0.0), 2) / 1 )));
-  REQUIRE(p.rmse_avg == Approx(std::sqrt(std::pow(4.5 - ((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0)) / 2, 2) / 1)));
+  REQUIRE(t.pred_avg == Catch::Approx(((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0)) / 2));
+  REQUIRE(t.var == Catch::Approx(0.5));
+  REQUIRE(p.rmse_1sample == Catch::Approx(std::sqrt(std::pow(4.5 - (2.0 * 1.0 + 0.0 * 0.0), 2) / 1 )));
+  REQUIRE(p.rmse_avg == Catch::Approx(std::sqrt(std::pow(4.5 - ((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0)) / 2, 2) / 1)));
 
   //// third iteration
 
@@ -110,10 +112,10 @@ TEST_CASE( "utils/eval_rmse", "Test if prediction variance is correctly calculat
 
   p.update(model, false);
 
-  REQUIRE(t.pred_avg == Approx(((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0)+ (2.0 * 3.0 + 0.0 * 0.0)) / 3));
-  REQUIRE(t.var == Approx(14.0)); // accumulated variance
-  REQUIRE(p.rmse_1sample == Approx(std::sqrt(std::pow(4.5 - (2.0 * 3.0 + 0.0 * 0.0), 2) / 1 )));
-  REQUIRE(p.rmse_avg == Approx(std::sqrt(std::pow(4.5 - ((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0) + (2.0 * 3.0 + 0.0 * 0.0)) / 3, 2) / 1)));
+  REQUIRE(t.pred_avg == Catch::Approx(((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0)+ (2.0 * 3.0 + 0.0 * 0.0)) / 3));
+  REQUIRE(t.var == Catch::Approx(14.0)); // accumulated variance
+  REQUIRE(p.rmse_1sample == Catch::Approx(std::sqrt(std::pow(4.5 - (2.0 * 3.0 + 0.0 * 0.0), 2) / 1 )));
+  REQUIRE(p.rmse_avg == Catch::Approx(std::sqrt(std::pow(4.5 - ((1.0 * 1.0 + 0.0 * 0.0) + (2.0 * 1.0 + 0.0 * 0.0) + (2.0 * 3.0 + 0.0 * 0.0)) / 3, 2) / 1)));
 }
 
 TEST_CASE("utils/auc","AUC ROC") {
@@ -143,7 +145,7 @@ TEST_CASE("utils/auc","AUC ROC") {
    { 1.0,  0.0 }
   };
 
-  REQUIRE ( calc_auc(items, 0.5) == Approx(0.84) );
+  REQUIRE ( calc_auc(items, 0.5) == Catch::Approx(0.84) );
 }
 
 TEST_CASE( "ScarceMatrixData/var_total", "Test if variance of Scarce Matrix is correctly calculated") {
@@ -157,7 +159,7 @@ TEST_CASE( "ScarceMatrixData/var_total", "Test if variance of Scarce Matrix is c
   data->setNoiseModel(NoiseFactory::create_noise_model(fixed_ncfg));
 
   data->init();
-  REQUIRE(data->var_total() == Approx(0.25));
+  REQUIRE(data->var_total() == Catch::Approx(0.25));
 }
 
 TEST_CASE( "DenseMatrixData/var_total", "Test if variance of Dense Matrix is correctly calculated") {
@@ -169,7 +171,7 @@ TEST_CASE( "DenseMatrixData/var_total", "Test if variance of Dense Matrix is cor
   data->setNoiseModel(NoiseFactory::create_noise_model(fixed_ncfg));
 
   data->init();
-  REQUIRE(data->var_total() == Approx(1.25));
+  REQUIRE(data->var_total() == Catch::Approx(1.25));
 }
 
 using namespace Eigen;
@@ -177,16 +179,16 @@ using namespace std;
 
 TEST_CASE("inv_norm_cdf/inv_norm_cdf", "Inverse normal CDF") {
 	REQUIRE( inv_norm_cdf(0.0)  == -std::numeric_limits<double>::infinity());
-	REQUIRE( inv_norm_cdf(0.5)  == Approx(0) );
-	REQUIRE( inv_norm_cdf(0.9)  == Approx(1.2815515655446004) );
-	REQUIRE( inv_norm_cdf(0.01) == Approx(-2.3263478740408408) );
+	REQUIRE( inv_norm_cdf(0.5)  == Catch::Approx(0) );
+	REQUIRE( inv_norm_cdf(0.9)  == Catch::Approx(1.2815515655446004) );
+	REQUIRE( inv_norm_cdf(0.01) == Catch::Approx(-2.3263478740408408) );
 }
 
 TEST_CASE("truncnorm/norm_cdf", "Normal CDF") {
-	REQUIRE( norm_cdf(0.0)  == Approx(0.5));
-	REQUIRE( norm_cdf(-1.0) == Approx(0.15865525393145707) );
-	REQUIRE( norm_cdf(-3.0) == Approx(0.0013498980316300933) );
-	REQUIRE( norm_cdf(4.0)  == Approx(0.99996832875816688) );
+	REQUIRE( norm_cdf(0.0)  == Catch::Approx(0.5));
+	REQUIRE( norm_cdf(-1.0) == Catch::Approx(0.15865525393145707) );
+	REQUIRE( norm_cdf(-3.0) == Catch::Approx(0.0013498980316300933) );
+	REQUIRE( norm_cdf(4.0)  == Catch::Approx(0.99996832875816688) );
 }
 
 TEST_CASE( "truncnorm/rand_truncnorm", "generaring random truncnorm variable" ) {

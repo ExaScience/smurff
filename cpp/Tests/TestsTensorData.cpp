@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
 
 #include <iostream>
 #include <string>
@@ -160,7 +160,7 @@ TEST_CASE("bpmfutils/eval_rmse_tensor", "Testing eval_rmse_tensor") {
     auto v0 = gmean + samples[0]->row(C(i, 0)).
                   cwiseProduct( samples[1]->row(C(i, 1)) ).
                   cwiseProduct( samples[2]->row(C(i, 2)) ).sum();
-    REQUIRE(v0 == Approx(pred(i)));
+    REQUIRE(v0 == Catch::Approx(pred(i)));
   }
 }
 

@@ -342,6 +342,13 @@ else (SKBUILD)
   SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 endif (SKBUILD)
 
+# tests
+if(ENABLE_TESTS)
+  find_package(Catch2 3 REQUIRED)
+  add_definitions(-DENABLE_TESTS)
+  add_subdirectory (cpp/Tests)
+endif (ENABLE_TESTS)
+
 # libraries
 add_subdirectory (cpp/SmurffCpp)
 
@@ -353,11 +360,6 @@ endif()
 # MPI
 if(ENABLE_MPI)
   add_subdirectory (cpp/SmurffMPI)
-endif()
-
-# tests
-if(ENABLE_TESTS)
-  add_subdirectory (cpp/Tests)
 endif()
 
 # python
