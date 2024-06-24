@@ -336,11 +336,6 @@ include_directories(cpp)
 
 message(STATUS "Creating folder structure...")
 
-if (SKBUILD)
-  SET(EXECUTABLE_OUTPUT_PATH "${SKBUILD_SCRIPTS_DIR}")
-else (SKBUILD)
-  SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
-endif (SKBUILD)
 
 # tests
 if(ENABLE_TESTS)
