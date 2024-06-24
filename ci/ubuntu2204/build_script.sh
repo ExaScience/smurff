@@ -19,9 +19,10 @@ git clone /smurff
 
 cd smurff
 cmake -S . -B build
-cmake --build build --parallel 32
+cmake --build build
 cmake --install build
 
-python3 setup.py install --install-binaries
-/usr/local/libexec/tests
+python3 -m pip install .
+
+smurff --bist
 pytest-3 python/test
