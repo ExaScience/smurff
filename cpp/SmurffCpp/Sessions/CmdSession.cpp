@@ -19,6 +19,9 @@
 #include <SmurffCpp/Utils/StateFile.h>
 #include <SmurffCpp/Utils/StringUtils.h>
 
+#ifdef ENABLE_TESTS
+#include <Tests/Tests.h>
+#endif
 namespace smurff {
 
 static const std::string RESTORE_NAME = "restore-from";
