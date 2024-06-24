@@ -59,6 +59,10 @@ jobs:
       run: |-
         cmake --build build.${{ matrix.build.type }}
 
+    - name: Install
+      run: |-
+        sudo cmake --install build.${{ matrix.build.type }}
+
     - name: Run tests
       run: |-
-        ./build.${{ matrix.build.type }}/bin/smurff --bist
+        smurff --bist
