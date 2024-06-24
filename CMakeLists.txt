@@ -132,10 +132,8 @@ elseif (CMAKE_COMPILER_IS_GNUCXX OR APPLE)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-unknown-pragmas -Wnon-virtual-dtor -Wno-parentheses -fPIC")
    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-unknown-pragmas -fPIC")
 
-   # suppress some pesky Eigen 3.3.7 warnings
-   if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7.0)
-     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-int-in-bool-context")
-   endif()
+   # suppress some pesky Eigen warnings
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-but-set-variable")
 
    if (ENABLE_ASAN)
       add_compile_options(-fno-omit-frame-pointer -fsanitize=address)
@@ -338,7 +336,13 @@ include_directories(cpp)
 
 message(STATUS "Creating folder structure...")
 
-SET(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
+
+# tests
+if(ENABLE_TESTS)
+  find_package(Catch2 3 REQUIRED)
+  add_definitions(-DENABLE_TESTS)
+  add_subdirectory (cpp/Tests)
+endif (ENABLE_TESTS)
 
 # libraries
 add_subdirectory (cpp/SmurffCpp)
@@ -351,11 +355,6 @@ endif()
 # MPI
 if(ENABLE_MPI)
   add_subdirectory (cpp/SmurffMPI)
-endif()
-
-# tests
-if(ENABLE_TESTS)
-  add_subdirectory (cpp/Tests)
 endif()
 
 # python

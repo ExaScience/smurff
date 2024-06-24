@@ -1,4 +1,5 @@
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.hpp>
 
 #include <cmath>
 #include <cstdio>
@@ -50,7 +51,7 @@ void testRandFunc(const Func generator, const std::string &name, const T expecte
   printActualResults(name, rnd);
 
   for (int i = 0; i < N; i++)
-    CHECK(rnd[i] == Approx(expected[i]).epsilon(smurff::approx_epsilon<smurff::float_type>()));
+    CHECK(rnd[i] == Catch::Approx(expected[i]).epsilon(smurff::approx_epsilon<smurff::float_type>()));
 }
 
 

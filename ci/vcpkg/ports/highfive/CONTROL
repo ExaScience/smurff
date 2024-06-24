@@ -1,4 +1,0 @@
-Source: highfive
-Version: 2.2.1
-Description: HighFive is a modern header-only C++11 friendly interface for libhdf5.
-Build-Depends: hdf5[core]
