@@ -13,6 +13,7 @@
 #include "CmdSession.h"
 #include <SmurffCpp/Predict/PredictSession.h>
 
+#include <SmurffCpp/Version.h>
 #include <SmurffCpp/Configs/Config.h>
 #include <SmurffCpp/Utils/Error.h>
 
@@ -54,7 +55,7 @@ po::options_description get_desc()
 {
     po::options_description general_desc("General parameters");
     general_desc.add_options()
-	(VERSION_NAME.c_str(), "print version info (and exit)")
+	(VERSION_NAME.c_str(), "print version info and exit (add --verbose=1 for more info)")
 	(HELP_NAME.c_str(), "show this help information (and exit)")
 	(NUM_THREADS_NAME.c_str(), po::value<int>()->default_value(Config::NUM_THREADS_DEFAULT_VALUE), "number of threads (0 = default by OpenMP)")
 	(VERBOSE_NAME.c_str(), po::value<int>()->default_value(Config::VERBOSE_DEFAULT_VALUE), "verbosity of output (0, 1, 2 or 3)")
@@ -217,7 +218,10 @@ Config parse_options(int argc, char *argv[])
 
         if (vm.count(VERSION_NAME))
         {
-            std::cout << "SMURFF " << SMURFF_VERSION << std::endl;
+            if (vm.count(VERBOSE_NAME) && vm[VERBOSE_NAME].as<int>() > 0)
+                std::cout << "SMURFF " << smurff::full_version() << std::endl;
+            else
+                std::cout << "SMURFF " << SMURFF_VERSION << std::endl;
             return Config();
         }
     }
