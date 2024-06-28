@@ -48,6 +48,7 @@ macro(configure_blas)
     message(STATUS "BLAS libraries: ${BLAS_LIBRARIES}" )
     message(STATUS "BLAS include: ${BLAS_INCLUDE_DIR}" )
     add_definitions(-DEIGEN_USE_BLAS)
+    add_definitions(-DBLA_VENDOR=${BLA_VENDOR})
 
     if (BLA_VENDOR MATCHES "Intel10")
       add_definitions(-DEIGEN_USE_MKL_ALL)
