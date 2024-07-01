@@ -9,7 +9,7 @@ class Highfive < Formula
 
   depends_on "cmake" => :build
   depends_on "boost" => [ :build, :test ]
-  depends_on "hdf5"
+  depends_on "hdf5@1.10"
 
   def install
     system "cmake", ".", *std_cmake_args
