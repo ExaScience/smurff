@@ -1,6 +1,6 @@
 FROM quay.io/pypa/musllinux_1_2_x86_64
 
-RUN apk add wget eigen openblas hdf5-dev
+RUN apk add wget eigen-dev openblas-dev hdf5-dev
 
 #install HighFive
 RUN wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.2.2.tar.gz && \
