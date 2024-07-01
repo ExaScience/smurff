@@ -39,7 +39,7 @@ RUN cd /tmp && \
 
 #install HighFive
 RUN cd /tmp && \
-    wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.9.0.tar.gz && \
+    wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.2.2.tar.gz && \
     tar xzf HighFive.tar.gz && \
     rm HighFive.tar.gz && \
     cd HighFive* && \
