@@ -32,6 +32,9 @@ inline void show_internal(const char *name, const int& variable)
    std::cout << name << " =\n" << variable << std::endl << std::endl;
 }
 
+#define STRINGIFY(s) STRINGIFY_NAME(s)
+
+#define STRINGIFY_NAME(s) #s
 
 #define SHOW(M) show_internal(#M, M);
 
