@@ -32,7 +32,7 @@ namespace smurff {
       v += " (no BLAS)";
 #endif
 
-      v += " (HighFive " HIGHFIVE_VERSION_STRING ")";
+      v += " (HighFive " STRINGIFY(HIGHFIVE_VERSION) ")";
 
 
 #if defined(_OPENMP)
