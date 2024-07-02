@@ -21,7 +21,9 @@ RUN apt-get update && \
        python3-scipy python3-pandas \
        python3-joblib python3-sklearn \
        python3-h5py \
-       python3-pytest python3-parameterized \
+       python3-pytest \
+       python3-parameterized \
+       python3-pytest-xdist \
     && rm -rf /var/lib/apt/lists/*
 
 

@@ -25,4 +25,4 @@ cmake --install build
 python3 -m pip install .
 
 smurff --bist
-pytest-3 python/test
+pytest-3 -n auto -v python/test

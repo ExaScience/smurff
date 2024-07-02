@@ -45,8 +45,9 @@ requirements:
 test:
   requires:
     - setuptools
-    - parameterized
     - pytest
+    - parameterized
+    - pytest-xdist
   source_files:
     - python/test/*.py
 

@@ -76,8 +76,8 @@ musllinux-x86_64-image = "vanderaa/musllinux_1_2_x86_64_smurff"
 # - CPython 3.12: removed pkg_resources in h5sparse
 # - i686 and win32: we do not care about 32bit
 skip = "pp* cp36-* cp37-* cp38-* cp312-* *-win32 *i686"
-test-command = 'pytest {project}/python/test'
-test-requires = 'parameterized pytest'
+test-command = 'pytest -n auto {project}/python/test'
+test-requires = 'parameterized pytest pytest-xdist'
 build-verbosity = 3
 
 [tool.cibuildwheel.macos.config-settings]
