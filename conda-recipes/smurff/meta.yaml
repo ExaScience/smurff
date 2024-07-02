@@ -13,6 +13,7 @@ build:
 requirements:
   build:
     - cmake
+    - ninja
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
     - llvm-openmp             # [osx]

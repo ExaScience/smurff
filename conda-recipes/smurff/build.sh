@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export CMAKE_GENERATOR="Ninja"
+
 if [ "$blas_impl" == "mkl" ]
 then
     SKBUILD_CMAKE_ARGS="-DENABLE_MKL=ON -DENABLE_OPENBLAS=OFF"
