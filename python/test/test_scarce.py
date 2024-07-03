@@ -22,7 +22,7 @@ class TestScarce(unittest.TestCase):
     def test_simple(self):
         matrix = matrix_with_explicit_zeros()
         self.assertTrue(matrix.nnz == 6)
-        
+
         matrix.eliminate_zeros()
         self.assertTrue(matrix.nnz == 3)
 
@@ -30,8 +30,8 @@ class TestScarce(unittest.TestCase):
         matrix = matrix_with_explicit_zeros()
         self.assertTrue(matrix.nnz == 6)
 
-        predictions = smurff.bpmf(matrix, Ytest=matrix, num_latent=4, burnin=5, nsamples=5)
+        predictions = smurff.bpmf(matrix, Ytest=matrix, num_latent=4, burnin=5, nsamples=5, num_threads=1)
         self.assertEqual(len(predictions), 6)
-        
+
 if __name__ == '__main__':
     unittest.main()

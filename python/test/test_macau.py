@@ -29,6 +29,7 @@ class TestMacau(unittest.TestCase):
                                 direct=True,
                                 num_latent=4,
                                 verbose=verbose,
+                                num_threads=1,
                                 burnin=200,
                                 nsamples=200)
 
@@ -46,7 +47,9 @@ class TestMacau(unittest.TestCase):
                       num_latent=5,
                       burnin=200,
                       nsamples=200,
-                      verbose=verbose)
+                      verbose=verbose,
+                      num_threads=1,
+                      )
 
     def test_macau_dense(self):
         Y  = scipy.sparse.rand(15, 10, 0.2)
@@ -59,7 +62,9 @@ class TestMacau(unittest.TestCase):
                       num_latent=5,
                       burnin=200,
                       nsamples=200,
-                      verbose=verbose)
+                      verbose=verbose,
+                      num_threads=1
+                      )
 
     def test_macau_univariate(self):
         Y = scipy.sparse.rand(10, 20, 0.2)
@@ -73,13 +78,14 @@ class TestMacau(unittest.TestCase):
                                 univariate = True,
                                 num_latent=4,
                                 verbose=verbose,
+                                num_threads=1,
                                 burnin=200,
                                 nsamples=200)
         self.assertEqual(Ytest.nnz, len(predictions))
 
     def test_macau_tensor(self):
         shape = [30, 4, 2]
-        
+
         A = np.random.randn(shape[0], 2)
         B = np.random.randn(shape[1], 2)
         C = np.random.randn(shape[2], 2)
@@ -97,6 +103,7 @@ class TestMacau(unittest.TestCase):
              direct=True,
 			 num_latent = 4,
 			 verbose=verbose,
+             num_threads=1,
 			 burnin=200,
 			 nsamples=200)
 
@@ -125,6 +132,7 @@ class TestMacau(unittest.TestCase):
                                 univariate = True,
                                 num_latent=4,
                                 verbose=verbose,
+                                num_threads=1,
                                 burnin=200,
                                 nsamples=2000)
 

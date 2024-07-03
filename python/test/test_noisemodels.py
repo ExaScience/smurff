@@ -59,7 +59,7 @@ def test_noise_model(density, nmodes, side_info, noise_model):
     if si is not None:
         priors[0] = 'macau'
 
-    trainSession = smurff.TrainSession(priors = priors, num_latent=8, burnin=20, nsamples=20, threshold=.0, seed=seed, verbose=verbose)
+    trainSession = smurff.TrainSession(priors = priors, num_latent=8, burnin=20, nsamples=20, threshold=.0, seed=seed, verbose=verbose, num_threads=1)
 
     trainSession.addTrainAndTest(Ytrain, Ytest, nm)
     if not si is None:
