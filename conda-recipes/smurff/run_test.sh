@@ -1,2 +1,2 @@
 $PREFIX/bin/smurff --bist
-$PYTHON -m pytest -v python/test
+$PYTHON -m pytest -n auto -v python/test

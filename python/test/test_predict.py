@@ -16,13 +16,13 @@ class TestPredictSession(unittest.TestCase):
     __name__ = "TestPredictSession"
 
     def run_train_session(self, nmodes, density):
-        shape = range(5, nmodes+5) # 5, 6, 7, ... 
+        shape = range(5, nmodes+5) # 5, 6, 7, ...
         Y, X = smurff.generate.gen_tensor(shape, 3, density)
         self.Ytrain, self.Ytest = smurff.make_train_test(Y, 0.1)
         priors = ['normal'] * nmodes
 
         trainSession = smurff.TrainSession(priors = priors, num_latent=4,
-                burnin=10, nsamples=nsamples, verbose=verbose,
+                burnin=10, nsamples=nsamples, verbose=verbose, num_threads=1,
                 save_freq = 1, save_name = smurff.helper.temp_savename())
 
         trainSession.addTrainAndTest(self.Ytrain, self.Ytest)
@@ -47,7 +47,7 @@ class TestPredictSession(unittest.TestCase):
         c1,v1 = smurff.find(A)
         c2,v2 = smurff.find(B)
         assert np.array_equal(c1,c2)
-        assert np.allclose(v1,v2, atol=0.01) 
+        assert np.allclose(v1,v2, atol=0.01)
 
     def run_predict_some_all_one(self, train_session, predict_session):
         coords, _ = smurff.find(self.Ytest)
@@ -83,7 +83,7 @@ class TestPredictSession(unittest.TestCase):
         """ Test the PredictSession.predict function """
 
         def run_n_samples(samples, expected_nsamples):
-            operand_and_sizes = [ 
+            operand_and_sizes = [
                 [
                     ( Ellipsis   , x.shape[0] ),
                     ( slice(3)   , 3          ),

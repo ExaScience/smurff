@@ -8,11 +8,12 @@ on:
 
 jobs:
   conda-build:
-    name: Build Conda Package on ${{ matrix.os }}
+    name: Build Conda Package on ${{ matrix.os }} for Python ${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
           os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+          python: [ "3.8", "3.9", "3.10", "3.11"]
     defaults:
       run:
         shell: bash -el {0}
@@ -26,14 +27,7 @@ jobs:
           channels: conda-forge
           activate-environment: devtools
           environment-file: conda-recipes/devtools.yml
-      - run: conda info
-      - run: conda list
-      - run: conda config --show
-      - name: Conda Info
-        run: |
-          conda info
-      - run: git describe --tags
       - name: Run 'conda build'
         run: |
-          conda build -c vanderaa smurff
+          conda build -c vanderaa --python ${{ matrix.python }} smurff
         working-directory: conda-recipes
