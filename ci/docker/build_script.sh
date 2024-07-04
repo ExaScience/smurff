@@ -18,11 +18,13 @@ git config --global --add safe.directory /smurff/.git
 git clone /smurff
 
 cd smurff
-cmake -S . -B build
+cmake -S . -B build -GNinja
 cmake --build build
 cmake --install build
-
-python3 -m pip install .
-
 smurff --bist
+
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -v .
+
 pytest-3 -n auto -v python/test
