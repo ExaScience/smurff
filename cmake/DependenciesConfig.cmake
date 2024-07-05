@@ -48,18 +48,24 @@ macro(configure_blas)
     message(STATUS "BLAS libraries: ${BLAS_LIBRARIES}" )
     message(STATUS "BLAS include: ${BLAS_INCLUDE_DIR}" )
     add_definitions(-DEIGEN_USE_BLAS)
+    add_definitions(-DBLA_VENDOR=${BLA_VENDOR})
+    list(APPEND ALGEBRA_LIBS ${BLAS_LIBRARIES})
 
     if (BLA_VENDOR MATCHES "Intel10")
       add_definitions(-DEIGEN_USE_MKL_ALL)
       message(STATUS "MKL Found" )
+    else()
+      configure_lapack()
     endif()
-
-    list(APPEND ALGEBRA_LIBS ${BLAS_LIBRARIES})
 
   else()
     message(STATUS "BLAS NOT found" )
   endif (BLAS_FOUND)
 
+  message(STATUS "all algebra libraries: ${ALGEBRA_LIBS}" )
+endmacro(configure_blas)
+
+macro(configure_lapack)
   find_package(LAPACK)
   if (LAPACK_FOUND)
     message(STATUS "LAPACK libraries: ${LAPACK_LIBRARIES}" )
@@ -69,10 +75,14 @@ macro(configure_blas)
     # needed because MSVC does not have support for c-type _Complex
     add_definitions(-Dlapack_complex_float=std::complex<float> -Dlapack_complex_double=std::complex<double>)
     list(APPEND ALGEBRA_LIBS ${LAPACK_LIBRARIES})
+
+    configure_lapacke()
   else()
     message(STATUS "LAPACK NOT found" )
   endif (LAPACK_FOUND)
+endmacro(configure_lapack)
 
+macro(configure_lapacke)
   find_package(LAPACKE)
   if (LAPACKE_FOUND)
     message(STATUS "LAPACKE libraries: ${LAPACKE_LIBRARIES}" )
@@ -82,11 +92,7 @@ macro(configure_blas)
   else()
     message(STATUS "LAPACKE NOT found" )
   endif(LAPACKE_FOUND)
-
-  message(STATUS "all algebra libraries: ${ALGEBRA_LIBS}" )
-
-
-endmacro(configure_blas)
+endmacro(configure_lapacke)
 
 macro(configure_eigen)
   message ("Dependency check for eigen...")
