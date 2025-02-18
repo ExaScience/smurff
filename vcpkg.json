@@ -2,12 +2,7 @@
   "name": "smurff",
   "version": "0.17.0",
   "dependencies": [
-    "boost-filesystem",
-    "boost-program-options",
-    "boost-system",
-    "catch2",
     "eigen3",
-    "highfive",
-    "pybind11"
+    "highfive"
   ]
 }

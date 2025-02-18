@@ -63,9 +63,6 @@ Homepage = "http://github.com/ExaScience/smurff"
 py_smurff = "smurff.cmdline:main"
 
 [tool.cibuildwheel]
-manylinux-x86_64-image = "vanderaa/manylinux2014_x86_64_smurff"
-musllinux-x86_64-image = "vanderaa/musllinux_1_2_x86_64_smurff"
-
 # We skip these:
 # - PyPy: never tested, pandas does not seem to work
 # - CPython 3.6: unsupported by scikit_build_core
@@ -76,13 +73,23 @@ skip = "pp* cp36-* cp37-* cp38-* *musl* *-win32 *i686"
 test-command = 'pytest -n auto {project}/python/test'
 test-requires = 'parameterized pytest pytest-xdist'
 
+manylinux-x86_64-image = "vanderaa/manylinux2014_x86_64_smurff"
+musllinux-x86_64-image = "vanderaa/musllinux_1_2_x86_64_smurff"
+
+# - cibuildwheel on macos -
+
 [tool.cibuildwheel.macos.config-settings]
-"cmake.define.HDF5_ROOT" = "/usr/local/hdf5"
 "cmake.define.ENABLE_BLAS" = "ON"
 "cmake.define.ENABLE_BOOST" = "OFF"
 "cmake.define.ENABLE_CMDLINE" = "OFF"
 "cmake.define.ENABLE_TESTS" = "OFF"
 "cmake.define.BLA_VENDOR" = "Apple"
+"cmake.define.CMAKE_TOOLCHAIN_FILE" = "vcpkg/scripts/buildsystems/vcpkg.cmake"
+
+[tool.cibuildwheel.macos]
+before-all = "ci/buildwheel/install_deps.sh"
+
+# - cibuildwheel on linux -
 
 [tool.cibuildwheel.linux.config-settings]
 "cmake.define.ENABLE_BLAS" = "ON"
@@ -91,9 +98,15 @@ test-requires = 'parameterized pytest pytest-xdist'
 "cmake.define.ENABLE_TESTS" = "OFF"
 "cmake.define.BLA_VENDOR" = "OpenBLAS"
 
-[tool.cibuildwheel.macos]
-before-all = "ci/buildwheel/install_deps.sh"
 
-# https://github.com/mcleantom/scikit_build_core_vcpkg
-#[tool.cibuildwheel.windows.config-settings]
-# "cmake.define.CMAKE_TOOLCHAIN_FILE" = "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+# - cibuildwheel on windows -
+
+[tool.cibuildwheel.windows.config-settings]
+"cmake.define.ENABLE_BLAS" = "OFF"
+"cmake.define.ENABLE_BOOST" = "OFF"
+"cmake.define.ENABLE_CMDLINE" = "OFF"
+"cmake.define.ENABLE_TESTS" = "OFF"
+"cmake.define.CMAKE_TOOLCHAIN_FILE" = "vcpkg/scripts/buildsystems/vcpkg.cmake"
+
+[tool.cibuildwheel.windows]
+before-all = "ci\\buildwheel\\install_deps.bat"
