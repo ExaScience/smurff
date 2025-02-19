@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
           os: [ubuntu-latest, windows-latest, macos-13, macos-14]
-          pyver: [cp39, cp310, cp311, cp312]
+          pyver: [cp39, cp310, cp311, cp312, cp313]
 
     steps:
       - uses: actions/checkout@v4
