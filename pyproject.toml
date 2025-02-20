@@ -63,6 +63,8 @@ Homepage = "http://github.com/ExaScience/smurff"
 py_smurff = "smurff.cmdline:main"
 
 [tool.cibuildwheel]
+# Increase pip debugging output
+build-verbosity = 3
 # We skip these:
 # - PyPy: never tested, pandas does not seem to work
 # - CPython 3.6: unsupported by scikit_build_core
