@@ -19,7 +19,7 @@ requirements:
     - llvm-openmp             # [osx]
   host:
     - llvm-openmp             # [osx]
-    - mkl-devel               # [blas_impl == 'mkl']
+    - mkl-devel <2025         # [blas_impl == 'mkl']
     - openblas                # [blas_impl != 'mkl']
     - eigen
     - catch2
@@ -32,7 +32,7 @@ requirements:
     - setuptools_scm
   run:
     - python {{ python }}
-    - mkl                   # [blas_impl == 'mkl']
+    - mkl <2025             # [blas_impl == 'mkl']
     - openblas              # [blas_impl != 'mkl']
     - libboost              # [not win]
     - numpy
