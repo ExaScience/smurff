@@ -109,6 +109,7 @@ before-all = "ci/buildwheel/install_deps.sh"
 "cmake.define.ENABLE_CMDLINE" = "OFF"
 "cmake.define.ENABLE_TESTS" = "OFF"
 "cmake.define.CMAKE_TOOLCHAIN_FILE" = "vcpkg/scripts/buildsystems/vcpkg.cmake"
+"cmake.define.VCPKG_TARGET_TRIPLET" = "x64-windows-static"
 
 [tool.cibuildwheel.windows]
 before-all = "ci\\buildwheel\\install_deps.bat"
