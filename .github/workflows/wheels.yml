@@ -37,3 +37,11 @@ jobs:
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
+
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: build_wheels
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
