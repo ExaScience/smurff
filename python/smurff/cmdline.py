@@ -37,7 +37,7 @@ def read_ini(fname):
 
     priors = read_list(cfg["global"], "prior_")
     seed = cfg.getint("global", "random_seed") if cfg.getboolean("global", "random_seed_set") else None
-    threshold = cfg.getfloat("global", "threshold") if cfg.getboolean("global", "classify") else None 
+    threshold = cfg.getfloat("global", "threshold") if cfg.getboolean("global", "classify") else None
 
     session = smurff.TrainSession(
         priors,
@@ -45,7 +45,7 @@ def read_ini(fname):
         cfg.getint("global", "num_threads", fallback=None),
         cfg.getint("global", "burnin"),
         cfg.getint("global", "nsamples"),
-        seed, 
+        seed,
         threshold,
         cfg.getint("global", "verbose"),
         cfg.get   ("global", "save_name", fallback=smurff.temp_savename()),
@@ -62,7 +62,7 @@ def read_ini(fname):
     for mode in range(len(priors)):
         section = "side_info_%d" % mode
         if section in cfg.keys():
-            data, matrix_type, noise, pos, direct, tol = read_data(cfg, section) 
+            data, matrix_type, noise, pos, direct, tol = read_data(cfg, section)
             session.addSideInfo(mode, data, noise, direct)
 
     return session
@@ -70,10 +70,9 @@ def read_ini(fname):
 def main():
     parser = argparse.ArgumentParser(description='pySMURFF - command line utility to the SMURFF Python module')
 
-    parser.add_argument("command", help="Do full 'run' or only 'save' to .h5", choices=['run', 'save'])
+    parser.add_argument("command", help="Do full 'run' or only 'save' to .h5", choices=['run', 'save', 'version'])
 
     group = parser.add_argument_group("General parameters")
-    group.add_argument("--version", action="store_true", help="print version info (and exit)")
     group.add_argument("--verbose", metavar= "NUM", type=int, default=1, help="verbose output (default = 1}")
     group.add_argument("--ini", metavar="FILE", type=str,  help="read options from this .ini file")
     group.add_argument("--num-threads", metavar= "NUM", type=int,  help="number of threads (0 = default by OpenMP")
@@ -97,11 +96,13 @@ def main():
     group.add_argument("--checkpoint-freq", metavar="NUM", type=int, help="save state every n seconds, only one checkpointing state is kept")
 
     args = parser.parse_args()
-    print(args)
 
-    if args.version:
-        print("SMURFF %s" % smurff.version)
-        exit
+    if args.command == "version":
+        if args.verbose > 0:
+            print("SMURFF %s" % smurff.full_version())
+        else:
+            print("SMURFF %s" % smurff.version)
+        return
 
     session = smurff.TrainSession()
 

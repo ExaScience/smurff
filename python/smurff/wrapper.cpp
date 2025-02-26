@@ -5,6 +5,7 @@
 #include <pybind11/operators.h>
 
 #include <SmurffCpp/Types.h>
+#include <SmurffCpp/Version.h>
 #include <SmurffCpp/Configs/Config.h>
 #include <SmurffCpp/Configs/NoiseConfig.h>
 #include <SmurffCpp/Configs/DataConfig.h>
@@ -33,6 +34,7 @@ PYBIND11_MODULE(wrapper, m)
     m.doc() = "SMURFF Python Interface";
 
     m.attr("version") = SMURFF_VERSION;
+    m.def("full_version", &smurff::full_version, "Full version string");
 
     py::class_<smurff::NoiseConfig>(m, "NoiseConfig")
         .def(py::init<const std::string, double, double, double, double>(),
@@ -41,7 +43,7 @@ PYBIND11_MODULE(wrapper, m)
            py::arg("sn_init") = 1.0,
            py::arg("sn_max") = 10.0,
            py::arg("threshold") = 0.5
-        )  
+        )
         ;
 
     py::class_<smurff::StatusItem>(m, "StatusItem", "Short set of parameters indicative for the training progress.")
@@ -108,10 +110,10 @@ PYBIND11_MODULE(wrapper, m)
 
         .def("setTrain", &smurff::PythonSession::setTrain<smurff::SparseMatrix>)
         .def("setTrain", &smurff::PythonSession::setTrain<smurff::SparseTensor>)
-        
+
         .def("addSideInfo", &smurff::PythonSession::addSideInfoDense)
         .def("addSideInfo", &smurff::PythonSession::addSideInfoSparse)
-        
+
         .def("addData", &smurff::PythonSession::addDataDense<smurff::Matrix>)
         .def("addData", &smurff::PythonSession::addDataSparse<smurff::SparseMatrix>)
         .def("addData", &smurff::PythonSession::addDataDense<smurff::DenseTensor>)
@@ -124,7 +126,7 @@ PYBIND11_MODULE(wrapper, m)
         .def("getStatus", &smurff::TrainSession::getStatus)
         .def("getRmseAvg", &smurff::TrainSession::getRmseAvg)
         .def("getTestPredictions", [](const smurff::PythonSession &s) { return s.getResult().m_predictions; })
-        .def("getTestSamples", [](const smurff::PythonSession &s) { 
+        .def("getTestSamples", [](const smurff::PythonSession &s) {
             return
                 s.getConfig().getNModes() > 2  ?
                 py::cast(s.getResult().asVectorOfTensor()) :
@@ -139,7 +141,7 @@ PYBIND11_MODULE(wrapper, m)
 
     m.def("predict", &smurff::predict_matrix, "Predict helper function");
     m.def("predict", &smurff::predict_tensor, "Predict helper function");
-    
+
     py::register_exception_translator([](std::exception_ptr p) {
         try {
             if (p) std::rethrow_exception(p);
