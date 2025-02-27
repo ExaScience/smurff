@@ -3,7 +3,7 @@ package:
   version: {{ environ.get("GIT_DESCRIBE_TAG", "0.99.9").lstrip("v") }}
 
 source:
-  path: ../..
+  git_url: ../..
 
 build:
     number: {{ GIT_DESCRIBE_NUMBER }}
@@ -19,7 +19,7 @@ requirements:
     - llvm-openmp             # [osx]
   host:
     - llvm-openmp             # [osx]
-    - mkl-devel               # [blas_impl == 'mkl']
+    - mkl-devel <2025         # [blas_impl == 'mkl']
     - openblas                # [blas_impl != 'mkl']
     - eigen
     - catch2
@@ -32,7 +32,7 @@ requirements:
     - setuptools_scm
   run:
     - python {{ python }}
-    - mkl                   # [blas_impl == 'mkl']
+    - mkl <2025             # [blas_impl == 'mkl']
     - openblas              # [blas_impl != 'mkl']
     - libboost              # [not win]
     - numpy

@@ -1,0 +1,8 @@
+{
+  "name": "smurff",
+  "version": "0.17.0",
+  "dependencies": [
+    "eigen3",
+    "highfive"
+  ]
+}

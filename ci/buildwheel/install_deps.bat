@@ -1,0 +1,1 @@
+./vcpkg/bootstrap-vcpkg.bat
