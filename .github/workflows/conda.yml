@@ -25,7 +25,8 @@ jobs:
           fetch-depth: 0
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: 3.8
+          miniforge-version: latest
+          python-version: 3.9
           channels: conda-forge
           activate-environment: devtools
           environment-file: conda-recipes/devtools.yml
