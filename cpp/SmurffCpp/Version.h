@@ -1,8 +1,9 @@
 #pragma once
+#include <sstream>
 
 #include <SmurffCpp/Utils/Error.h>
 
-#ifdef ENABLE_BOOST
+#ifdef HAVE_BOOST
 #include <boost/version.hpp>
 #endif
 
@@ -14,7 +15,13 @@ namespace smurff {
       std::string v(SMURFF_VERSION);
 
 #ifdef HAVE_BOOST
-      v += " (Boost version: " BOOST_LIB_VERSION ")";
+      std::stringstream b;
+      b << " (Boost version: "
+        << BOOST_VERSION / 100000     << "."  // major version
+        << BOOST_VERSION / 100 % 1000 << "."  // minor version
+        << BOOST_VERSION % 100                // patch level
+        << ")";
+      v += b.str();
 #else
       v += " (no Boost)";
 #endif
