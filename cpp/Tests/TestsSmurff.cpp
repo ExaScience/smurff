@@ -101,51 +101,24 @@ void checkResultItems(const std::vector<ResultItem> &actualResultItems,
   }
 }
 
-struct SmurffTest {
-  Config config;
+void SmurffTest::runAndCheck(int nr)
+{
+        std::shared_ptr<ISession> trainSession = std::make_shared<TrainSession>(config);
+        trainSession->run();
 
-  SmurffTest(const Matrix &train, const SparseMatrix &test, std::vector<PriorTypes> priors)
-      : config(genConfig(train, test, priors)) {}
+        double actualRmseAvg = trainSession->getRmseAvg();
+        const std::vector<ResultItem> &actualResults = trainSession->getResultItems();
 
-  SmurffTest(const SparseMatrix &train, const SparseMatrix &test, std::vector<PriorTypes> priors)
-      : config(genConfig(train, test, priors)) {}
+        printActualResults(nr, actualRmseAvg, actualResults);
+        if (expectedResults.find(nr) == expectedResults.end())
+                FAIL("Expected results for nr " << nr << " not found\n");
 
-  SmurffTest(const DenseTensor &train, const SparseTensor &test, std::vector<PriorTypes> priors)
-      : config(genConfig(train, test, priors)) {}
+        double &expectedRmseAvg = expectedResults[nr].rmseAvg;
+        auto &expectedResultItems = expectedResults[nr].resultItems;
 
-  SmurffTest(const SparseTensor &train, const SparseTensor &test, std::vector<PriorTypes> priors)
-      : config(genConfig(train, test, priors)) {}
-
-  template<class M>
-  SmurffTest &addSideInfo(int m, const M &c, bool direct = true) {
-    config.addSideInfo(m, makeSideInfoConfig(c, direct));
-    return *this;
-  }
-
-  SmurffTest &addAuxData(const DataConfig &c) {
-    config.addData() = c;
-    return *this;
-  }
-
-
-  void runAndCheck(int nr) {
-    std::shared_ptr<ISession> trainSession = std::make_shared<TrainSession>(config);
-    trainSession->run();
-
-    double actualRmseAvg = trainSession->getRmseAvg();
-    const std::vector<ResultItem> &actualResults = trainSession->getResultItems();
-
-    printActualResults(nr, actualRmseAvg, actualResults);
-    if(expectedResults.find(nr) == expectedResults.end())
-        FAIL("Expected results for nr " << nr << " not found\n");
-
-    double &expectedRmseAvg = expectedResults[nr].rmseAvg;
-    auto &expectedResultItems = expectedResults[nr].resultItems;
-
-    checkValue(actualRmseAvg, expectedRmseAvg, rmse_epsilon);
-    checkResultItems(actualResults, expectedResultItems);
-  }
-};
+        checkValue(actualRmseAvg, expectedRmseAvg, rmse_epsilon);
+        checkResultItems(actualResults, expectedResultItems);
+}
 
 ///===========================================================================
 TEST_CASE("train_dense_matrix_test_sparse_matrix_normal_normal_none_none",

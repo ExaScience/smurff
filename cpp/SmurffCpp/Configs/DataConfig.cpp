@@ -25,7 +25,7 @@ static const std::string SN_INIT_TAG = "sn_init";
 static const std::string SN_MAX_TAG = "sn_max";
 static const std::string NOISE_THRESHOLD_TAG = "noise_threshold";
 
-DataConfig::DataConfig () 
+DataConfig::DataConfig ()
    : m_hasData(false) {}
 
 DataConfig::DataConfig ( const Matrix &m
@@ -90,6 +90,8 @@ void DataConfig::check() const
 // other methods
 //
 
+const std::string NON_FINITE_MSG = "Found nan/infinite in input data";
+
 void DataConfig::setData(const Matrix &m)
 {
    m_dense_matrix_data = m;
@@ -98,7 +100,7 @@ void DataConfig::setData(const Matrix &m)
    m_isScarce = false;
    m_isMatrix = true;
 
-   THROWERROR_ASSERT(m.array().isFinite().all());
+   THROWERROR_ASSERT_MSG(m.array().isFinite().all(), NON_FINITE_MSG);
 
    check();
 }
@@ -112,7 +114,7 @@ void DataConfig::setData(const SparseMatrix &m, bool isScarce)
    m_isMatrix = true;
 
    const Eigen::Map<const Vector> values(m.valuePtr(), m.nonZeros());
-   THROWERROR_ASSERT(values.array().isFinite().all());
+   THROWERROR_ASSERT_MSG(values.array().isFinite().all(), NON_FINITE_MSG);
 
    check();
 }
@@ -125,7 +127,7 @@ void DataConfig::setData(const DenseTensor &m)
    m_isMatrix = false;
 
    const Eigen::Map<const Vector> values(m.getValues().data(), m.getValues().size());
-   THROWERROR_ASSERT(values.array().isFinite().all());
+   THROWERROR_ASSERT_MSG(values.array().isFinite().all(), NON_FINITE_MSG);;
 
    check();
 }
@@ -139,7 +141,7 @@ void DataConfig::setData(const SparseTensor &m, bool isScarce)
    m_isMatrix = false;
 
    const Eigen::Map<const Vector> values(m.getValues().data(), m.getValues().size());
-   THROWERROR_ASSERT(values.array().isFinite().all());
+   THROWERROR_ASSERT_MSG(values.array().isFinite().all(), NON_FINITE_MSG);;
 
    check();
 }
@@ -180,13 +182,13 @@ SparseMatrix &DataConfig::getSparseMatrixData()
    return m_sparse_matrix_data;
 }
 
-SparseTensor &DataConfig::getSparseTensorData() 
+SparseTensor &DataConfig::getSparseTensorData()
 {
    THROWERROR_ASSERT(!hasData());
    return m_sparse_tensor_data;
 }
 
-DenseTensor &DataConfig::getDenseTensorData() 
+DenseTensor &DataConfig::getDenseTensorData()
 {
    THROWERROR_ASSERT(!hasData());
    return m_dense_tensor_data;
@@ -237,7 +239,7 @@ const std::vector<std::uint64_t> DataConfig::getDims() const
       const auto &m = getDenseMatrixData();
       return std::vector<std::uint64_t>{ (std::uint64_t)m.rows(), (std::uint64_t)m.cols() };
    }
-   else if (isMatrix() && !isDense()) 
+   else if (isMatrix() && !isDense())
    {
       const auto &m = getSparseMatrixData();
       return std::vector<std::uint64_t>{ (std::uint64_t)m.rows(), (std::uint64_t)m.cols() };
@@ -252,7 +254,7 @@ const std::vector<std::uint64_t> DataConfig::getDims() const
       const auto &m = getDenseTensorData();
       return m.getDims();
    }
-   else 
+   else
       THROWERROR_NOTIMPL();
 }
 
@@ -337,15 +339,15 @@ void DataConfig::save(HDF5Group& cfg_file, const std::string& sectionName) const
       cfg_file.put(sectionName, POS_TAG, ss.str());
    }
 
-   if (isMatrix() && isDense()) 
+   if (isMatrix() && isDense())
       cfg_file.write(sectionName, DATA_TAG, getDenseMatrixData());
-   else if (isMatrix() && !isDense()) 
+   else if (isMatrix() && !isDense())
       cfg_file.write(sectionName, DATA_TAG, getSparseMatrixData());
    else if (!isMatrix() && !isDense())
       cfg_file.write(sectionName, DATA_TAG, getSparseTensorData());
    else if (!isMatrix() && isDense())
       cfg_file.write(sectionName, DATA_TAG, getDenseTensorData());
-   else 
+   else
       THROWERROR_NOTIMPL();
 
    //write tensor config type

@@ -14,6 +14,7 @@ FILE (GLOB SOURCE_FILES "tests.cpp"
                         "TestsSparseSideInfo.cpp"
                         "TestsSmurff.cpp"
                         "TestsRandom.cpp"
+                        "TestsInputValidation.cpp"
                         )
 
 include_directories("expected_${SMURFF_FLOAT_TYPE}")
