@@ -75,6 +75,35 @@ Config genConfig(const Train &train, const Test &test, std::vector<PriorTypes> p
   return config;
 }
 
+struct SmurffTest {
+  Config config;
+
+  SmurffTest(const Matrix &train, const SparseMatrix &test, std::vector<PriorTypes> priors)
+      : config(genConfig(train, test, priors)) {}
+
+  SmurffTest(const SparseMatrix &train, const SparseMatrix &test, std::vector<PriorTypes> priors)
+      : config(genConfig(train, test, priors)) {}
+
+  SmurffTest(const DenseTensor &train, const SparseTensor &test, std::vector<PriorTypes> priors)
+      : config(genConfig(train, test, priors)) {}
+
+  SmurffTest(const SparseTensor &train, const SparseTensor &test, std::vector<PriorTypes> priors)
+      : config(genConfig(train, test, priors)) {}
+
+  template<class M>
+  SmurffTest &addSideInfo(int m, const M &c, bool direct = true) {
+    config.addSideInfo(m, makeSideInfoConfig(c, direct));
+    return *this;
+  }
+
+  SmurffTest &addAuxData(const DataConfig &c) {
+    config.addData() = c;
+    return *this;
+  }
+
+  void runAndCheck(int nr);
+};
+
 void checkValue(double actualValue, double expectedValue, double epsilon);
 
 } // namespace test
