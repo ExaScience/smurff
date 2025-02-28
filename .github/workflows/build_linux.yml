@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        build.type:
+        build_type:
         - Debug
         - Release
         - RelNoOpenMP
@@ -53,15 +53,15 @@ jobs:
 
     - name: Run CMake
       run: |-
-         cmake -S .  -B build.${{ matrix.build.type }} -DCMAKE_BUILD_TYPE=${{ matrix.build.type }} -DENABLE_PYTHON=OFF
+         cmake -S .  -B build.${{ matrix.build_type }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DENABLE_PYTHON=OFF
 
     - name: Build
       run: |-
-        cmake --build build.${{ matrix.build.type }}
+        cmake --build build.${{ matrix.build_type }}
 
     - name: Install
       run: |-
-        sudo cmake --install build.${{ matrix.build.type }}
+        sudo cmake --install build.${{ matrix.build_type }}
 
     - name: Run tests
       run: |-
