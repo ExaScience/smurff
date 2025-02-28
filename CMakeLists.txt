@@ -160,7 +160,11 @@ set(SMURFF_VERSION "${SKBUILD_PROJECT_VERSION_FULL}")
 
 message(STATUS "SKBUILD version: ${SMURFF_VERSION}")
 
-else(SKBUILD)
+elseif(SMURFF_VERSION)
+
+message(STATUS "SMURFF from commandline: ${SMURFF_VERSION}")
+
+else()
 
 #get GIT commit count we can later use as patch level
 execute_process(
@@ -222,7 +226,7 @@ endif()
 
 message(STATUS "GIT describe ${SMURFF_VERSION}")
 
-endif(SKBUILD)
+endif()
 
 string(REGEX REPLACE "-[^-]+$"
     "" SMURFF_VERSION_CLEAN
