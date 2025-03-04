@@ -29,7 +29,6 @@ jobs:
         with:
           miniforge-version: latest
           python-version: 3.11
-          channels: conda-forge
           environment-file: conda-recipes/devtools.yml
           show-channel-urls: true
           conda-remove-defaults: 'true'
