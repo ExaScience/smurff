@@ -95,6 +95,10 @@ class TrainSession(PythonSession):
                save_name = os.path.join(tempfile.mkdtemp(), "output.hdf5")
             self.setSaveName(save_name)
 
+    @property
+    def niter(self):
+        return self.getBurnin() + self.getNSamples()
+
     def addTrainAndTest(self, Y, Ytest = None, noise = FixedNoise(), is_scarce = True):
         self.setTrain(Y, noise, is_scarce)
 
