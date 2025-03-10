@@ -224,7 +224,7 @@ class TrainSession(PythonSession):
         logging.info(self)
         return self.getStatus()
 
-    def step(self):
+    def step(self, pbar = None):
         """Does on sampling or burnin iteration.
 
         Returns
@@ -233,29 +233,41 @@ class TrainSession(PythonSession):
         - After the last iteration, when no step was executed: `None`.
 
         """
-        not_done = super().step()
-        
+        done = not super().step()
+
         if self.interrupted():
             raise KeyboardInterrupt
 
-        if not_done:
-            status = self.getStatus()
-            logging.info(status)
-            return status
-        else:
+        if done:
             return None
+
+        status = self.getStatus()
+
+        if pbar:
+            pbar.set_description("{} (RMSE={:.4f})".format(status.phase, status.rmse_avg), refresh=True)
+            pbar.update(1)
+
+        logging.info(status)
+        return status
 
     def run(self):
         """Equivalent to:
 
         .. code-block:: python
-        
+
             self.init()
             while self.step():
                 pass
         """
         self.init()
-        while self.step():
+
+        try:
+            import tqdm
+            pbar = tqdm.tqdm(total=self.niter)
+        except ImportError:
+            pbar = None
+
+        while self.step(pbar):
             pass
 
         return self.getTestPredictions()
