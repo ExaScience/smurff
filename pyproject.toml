@@ -56,6 +56,9 @@ dependencies = [
 ]
 license = {text = "MIT"}
 
+[project.optional-dependencies]
+tqdm = ["tqdm"]
+
 [project.urls]
 Homepage = "http://github.com/ExaScience/smurff"
 
