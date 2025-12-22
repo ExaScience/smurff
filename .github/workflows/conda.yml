@@ -11,7 +11,7 @@ on:
 
 jobs:
   conda-build:
-    name: Build Conda Package on ${{ matrix.os }} for Python ${{ matrix.python }}
+    name: Build Conda Package on ${{ matrix.os }} for Python ${{ matrix.pyver }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -51,12 +51,12 @@ jobs:
           conda-remove-defaults: "true"
       - name: Build conda packages
         run: |
-          conda build --python ${{ matrix.python }}  --output-folder ../conda_packages smurff
+          conda build --python ${{ matrix.pyver }}  --output-folder ../conda_packages smurff
         working-directory: conda-recipes
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: conda-${{ matrix.os }}-${{ matrix.python }}
+          name: conda-${{ matrix.os }}-${{ matrix.pyver }}
           path: conda_packages/*
 
   merge:
