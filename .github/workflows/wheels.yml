@@ -12,7 +12,7 @@ on:
 jobs:
   build_wheels:
     name: Build wheel ${{ matrix.pyver }}-${{ matrix.os }}
-    runs-on: ${{matrix.os}}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         pyver: [cp39, cp310, cp311, cp312, cp313]
