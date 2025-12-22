@@ -21,7 +21,9 @@ jobs:
           - os: macos-15
           - os: macos-15-intel
           - os: ubuntu-latest
-          - cibw_archs: "native aarch64"
+            cibw_archs: "native"
+          - os: ubuntu-latest
+            cibw_archs: "aarch64"
 
     steps:
       - name: Set up QEMU
