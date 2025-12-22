@@ -50,6 +50,7 @@ jobs:
 
       - name: Build wheels
         env:
+          CIBW_SKIP: "pp*"
           CIBW_BUILD: ${{ matrix.pyver }}-*
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
         run: python -m cibuildwheel --output-dir wheelhouse
