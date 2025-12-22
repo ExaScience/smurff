@@ -116,7 +116,7 @@ endmacro(configure_highfive)
 macro(configure_boost)
   message ("Dependency check for boost...")
   if(${ENABLE_BOOST})
-      FIND_PACKAGE(Boost COMPONENTS system program_options filesystem REQUIRED)
+      FIND_PACKAGE(Boost COMPONENTS program_options filesystem REQUIRED)
 
       message("-- Found Boost_VERSION: ${Boost_VERSION}")
       message("-- Found Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
