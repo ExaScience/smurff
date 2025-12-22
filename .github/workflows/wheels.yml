@@ -11,8 +11,8 @@ on:
 
 jobs:
   build_wheels:
-    name: wheel ${{ matrix.pyver }}-${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
+    name: Build wheel ${{ matrix.pyver }}-${{ matrix.os }}
+    runs-on: ${{matrix.os}}
     strategy:
       matrix:
         include:
