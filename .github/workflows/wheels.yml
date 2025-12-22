@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        pyver: [cp39, cp310, cp311, cp312, cp313]
+        pyver: [cp39, cp310, cp311, cp312, cp313, cp314]
         include:
           - os: windows-latest
             cibw_archs: "native"
