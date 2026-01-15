@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 RUN apt-get update && \
    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -16,14 +16,7 @@ RUN apt-get update && \
        libhdf5-dev \
        gdb vim wget\
        libhdf5-dev \
-       python3-pip \
-       python3-numpy python3-pybind11 python3-setuptools \
-       python3-scipy python3-pandas \
-       python3-joblib python3-sklearn \
-       python3-h5py \
-       python3-pytest \
-       python3-parameterized \
-       python3-pytest-xdist \
+       python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
 
