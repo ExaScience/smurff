@@ -4,4 +4,4 @@ sphinx_rtd_theme
 ipykernel
 nbsphinx
 pygments>=2.6.1
-smurff>=0.17.0<0.18.0
+smurff==1.0
