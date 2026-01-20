@@ -9,7 +9,7 @@ RUN apk add \
         py3-pybind11-dev python3-dev py3-pip py3-pytest py3-parameterized py3-pytest-xdist
 
 #install HighFive
-RUN wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.2.2.tar.gz && \
+RUN wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.10.1.tar.gz && \
     tar xzf HighFive.tar.gz && \
     rm HighFive.tar.gz && \
     cd HighFive* && \

@@ -12,7 +12,7 @@ build:
 
 requirements:
   build:
-    - cmake
+    - cmake <4.0
     - ninja
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
@@ -25,7 +25,7 @@ requirements:
     - catch2
     - libboost-devel
     - pybind11
-    - highfive >=2.2
+    - highfive ==2.*
     - h5py
     - python {{ python }}
     - scikit-build-core

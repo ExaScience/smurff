@@ -21,3 +21,4 @@ wheelhouse
 *.generated
 cpp_generated*
 .venv
+vcpkg_installed

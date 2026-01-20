@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cinttypes>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -14,7 +15,7 @@ namespace smurff
 {
 const int MaxDims = 10;
 
-   
+
 template <size_t MaxSize = MaxDims>
 class PVec
 {
