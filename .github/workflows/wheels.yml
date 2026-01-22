@@ -11,23 +11,24 @@ on:
 
 jobs:
   build_wheels:
-    name: Build wheel ${{ matrix.pyver }}-${{ matrix.os }}
+    name: Build wheel ${{ matrix.pyver }}-${{ matrix.os }}-${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [windows-latest, macos-15, macos-15-intel, ubuntu-latest]
+        arch: [native, aarch64]
         pyver: [cp39, cp310, cp311, cp312, cp313, cp314]
         include:
           - os: windows-latest
-            cibw_archs: "native"
+            arch: "native"
           - os: macos-15
-            cibw_archs: "native"
+            arch: "native"
           - os: macos-15-intel
-            cibw_archs: "native"
+            arch: "native"
           - os: ubuntu-latest
-            cibw_archs: "native"
+            arch: "native"
           - os: ubuntu-latest
-            cibw_archs: "aarch64"
+            arch: "aarch64"
 
     steps:
       - uses: actions/checkout@v4
@@ -46,6 +47,7 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BUILD: ${{ matrix.pyver }}-*
+          CIBW_ARCHS: ${{ matrix.arch }}
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - uses: actions/upload-artifact@v4
