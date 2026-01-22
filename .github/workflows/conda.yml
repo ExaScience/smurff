@@ -11,16 +11,33 @@ on:
 
 jobs:
   conda-build:
-    name: Build Conda Package on ${{ matrix.os }} for Python ${{ matrix.python }}
+    name: Build Conda Package on ${{ matrix.os }} for Python ${{ matrix.pyver }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-          os: [ubuntu-latest, windows-latest, macos-15-intel, macos-15]
-          python: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
+        pyver: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        include:
+          - os: windows-latest
+            cibw_archs: "native"
+          - os: macos-15
+            cibw_archs: "native"
+          - os: macos-15-intel
+            cibw_archs: "native"
+          - os: ubuntu-latest
+            cibw_archs: "native"
+          - os: ubuntu-latest
+            cibw_archs: "aarch64"
+
     defaults:
       run:
         shell: bash -el {0}
+
     steps:
+      - name: Set up QEMU
+        if: matrix.cibw_archs == 'aarch64'
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -31,16 +48,16 @@ jobs:
           python-version: 3.11
           environment-file: conda-recipes/devtools.yml
           show-channel-urls: true
-          conda-remove-defaults: 'true'
+          conda-remove-defaults: "true"
       - name: Build conda packages
         run: |
-          conda build --python ${{ matrix.python }}  --output-folder ../conda_packages smurff
+          conda build --python ${{ matrix.pyver }}  --output-folder ../conda_packages smurff
         working-directory: conda-recipes
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-           name: conda-${{ matrix.os }}-${{ matrix.python }}
-           path: conda_packages/*
+          name: conda-${{ matrix.os }}-${{ matrix.pyver }}
+          path: conda_packages/*
 
   merge:
     name: Merge all Conda artifacts
