@@ -1,0 +1,58 @@
+name: Build Documentation
+
+on:
+  push:
+    branches:
+    - master
+    - release-*
+    - v*
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install pandoc
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pandoc
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r docs/requirements.txt
+
+    - name: Build documentation
+      run: |
+        cd docs
+        make html
+
+    - name: Check for build errors
+      run: |
+        if [ -d docs/_build/html ]; then
+          echo "Documentation built successfully"
+          ls -la docs/_build/html
+        else
+          echo "Documentation build failed"
+          exit 1
+        fi
+
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation-html
+        path: docs/_build/html/
+        retention-days: 30
