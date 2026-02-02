@@ -17,6 +17,8 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('c') }}
     - llvm-openmp             # [osx]
+    - python                           # [build_platform != target_platform]
+    - cross-python_{{target_platform}} # [build_platform != target_platform]
   host:
     - llvm-openmp             # [osx]
     - mkl-devel <2025         # [blas_impl == 'mkl']

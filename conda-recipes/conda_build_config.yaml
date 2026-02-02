@@ -3,12 +3,13 @@ python:
     - 3.10
     - 3.11
     - 3.12
-    - 3.13
+    - 3.13      # [not aarch64]
     - 3.14
 
-blas_impl:      # [linux64 or win64]
+blas_impl:      # [linux64 or aarch64 or win64]
     - openblas  # [linux64 or win64]
     - mkl       # [linux64 or win64]
+    - openblas  # [aarch64]
 
 hdf5:
     - 1.10.4
@@ -17,6 +18,13 @@ hdf5:
 c_compiler: vs2022    # [win]
 cxx_compiler: vs2022  # [win]
 
+target_platform:          # [linux]
+    - linux-64            # [linux]
+    - linux-aarch64       # [linux]
+
 pin_run_as_build:
   libboost: x.x
   hdf5: x.x.x
+  python:
+    min_pin: x.x
+    max_pin: x.x
