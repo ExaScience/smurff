@@ -15,8 +15,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, macos-15, macos-15-intel, ubuntu-latest]
-        arch: [native, aarch64]
         pyver: [cp39, cp310, cp311, cp312, cp313, cp314]
         include:
           - os: windows-latest
