@@ -11,24 +11,12 @@ on:
 
 jobs:
   conda-build:
-    name: Build Conda Package on ${{ matrix.os }} for Python ${{ matrix.pyver }} and arch ${{ matrix.arch }}
+    name: Build Conda Package on ${{ matrix.os }} for Python ${{ matrix.pyver }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest, macos-15, macos-15-intel, ubuntu-latest]
-        arch: [native, aarch64]
         pyver: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-        include:
-          - os: windows-latest
-            arch: "native"
-          - os: macos-15
-            arch: "native"
-          - os: macos-15-intel
-            arch: "native"
-          - os: ubuntu-latest
-            arch: "native"
-          - os: ubuntu-latest
-            arch: "aarch64"
 
     defaults:
       run:
@@ -36,7 +24,7 @@ jobs:
 
     steps:
       - name: Set up QEMU
-        if: matrix.arch == 'aarch64'
+        if: matrix.os == 'ubuntu-latest'
         uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64
@@ -58,7 +46,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: conda-${{ matrix.os }}-${{ matrix.pyver }}-${{ matrix.arch }}
+          name: conda-${{ matrix.os }}-${{ matrix.pyver }}
           path: conda_packages/*
 
   merge:
