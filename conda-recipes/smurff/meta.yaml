@@ -20,9 +20,9 @@ requirements:
     - python                           # [build_platform != target_platform]
     - cross-python_{{target_platform}} # [build_platform != target_platform]
   host:
-    - llvm-openmp             # [osx]
-    - mkl-devel <2025         # [blas_impl == 'mkl']
-    - openblas                # [blas_impl != 'mkl']
+    - llvm-openmp        # [osx]
+    - mkl-devel          # [blas_impl == 'mkl']
+    - openblas           # [blas_impl != 'mkl']
     - eigen
     - catch2
     - libboost-devel
@@ -34,9 +34,9 @@ requirements:
     - setuptools_scm
   run:
     - python {{ python }}
-    - mkl <2025             # [blas_impl == 'mkl']
-    - openblas              # [blas_impl != 'mkl']
-    - libboost              # [not win]
+    - mkl            # [blas_impl == 'mkl']
+    - openblas       # [blas_impl != 'mkl']
+    - libboost       # [not win]
     - numpy
     - scipy
     - pandas
