@@ -20,6 +20,11 @@ jobs:
         - RelNoOpenMP
         - RelWithDebInfo
     steps:
+    - name: Set up QEMU
+      if: runner.os == 'Linux'
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: arm64
     - name: checkout
       uses: actions/checkout@v4
       with:
