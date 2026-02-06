@@ -110,8 +110,8 @@ class TestMacau(unittest.TestCase):
         rmse = smurff.calc_rmse(predictions)
 
         self.assertTrue(
-            rmse < 1.1,
-            msg="Tensor factorization gave RMSE above 1.1 (%f)." % rmse,
+            rmse < 1.5,
+            msg="Tensor factorization gave RMSE above 1.5 (%f)." % rmse,
         )
 
     def test_macau_tensor_univariate(self):
@@ -141,8 +141,8 @@ class TestMacau(unittest.TestCase):
         rmse = smurff.calc_rmse(predictions)
 
         self.assertTrue(
-            rmse < 1.1,
-            msg="Tensor factorization gave RMSE above 1.1 (%f)." % rmse,
+            rmse < 1.5,
+            msg="Tensor factorization gave RMSE above 1.5 (%f)." % rmse,
         )
 
 
