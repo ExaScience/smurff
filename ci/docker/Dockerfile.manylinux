@@ -3,29 +3,5 @@ FROM quay.io/pypa/manylinux_2_28_x86_64
 RUN yum -y install wget openblas-devel hdf5-devel && \
    yum clean all
 
-
-#install Eigen
-RUN wget -O Eigen.tar.gz https://gitlab.com/libeigen/eigen/-/archive/3.4.1/eigen-3.4.1.tar.gz && \
-   tar xzf Eigen.tar.gz && \
-   rm Eigen.tar.gz && \
-   cd eigen* && \
-   mkdir build && \
-   cd build && \
-   cmake .. && \
-   make -j2 && \
-   make install && \
-   cd ../.. && \
-   rm -r eigen*
-
-#install HighFive
-RUN wget -O HighFive.tar.gz https://github.com/BlueBrain/HighFive/archive/v2.10.1.tar.gz && \
-    tar xzf HighFive.tar.gz && \
-    rm HighFive.tar.gz && \
-    cd HighFive* && \
-    mkdir build && \
-    cd build && \
-    cmake .. -DHIGHFIVE_USE_BOOST=OFF && \
-    make -j2 && \
-    make install && \
-    cd ../.. && \
-    rm -r HighFive*
+COPY install_dependencies.sh /tmp/install_dependencies.sh
+RUN chmod +x /tmp/install_dependencies.sh && /tmp/install_dependencies.sh && rm /tmp/install_dependencies.sh
